@@ -21,7 +21,7 @@ const EN = "/en/";
 const hreflang = `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}${HOME}">\n  <link rel="alternate" hreflang="en" href="${ORIGIN}${EN}">\n  <link rel="alternate" hreflang="x-default" href="${ORIGIN}${HOME}">`;
 const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
 // Google AdSense 发布商 ID（ca-pub-…）。留空则不输出广告代码和 ads.txt。
-const ADSENSE_CLIENT = "";
+const ADSENSE_CLIENT = "ca-pub-7118095537154296";
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`;
