@@ -1,0 +1,2072 @@
+{
+  "version": 1,
+  "roles": {
+    "structure": "主流派：决定布局、字体、圆角、边框、阴影与动效",
+    "surface": "副流派：决定色彩、质感、母题与生图媒介"
+  },
+  "textureKinds": {
+    "none": "无质感，纯平面",
+    "grain": "细颗粒噪点，像石版印刷",
+    "paper": "纤维纸纹，暖色底",
+    "halftone": "网点印刷，圆点阵列",
+    "lines": "细密平行线，金属拉丝或版画排线",
+    "dots": "稀疏大圆点图案",
+    "wash": "水墨晕染，边缘柔和的淡墨团",
+    "dapple": "碎笔触色斑，用强调色叠出光斑或色块",
+    "stipple": "密集的纯色小点，靠眼睛混色",
+    "vignette": "一束侧光，四周压暗",
+    "sky": "从上往下褪开的天色",
+    "speed": "细密斜向速度线",
+    "silk": "绢本经纬纹",
+    "gouge": "木刻刀痕般的斜向粗线",
+    "fresco": "壁画墙面的斑驳色块和颗粒"
+  },
+  "schools": [
+    {
+      "id": "cubism",
+      "name": "立体主义",
+      "en": "Cubism",
+      "aliases": [
+        "立体主义",
+        "立体派",
+        "Cubism",
+        "Cubist"
+      ],
+      "era": "1907–1920s · 法国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "把对象拆成多个视角的碎面，再叠回同一个平面；颜色克制，以赭、灰、橄榄为主。",
+      "intro": "立体主义 1907 年前后在巴黎兴起，由毕加索和布拉克推动。它放弃单一视点，把对象拆成碎面，从几个角度同时呈现，再拼回同一个平面。",
+      "palette": {
+        "bg": "oklch(0.9 0.025 80)",
+        "surface": "oklch(0.83 0.035 75)",
+        "ink": "oklch(0.2 0.02 60)",
+        "muted": "oklch(0.4 0.02 60)",
+        "line": "oklch(0.3 0.02 60)",
+        "accent": "oklch(0.45 0.08 55)",
+        "onAccent": "oklch(0.96 0.01 80)",
+        "accent2": "oklch(0.62 0.05 120)",
+        "accent3": "oklch(0.72 0.06 70)"
+      },
+      "colorWords": [
+        "ochre",
+        "raw umber",
+        "olive grey",
+        "slate"
+      ],
+      "colorUsage": "赭、灰、橄榄三色做相互叠压的碎面，饱和度压低；深棕做 CTA。",
+      "texture": {
+        "kind": "grain",
+        "level": 0.35,
+        "desc": "油画布上的细颗粒"
+      },
+      "motifs": [
+        "吉他与酒瓶的碎面",
+        "报纸拼贴碎片",
+        "多视角轮廓",
+        "素描辅助线"
+      ],
+      "motifsEn": [
+        "fragmented guitar and bottle",
+        "collaged newspaper fragments",
+        "multi-angle contours",
+        "sketch construction lines"
+      ],
+      "medium": "Analytic Cubist painting, faceted planes, muted ochre and grey palette, oil on canvas with papier colle",
+      "dont": [
+        "高饱和霓虹",
+        "光滑渐变"
+      ],
+      "negative": [
+        "neon",
+        "smooth gradient",
+        "photorealistic"
+      ],
+      "structure": {
+        "dont": [
+          "单一透视",
+          "圆角",
+          "整齐划一的卡片网格"
+        ],
+        "negative": [
+          "single viewpoint",
+          "smooth curves",
+          "realistic perspective"
+        ],
+        "grid": "碎面网格：区块切成不规则四边形并相互叠压",
+        "composition": "fragmented overlapping planes seen from multiple viewpoints, faceted geometric shards",
+        "rules": [
+          "区块用 clip-path 切成不规则四边形，相邻区块互相压住一角",
+          "标题出现两次：一次正常，一次错位做成残影",
+          "用细直线做素描辅助线，穿过多个区块",
+          "碎面叠在一起时用半透明，叠出第三种颜色"
+        ],
+        "radius": "0",
+        "border": "1px 直线",
+        "shadow": "无",
+        "density": "饱满",
+        "accentSlots": 3,
+        "textureCap": 0.5,
+        "type": {
+          "display": {
+            "family": "Abril Fatface",
+            "weight": 400,
+            "transform": "none",
+            "tracking": "0"
+          },
+          "body": {
+            "family": "Libre Franklin",
+            "weight": 400
+          },
+          "google": [
+            "Abril Fatface",
+            "Libre Franklin:wght@400;600"
+          ],
+          "zh": "\"Songti SC\", \"Noto Serif SC\", serif"
+        },
+        "motion": {
+          "desc": "错位：区块轻微平移后叠合，像换了一个视角",
+          "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "duration": "220ms"
+        }
+      }
+    },
+    {
+      "id": "futurism",
+      "name": "未来主义",
+      "en": "Futurism",
+      "aliases": [
+        "未来主义",
+        "未来派",
+        "Futurism",
+        "Futurist"
+      ],
+      "era": "1909–1930s · 意大利",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "歌颂速度与机器：重复的运动轨迹、放射的力线、向前冲的斜体大字。",
+      "intro": "未来主义诞生于 1909 年马里内蒂在《费加罗报》发表的宣言，主要活跃在意大利。它崇拜速度、机器和城市，用重复的轮廓和力线画出运动本身。",
+      "palette": {
+        "bg": "oklch(0.95 0.02 80)",
+        "surface": "oklch(0.9 0.03 70)",
+        "ink": "oklch(0.18 0.02 30)",
+        "muted": "oklch(0.4 0.03 30)",
+        "line": "oklch(0.18 0.02 30)",
+        "accent": "oklch(0.52 0.19 40)",
+        "onAccent": "oklch(0.98 0.01 80)",
+        "accent2": "oklch(0.4 0.14 260)",
+        "accent3": "oklch(0.84 0.14 88)"
+      },
+      "colorWords": [
+        "speed orange",
+        "steel blue",
+        "electric yellow",
+        "carbon black"
+      ],
+      "colorUsage": "橙色做冲刺方向上的主色和 CTA，钢蓝做力线，电黄只点在速度最快的地方。",
+      "texture": {
+        "kind": "speed",
+        "level": 0.45,
+        "desc": "细密斜向速度线"
+      },
+      "motifs": [
+        "连续曝光的重复轮廓",
+        "放射力线",
+        "飞驰的汽车与火车",
+        "螺旋桨"
+      ],
+      "motifsEn": [
+        "repeated overlapping contours of motion",
+        "radiating force lines",
+        "speeding cars and trains",
+        "propellers"
+      ],
+      "medium": "Italian Futurist painting, dynamism, repeated overlapping forms, force lines, fragmented motion",
+      "dont": [
+        "柔和低饱和",
+        "田园题材"
+      ],
+      "negative": [
+        "muted pastel",
+        "pastoral",
+        "soft focus"
+      ],
+      "structure": {
+        "dont": [
+          "静止对称",
+          "横平竖直的规整网格",
+          "圆角"
+        ],
+        "negative": [
+          "static composition",
+          "symmetry",
+          "calm"
+        ],
+        "grid": "动势网格：所有区块沿同一斜向矢量排列",
+        "composition": "dynamic diagonal thrust, repeated forms suggesting speed, radiating force lines from one point",
+        "rules": [
+          "标题带 2–3 层逐次变淡的残影，表现运动轨迹",
+          "区块切成平行四边形，统一向右上倾斜",
+          "几条力线从同一点射出，贯穿页面",
+          "字号从大到小排列，制造纵深"
+        ],
+        "radius": "0",
+        "border": "无",
+        "shadow": "沿运动方向的重复残影",
+        "density": "紧凑",
+        "accentSlots": 3,
+        "textureCap": 0.5,
+        "type": {
+          "display": {
+            "family": "Saira Extra Condensed",
+            "weight": 800,
+            "transform": "uppercase",
+            "tracking": "0"
+          },
+          "body": {
+            "family": "Saira",
+            "weight": 400
+          },
+          "google": [
+            "Saira Extra Condensed:wght@800",
+            "Saira:wght@400;600"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "冲刺：沿斜线快速滑入并留下残影",
+          "easing": "cubic-bezier(0.2, 0.9, 0.1, 1)",
+          "duration": "180ms"
+        }
+      }
+    },
+    {
+      "id": "suprematism",
+      "name": "至上主义",
+      "en": "Suprematism",
+      "aliases": [
+        "至上主义",
+        "至上派",
+        "Suprematism",
+        "Suprematist",
+        "马列维奇"
+      ],
+      "era": "1915–1920s · 俄国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "纯粹的几何形漂浮在白色虚空里，彼此倾斜、错落，没有地平线。",
+      "intro": "至上主义由马列维奇在 1915 年提出，代表作是《黑色方块》。它抛开一切具象，只留下漂浮在白色空间里的纯粹几何形，追求纯粹感觉的至高无上。",
+      "palette": {
+        "bg": "oklch(0.97 0.006 90)",
+        "surface": "oklch(0.93 0.008 90)",
+        "ink": "oklch(0.14 0.005 60)",
+        "muted": "oklch(0.42 0.005 60)",
+        "line": "oklch(0.14 0.005 60)",
+        "accent": "oklch(0.52 0.2 28)",
+        "onAccent": "oklch(0.98 0.005 90)",
+        "accent2": "oklch(0.16 0.005 60)",
+        "accent3": "oklch(0.45 0.14 262)"
+      },
+      "colorWords": [
+        "black square",
+        "cadmium red",
+        "ultramarine",
+        "white void"
+      ],
+      "colorUsage": "白底就是无限空间；黑色和红色做漂浮的主形，蓝色只做细长条。",
+      "texture": {
+        "kind": "grain",
+        "level": 0.2,
+        "desc": "白色画布的细颗粒"
+      },
+      "motifs": [
+        "黑方块",
+        "倾斜的红色矩形",
+        "交叉的细长条",
+        "白色虚空"
+      ],
+      "motifsEn": [
+        "black square",
+        "tilted red rectangles",
+        "crossing thin bars",
+        "white void"
+      ],
+      "medium": "Suprematist painting, flat geometric planes floating on a white ground, oil on canvas",
+      "dont": [
+        "渐变",
+        "具象描绘"
+      ],
+      "negative": [
+        "gradient",
+        "figurative",
+        "photorealistic"
+      ],
+      "structure": {
+        "dont": [
+          "横平竖直的网格",
+          "阴影",
+          "居中对称"
+        ],
+        "negative": [
+          "horizon line",
+          "perspective",
+          "symmetry"
+        ],
+        "grid": "无网格：内容块是漂浮在白底上的几何面，各自倾斜 4–20°",
+        "composition": "floating geometric planes in white void, tilted at different angles, no horizon",
+        "rules": [
+          "大面积白底就是空间，不分栏",
+          "内容块是倾斜角度各不相同的矩形色面",
+          "一个大黑方块或红色矩形做视觉重心",
+          "文字跟着所在色面一起倾斜"
+        ],
+        "radius": "0",
+        "border": "无",
+        "shadow": "无",
+        "density": "稀疏",
+        "accentSlots": 3,
+        "textureCap": 0.3,
+        "type": {
+          "display": {
+            "family": "Unbounded",
+            "weight": 700,
+            "transform": "uppercase",
+            "tracking": "-0.01em"
+          },
+          "body": {
+            "family": "PT Sans",
+            "weight": 400
+          },
+          "google": [
+            "Unbounded:wght@700",
+            "PT Sans:wght@400;700"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "漂浮：缓慢平移和小角度旋转，像在失重空间",
+          "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "duration": "400ms"
+        }
+      }
+    },
+    {
+      "id": "constructivism",
+      "name": "构成主义",
+      "en": "Constructivism",
+      "aliases": [
+        "构成主义",
+        "俄国构成主义",
+        "Constructivism",
+        "Russian Constructivism"
+      ],
+      "era": "1915–1930s · 俄国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "斜线、动势与宣言式大字，把版面当作一台在运转的机器。",
+      "intro": "构成主义 1910 年代在俄国兴起，塔特林、罗德琴科、李西茨基是代表。它主张艺术为社会服务，海报和书籍大量使用斜线、照片蒙太奇和粗体字。",
+      "palette": {
+        "bg": "oklch(0.92 0.03 80)",
+        "surface": "oklch(0.87 0.04 75)",
+        "ink": "oklch(0.16 0.01 30)",
+        "muted": "oklch(0.38 0.02 40)",
+        "line": "oklch(0.16 0.01 30)",
+        "accent": "oklch(0.5 0.2 28)",
+        "onAccent": "oklch(0.97 0.01 80)",
+        "accent2": "oklch(0.24 0.01 30)",
+        "accent3": "oklch(0.76 0.08 75)"
+      },
+      "colorWords": [
+        "revolutionary red",
+        "black",
+        "aged paper beige",
+        "kraft brown"
+      ],
+      "colorUsage": "红黑二色主导，红色做斜向色带和 CTA，牛皮纸色做次级面板。",
+      "texture": {
+        "kind": "halftone",
+        "level": 0.45,
+        "desc": "粗网点印刷，像照片蒙太奇的印刷品"
+      },
+      "motifs": [
+        "斜向色带",
+        "箭头与粗线",
+        "照片蒙太奇",
+        "同心圆"
+      ],
+      "motifsEn": [
+        "diagonal bands",
+        "arrows and heavy rules",
+        "photomontage",
+        "concentric circles"
+      ],
+      "medium": "Russian constructivist poster, photomontage, halftone print on aged paper",
+      "dont": [
+        "柔和低饱和色"
+      ],
+      "negative": [
+        "pastel",
+        "soft lighting"
+      ],
+      "structure": {
+        "dont": [
+          "居中对称",
+          "圆角",
+          "细小正文做主角"
+        ],
+        "negative": [
+          "symmetry",
+          "rounded corners",
+          "ornament"
+        ],
+        "grid": "倾斜 -8° 到 -15° 的对角网格，主轴从左下冲向右上",
+        "composition": "dynamic diagonal composition, tilted axis, strong forward momentum",
+        "rules": [
+          "大标题全大写窄体，沿对角线倾斜放置",
+          "一条贯穿页面的斜向色带",
+          "用箭头和粗线把视线引向 CTA",
+          "图片做成裁切的蒙太奇块"
+        ],
+        "radius": "0",
+        "border": "粗黑线 3–6px",
+        "shadow": "无",
+        "density": "紧凑",
+        "accentSlots": 2,
+        "textureCap": 0.6,
+        "type": {
+          "display": {
+            "family": "Oswald",
+            "weight": 700,
+            "transform": "uppercase",
+            "tracking": "0.01em"
+          },
+          "body": {
+            "family": "PT Sans",
+            "weight": 400
+          },
+          "google": [
+            "Oswald:wght@500;700",
+            "PT Sans:wght@400;700"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "沿斜线快速滑入，果断停住",
+          "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+          "duration": "220ms"
+        }
+      }
+    },
+    {
+      "id": "dada",
+      "name": "达达",
+      "en": "Dada",
+      "aliases": [
+        "达达",
+        "达达主义",
+        "Dada",
+        "Dadaism"
+      ],
+      "era": "1916–1924 · 瑞士 / 德国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "反艺术：剪报拼贴、勒索信式混排字体、印章乱盖，故意荒诞。",
+      "intro": "达达 1916 年诞生于苏黎世的伏尔泰酒馆，是一战期间对战争和理性的反叛。它用拼贴、现成品和荒诞表演追问什么是艺术，排版刻意混乱。",
+      "palette": {
+        "bg": "oklch(0.93 0.015 90)",
+        "surface": "oklch(0.98 0.004 90)",
+        "ink": "oklch(0.15 0 0)",
+        "muted": "oklch(0.4 0 0)",
+        "line": "oklch(0.15 0 0)",
+        "accent": "oklch(0.53 0.2 25)",
+        "onAccent": "oklch(0.98 0 0)",
+        "accent2": "oklch(0.88 0.11 95)",
+        "accent3": "oklch(0.48 0.1 250)"
+      },
+      "colorWords": [
+        "newsprint",
+        "black ink",
+        "stamp red",
+        "faded blue",
+        "yellowed paper"
+      ],
+      "colorUsage": "旧报纸底色，黑字为主；红色只做印章和 CTA，黄色做胶带和标签。",
+      "texture": {
+        "kind": "halftone",
+        "level": 0.4,
+        "desc": "旧报纸照片的网点"
+      },
+      "motifs": [
+        "剪报碎片",
+        "勒索信字母",
+        "橡皮图章",
+        "机械齿轮"
+      ],
+      "motifsEn": [
+        "cut-out newspaper fragments",
+        "ransom-note lettering",
+        "rubber stamps",
+        "machine gears"
+      ],
+      "medium": "Dada photomontage collage, cut-out newspaper fragments, mismatched typefaces, rubber stamps",
+      "dont": [
+        "精致渐变",
+        "柔和粉彩"
+      ],
+      "negative": [
+        "gradient",
+        "pastel",
+        "polished"
+      ],
+      "structure": {
+        "dont": [
+          "整齐对齐",
+          "统一字体",
+          "对称"
+        ],
+        "negative": [
+          "clean layout",
+          "symmetry",
+          "consistent typography"
+        ],
+        "grid": "无网格拼贴：剪报块随意叠放，方向和字体互相冲突",
+        "composition": "chaotic collage of cut-out paper fragments, mismatched typography, random rotation",
+        "rules": [
+          "标题的每个词用不同字体或字号，像勒索信",
+          "区块像剪下来的纸片，带不同角度的轻微旋转和纸片投影",
+          "印章、编号随意盖在内容上",
+          "可以有一块竖排或倒置的小字"
+        ],
+        "radius": "0",
+        "border": "1px 黑框或无",
+        "shadow": "2px 2px 0 纸片投影",
+        "density": "拥挤",
+        "accentSlots": 3,
+        "textureCap": 0.6,
+        "type": {
+          "display": {
+            "family": "Alfa Slab One",
+            "weight": 400,
+            "transform": "uppercase",
+            "tracking": "0"
+          },
+          "body": {
+            "family": "Courier Prime",
+            "weight": 400
+          },
+          "google": [
+            "Alfa Slab One",
+            "Courier Prime:wght@400;700"
+          ],
+          "zh": "\"Songti SC\", \"Noto Serif SC\", serif"
+        },
+        "motion": {
+          "desc": "抖动：悬停时跳一下角度，打破秩序",
+          "easing": "steps(2)",
+          "duration": "120ms"
+        }
+      }
+    },
+    {
+      "id": "de-stijl",
+      "name": "风格派",
+      "en": "De Stijl",
+      "aliases": [
+        "风格派",
+        "新造型主义",
+        "蒙德里安",
+        "De Stijl",
+        "Neoplasticism",
+        "Mondrian"
+      ],
+      "era": "1917–1931 · 荷兰",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "只剩水平线、垂直线和三原色，用不对称的矩形分割达成平衡。",
+      "intro": "风格派 1917 年由杜斯伯格和蒙德里安在荷兰创立，同名杂志是它的阵地。它把画面简化成水平线、垂直线和红黄蓝三原色，追求普遍、客观的和谐。",
+      "palette": {
+        "bg": "oklch(0.98 0 0)",
+        "surface": "oklch(0.98 0 0)",
+        "ink": "oklch(0.13 0 0)",
+        "muted": "oklch(0.38 0 0)",
+        "line": "oklch(0.13 0 0)",
+        "accent": "oklch(0.53 0.22 27)",
+        "onAccent": "oklch(0.98 0 0)",
+        "accent2": "oklch(0.88 0.18 95)",
+        "accent3": "oklch(0.42 0.18 264)"
+      },
+      "colorWords": [
+        "primary red",
+        "primary yellow",
+        "primary blue",
+        "white",
+        "black"
+      ],
+      "colorUsage": "大部分格子保持白色，三原色只占少数格子；黑色只出现在粗网格线和文字上。",
+      "texture": {
+        "kind": "none",
+        "level": 0,
+        "desc": "平涂，无质感"
+      },
+      "motifs": [
+        "粗黑网格线",
+        "不对称三原色矩形",
+        "大面积白格"
+      ],
+      "motifsEn": [
+        "thick black grid lines",
+        "asymmetric primary-color rectangles",
+        "white fields"
+      ],
+      "medium": "De Stijl neoplasticist painting, oil on canvas, flat unmodulated color",
+      "dont": [
+        "渐变",
+        "绿、紫、橙等二次色",
+        "质感纹理"
+      ],
+      "negative": [
+        "gradient",
+        "secondary colors",
+        "texture"
+      ],
+      "structure": {
+        "dont": [
+          "斜线",
+          "曲线与圆形",
+          "阴影"
+        ],
+        "negative": [
+          "diagonal lines",
+          "curves",
+          "circles"
+        ],
+        "grid": "不对称矩形分割，格子由 6–10px 粗黑线分开",
+        "composition": "asymmetric rectangular division by thick black horizontal and vertical lines",
+        "rules": [
+          "整个页面被粗黑线切成大小不一的矩形格",
+          "只有水平和垂直方向，禁止斜线和曲线",
+          "彩色格子少于三成，其余是白格",
+          "文字放在白格里，靠格子大小表达层级"
+        ],
+        "radius": "0",
+        "border": "6–10px 黑线，格子之间的间隙就是线",
+        "shadow": "无",
+        "density": "中等偏疏",
+        "accentSlots": 3,
+        "textureCap": 0.2,
+        "type": {
+          "display": {
+            "family": "Archivo Black",
+            "weight": 400,
+            "transform": "uppercase",
+            "tracking": "0"
+          },
+          "body": {
+            "family": "Archivo",
+            "weight": 400
+          },
+          "google": [
+            "Archivo Black",
+            "Archivo:wght@400;600"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "格子展开、线条生长；只沿水平或垂直方向，不旋转",
+          "easing": "cubic-bezier(0.3, 0, 0.2, 1)",
+          "duration": "240ms"
+        }
+      }
+    },
+    {
+      "id": "bauhaus",
+      "name": "包豪斯",
+      "en": "Bauhaus",
+      "aliases": [
+        "包豪斯",
+        "Bauhaus",
+        "bauhaus"
+      ],
+      "era": "1919–1933 · 德国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "形式追随功能：基本几何形、三原色与网格，字本身就是图像。",
+      "intro": "包豪斯 1919 年由格罗皮乌斯在德国魏玛创立，是一所把艺术、工艺和技术结合起来的设计学校。它强调形式服从功能，用字体、色块和基本几何形建立清楚的秩序。",
+      "palette": {
+        "bg": "oklch(0.96 0.012 90)",
+        "surface": "oklch(0.92 0.02 90)",
+        "ink": "oklch(0.18 0.01 260)",
+        "muted": "oklch(0.42 0.01 260)",
+        "line": "oklch(0.18 0.01 260)",
+        "accent": "oklch(0.53 0.21 29)",
+        "onAccent": "oklch(0.98 0.005 90)",
+        "accent2": "oklch(0.86 0.17 92)",
+        "accent3": "oklch(0.45 0.16 262)"
+      },
+      "colorWords": [
+        "signal red",
+        "chrome yellow",
+        "cobalt blue",
+        "off-white",
+        "black"
+      ],
+      "colorUsage": "三原色各自成整块色面，承载内容或几何形；黑色只做粗分隔条和文字，不做描边色。",
+      "texture": {
+        "kind": "grain",
+        "level": 0.25,
+        "desc": "石版印刷的细颗粒，几乎察觉不到"
+      },
+      "motifs": [
+        "圆、方、三角三种基本形",
+        "粗黑分隔条",
+        "旋转 90° 的大标题"
+      ],
+      "motifsEn": [
+        "circle square triangle primitives",
+        "heavy black bars",
+        "typography as image"
+      ],
+      "medium": "Bauhaus lithograph poster, flat primary colors, geometric primitives, off-white paper",
+      "dont": [
+        "渐变",
+        "装饰花纹"
+      ],
+      "negative": [
+        "gradient",
+        "ornament",
+        "photorealistic",
+        "3d render"
+      ],
+      "structure": {
+        "dont": [
+          "柔和阴影",
+          "大圆角卡片",
+          "居中堆叠的布局"
+        ],
+        "negative": [
+          "soft shadow",
+          "cluttered layout"
+        ],
+        "grid": "12 栏模块网格，所有元素对齐到栏线",
+        "composition": "strict modular grid composition, asymmetric balance of geometric blocks",
+        "rules": [
+          "标题巨大、左对齐，可以旋转 90° 竖放在侧边",
+          "用圆、方、三角三种基本形划分区域",
+          "色块直接承载内容，不靠阴影区分层级",
+          "4–8px 粗黑条做分隔"
+        ],
+        "radius": "0（几何圆形作为图形可用）",
+        "border": "无描边，用色块和粗黑条分区",
+        "shadow": "无",
+        "density": "中等",
+        "accentSlots": 3,
+        "textureCap": 0.4,
+        "type": {
+          "display": {
+            "family": "Jost",
+            "weight": 700,
+            "transform": "none",
+            "tracking": "-0.02em"
+          },
+          "body": {
+            "family": "Jost",
+            "weight": 400
+          },
+          "google": [
+            "Jost:wght@400;700"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "机械、直接：形状平移或旋转 90°，没有回弹",
+          "easing": "cubic-bezier(0.2, 0, 0, 1)",
+          "duration": "200ms"
+        }
+      }
+    },
+    {
+      "id": "art-deco",
+      "name": "装饰艺术",
+      "en": "Art Deco",
+      "aliases": [
+        "装饰艺术",
+        "装饰风艺术",
+        "Art Deco",
+        "Deco"
+      ],
+      "era": "1920s–1930s · 法国 / 美国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "机器时代的奢华：中轴对称、阶梯层叠、放射纹和金色细线。",
+      "intro": "装饰艺术因 1925 年巴黎装饰艺术博览会得名，盛行于两次大战之间。它把机器时代的流线型和古典的对称结合在一起，常见于摩天楼、海报和远洋邮轮。",
+      "palette": {
+        "bg": "oklch(0.17 0.02 260)",
+        "surface": "oklch(0.22 0.03 260)",
+        "ink": "oklch(0.93 0.03 85)",
+        "muted": "oklch(0.74 0.04 85)",
+        "line": "oklch(0.76 0.12 85)",
+        "accent": "oklch(0.78 0.13 85)",
+        "onAccent": "oklch(0.17 0.02 260)",
+        "accent2": "oklch(0.52 0.1 165)",
+        "accent3": "oklch(0.88 0.04 85)"
+      },
+      "colorWords": [
+        "gold",
+        "midnight navy",
+        "emerald",
+        "cream"
+      ],
+      "colorUsage": "深底浅字，金色只做细线、边框和 CTA，翡翠绿点缀小面积。",
+      "texture": {
+        "kind": "lines",
+        "level": 0.3,
+        "desc": "金属拉丝般的细竖纹"
+      },
+      "motifs": [
+        "扇形放射纹",
+        "阶梯金字塔轮廓",
+        "人字纹",
+        "双线边框"
+      ],
+      "motifsEn": [
+        "sunburst fans",
+        "stepped ziggurat silhouettes",
+        "chevrons",
+        "double-line frames"
+      ],
+      "medium": "Art Deco poster, 1920s gouache, metallic gold linework, streamlined geometry",
+      "dont": [
+        "手绘笔触",
+        "糖果色"
+      ],
+      "negative": [
+        "brush strokes",
+        "pastel candy colors",
+        "grunge"
+      ],
+      "structure": {
+        "dont": [
+          "不对称散乱布局",
+          "大圆角"
+        ],
+        "negative": [
+          "asymmetry",
+          "messy layout"
+        ],
+        "grid": "严格中轴对称，内容居中，两侧镜像",
+        "composition": "strict central symmetry, stepped tiers rising to a central focal point",
+        "rules": [
+          "所有区块居中，用双线框包住",
+          "标题区做成阶梯式层叠",
+          "用放射纹或扇形纹做分隔",
+          "标题全大写，字距拉宽"
+        ],
+        "radius": "0（扇形与拱形作为图形可用）",
+        "border": "1px 金线，常用双线",
+        "shadow": "无",
+        "density": "中等",
+        "accentSlots": 2,
+        "textureCap": 0.5,
+        "type": {
+          "display": {
+            "family": "Poiret One",
+            "weight": 400,
+            "transform": "uppercase",
+            "tracking": "0.12em"
+          },
+          "body": {
+            "family": "Josefin Sans",
+            "weight": 400
+          },
+          "google": [
+            "Poiret One",
+            "Josefin Sans:wght@400;600"
+          ],
+          "zh": "\"Songti SC\", \"Noto Serif SC\", serif"
+        },
+        "motion": {
+          "desc": "缓慢、庄重：淡入，金线逐段描出",
+          "easing": "cubic-bezier(0.2, 0, 0, 1)",
+          "duration": "480ms"
+        }
+      }
+    },
+    {
+      "id": "minimalism",
+      "name": "极简主义",
+      "en": "Minimalism",
+      "aliases": [
+        "极简主义",
+        "极简",
+        "Minimalism",
+        "Minimal"
+      ],
+      "era": "1960s– · 美国",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "少到不能再少：大片留白、一条细线、一个焦点，靠比例说话。",
+      "intro": "极简主义 1960 年代在纽约兴起，贾德、弗莱文是代表。它去掉表现和装饰，用工业材料、重复的单元和精确的边缘，让作品和所在的真实空间直接对话。",
+      "palette": {
+        "bg": "oklch(0.985 0.003 90)",
+        "surface": "oklch(0.96 0.004 90)",
+        "ink": "oklch(0.2 0.005 90)",
+        "muted": "oklch(0.5 0.005 90)",
+        "line": "oklch(0.86 0.004 90)",
+        "accent": "oklch(0.2 0.005 90)",
+        "onAccent": "oklch(0.985 0.003 90)",
+        "accent2": "oklch(0.62 0.005 90)",
+        "accent3": "oklch(0.55 0.13 45)"
+      },
+      "colorWords": [
+        "bone white",
+        "graphite",
+        "a single rust accent"
+      ],
+      "colorUsage": "近乎单色；锈红只用在一处，比如一个点或一条线。",
+      "texture": {
+        "kind": "none",
+        "level": 0,
+        "desc": "哑光纯平面"
+      },
+      "motifs": [
+        "一条细线",
+        "单一方形色域",
+        "重复的等距单元"
+      ],
+      "motifsEn": [
+        "a single thin line",
+        "one square color field",
+        "serial repetition"
+      ],
+      "medium": "minimalist painting, matte monochrome field, precise hard edge",
+      "dont": [
+        "两种以上强调色",
+        "质感纹理"
+      ],
+      "negative": [
+        "multiple colors",
+        "texture"
+      ],
+      "structure": {
+        "dont": [
+          "装饰",
+          "图标堆砌",
+          "阴影"
+        ],
+        "negative": [
+          "clutter",
+          "ornament",
+          "shadow"
+        ],
+        "grid": "单栏，左对齐，正文宽度不超过 60 字符",
+        "composition": "vast negative space, single focal element placed off-center",
+        "rules": [
+          "留白占画面六成以上",
+          "只用 1px 细线分隔",
+          "一屏只放一个焦点",
+          "字号最多三级"
+        ],
+        "radius": "0",
+        "border": "1px 细线",
+        "shadow": "无",
+        "density": "稀疏",
+        "accentSlots": 1,
+        "textureCap": 0.15,
+        "type": {
+          "display": {
+            "family": "Instrument Sans",
+            "weight": 500,
+            "transform": "none",
+            "tracking": "-0.03em"
+          },
+          "body": {
+            "family": "Instrument Sans",
+            "weight": 400
+          },
+          "google": [
+            "Instrument Sans:wght@400;500"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "几乎静止：只做透明度过渡",
+          "easing": "ease-out",
+          "duration": "150ms"
+        }
+      }
+    },
+    {
+      "id": "memphis",
+      "name": "孟菲斯",
+      "en": "Memphis",
+      "aliases": [
+        "孟菲斯",
+        "孟菲斯风格",
+        "Memphis",
+        "Memphis Group"
+      ],
+      "era": "1981–1987 · 意大利",
+      "group": "modern",
+      "roles": [
+        "structure",
+        "surface"
+      ],
+      "essence": "故意撞色、故意错位：波浪线、碎几何、粗黑描边和硬投影。",
+      "intro": "孟菲斯是埃托雷·索特萨斯 1980 年底在米兰召集的设计团体，1981 年首展，名字来自鲍勃·迪伦的一首歌。它反对现代主义的好品味，用撞色、波浪线和廉价材质做家具和图案。",
+      "palette": {
+        "bg": "oklch(0.97 0.02 95)",
+        "surface": "oklch(0.99 0 0)",
+        "ink": "oklch(0.2 0.02 280)",
+        "muted": "oklch(0.42 0.03 280)",
+        "line": "oklch(0.2 0.02 280)",
+        "accent": "oklch(0.72 0.17 350)",
+        "onAccent": "oklch(0.2 0.02 280)",
+        "accent2": "oklch(0.78 0.12 190)",
+        "accent3": "oklch(0.88 0.16 95)"
+      },
+      "colorWords": [
+        "bubblegum pink",
+        "aqua",
+        "lemon yellow",
+        "black outlines"
+      ],
+      "colorUsage": "粉、青、黄三色撞色，块面之间不需要协调；所有色块都加黑描边。",
+      "texture": {
+        "kind": "dots",
+        "level": 0.35,
+        "desc": "稀疏大圆点和碎纹图案"
+      },
+      "motifs": [
+        "波浪线",
+        "碎三角",
+        "水磨石纹",
+        "锯齿"
+      ],
+      "motifsEn": [
+        "squiggles",
+        "confetti triangles",
+        "terrazzo",
+        "zigzags"
+      ],
+      "medium": "Memphis Group design, 1980s, flat vector shapes, bold black outlines",
+      "dont": [
+        "低饱和"
+      ],
+      "negative": [
+        "muted colors",
+        "realism"
+      ],
+      "structure": {
+        "dont": [
+          "严格对齐",
+          "柔和模糊阴影"
+        ],
+        "negative": [
+          "minimalism",
+          "soft shadows",
+          "rigid grid"
+        ],
+        "grid": "松散拼贴：元素故意错位，倾斜 2–6°",
+        "composition": "playful collage composition, tilted overlapping shapes, scattered fragments",
+        "rules": [
+          "卡片加 3px 黑描边和 6px 无模糊硬投影",
+          "卡片轻微旋转，相邻卡片方向相反",
+          "背景散布波浪线、圆点和三角碎片",
+          "直角和全圆角混用"
+        ],
+        "radius": "0 与 999px 混用",
+        "border": "3px 黑描边",
+        "shadow": "6px 6px 0 硬投影，无模糊",
+        "density": "饱满",
+        "accentSlots": 3,
+        "textureCap": 0.6,
+        "type": {
+          "display": {
+            "family": "Bungee",
+            "weight": 400,
+            "transform": "uppercase",
+            "tracking": "0"
+          },
+          "body": {
+            "family": "Rubik",
+            "weight": 400
+          },
+          "google": [
+            "Bungee",
+            "Rubik:wght@400;600"
+          ],
+          "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"
+        },
+        "motion": {
+          "desc": "弹跳俏皮：回弹缓动，按下时倾斜",
+          "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          "duration": "260ms"
+        }
+      }
+    },
+    {
+      "id": "dunhuang",
+      "name": "敦煌壁画",
+      "en": "Dunhuang Murals",
+      "aliases": [
+        "敦煌壁画",
+        "敦煌",
+        "莫高窟",
+        "Dunhuang",
+        "Dunhuang Murals"
+      ],
+      "era": "4–14 世纪 · 中国甘肃",
+      "group": "east",
+      "roles": [
+        "surface"
+      ],
+      "essence": "土红、石青、石绿和赭黄，墙面斑驳褪色；飞天的飘带和藻井的莲花。",
+      "intro": "敦煌莫高窟的壁画从 4 世纪一直画到 14 世纪。矿物颜料画在泥壁上，历经千年，部分颜料变色、壁面风化，留下斑驳的飞天、藻井和佛传故事。",
+      "palette": {
+        "bg": "oklch(0.86 0.04 65)",
+        "surface": "oklch(0.8 0.05 60)",
+        "ink": "oklch(0.22 0.04 40)",
+        "muted": "oklch(0.38 0.05 40)",
+        "line": "oklch(0.45 0.1 35)",
+        "accent": "oklch(0.46 0.13 35)",
+        "onAccent": "oklch(0.95 0.02 75)",
+        "accent2": "oklch(0.5 0.08 230)",
+        "accent3": "oklch(0.62 0.08 170)"
+      },
+      "colorWords": [
+        "earth red",
+        "azurite blue",
+        "malachite green",
+        "ochre wall",
+        "oxidized brown"
+      ],
+      "colorUsage": "赭黄墙面做底，土红做主色和 CTA，石青、石绿成对出现在纹样和次级面板上；所有颜色都带一点褪色感。",
+      "texture": {
+        "kind": "fresco",
+        "level": 0.55,
+        "desc": "壁画墙面的斑驳色块和颗粒"
+      },
+      "motifs": [
+        "飞天飘带",
+        "藻井莲花",
+        "火焰纹背光",
+        "千佛排列"
+      ],
+      "motifsEn": [
+        "flying apsaras with ribbons",
+        "lotus caisson ceiling",
+        "flame-pattern halos",
+        "rows of seated buddhas"
+      ],
+      "medium": "Dunhuang Mogao cave mural, mineral pigments on plaster, faded earth red and azurite, Tang dynasty",
+      "dont": [
+        "荧光色",
+        "纯白底",
+        "干净无瑕的平面"
+      ],
+      "negative": [
+        "neon",
+        "pure white background",
+        "glossy",
+        "3d render"
+      ]
+    },
+    {
+      "id": "blue-green",
+      "name": "青绿山水",
+      "en": "Blue-Green Landscape",
+      "aliases": [
+        "青绿山水",
+        "青绿",
+        "千里江山",
+        "Blue-Green Landscape",
+        "Qinglu"
+      ],
+      "era": "隋唐至宋 · 中国",
+      "group": "east",
+      "roles": [
+        "surface"
+      ],
+      "essence": "石青石绿层层罩染，细线勾出山石轮廓，绢本上的理想山水。",
+      "intro": "青绿山水以石青、石绿为主色，隋唐时成熟，北宋王希孟的《千里江山图》是巅峰。它先勾出山石轮廓，再用矿物颜料层层罩染，画的是理想中的江山。",
+      "palette": {
+        "bg": "oklch(0.93 0.025 90)",
+        "surface": "oklch(0.88 0.035 120)",
+        "ink": "oklch(0.22 0.03 200)",
+        "muted": "oklch(0.42 0.04 190)",
+        "line": "oklch(0.66 0.1 85)",
+        "accent": "oklch(0.45 0.1 230)",
+        "onAccent": "oklch(0.96 0.02 90)",
+        "accent2": "oklch(0.6 0.1 165)",
+        "accent3": "oklch(0.65 0.08 60)"
+      },
+      "colorWords": [
+        "azurite blue",
+        "malachite green",
+        "pale gold line",
+        "ochre",
+        "silk"
+      ],
+      "colorUsage": "石青做主色和 CTA，石绿做大面积面板，赭石点缀在山脚，细线用淡金色。",
+      "texture": {
+        "kind": "silk",
+        "level": 0.35,
+        "desc": "绢本经纬纹"
+      },
+      "motifs": [
+        "层叠山峰",
+        "细线勾勒",
+        "青绿罩染",
+        "楼阁与长卷"
+      ],
+      "motifsEn": [
+        "layered peaks",
+        "fine contour lines",
+        "azurite and malachite washes",
+        "pavilions along a handscroll"
+      ],
+      "medium": "Chinese blue-green landscape painting, mineral azurite and malachite on silk, fine ink outlines, handscroll",
+      "dont": [
+        "灰暗的水墨调",
+        "荧光色",
+        "西式透视"
+      ],
+      "negative": [
+        "monochrome",
+        "neon",
+        "western perspective",
+        "3d render"
+      ]
+    },
+    {
+      "id": "ink",
+      "name": "水墨",
+      "en": "Chinese Ink Wash",
+      "aliases": [
+        "水墨",
+        "宋画",
+        "水墨画",
+        "国画",
+        "Ink Wash",
+        "Shan shui",
+        "Song painting"
+      ],
+      "era": "唐宋至今 · 中国",
+      "group": "east",
+      "roles": [
+        "surface"
+      ],
+      "essence": "墨分五色：大面积留白、淡墨晕染、枯笔，一方朱印收尾。",
+      "intro": "水墨画在唐代兴起、宋代成熟，讲究墨分五色。它用墨的浓淡干湿表现远近和气韵，画面常留大片空白，也常配有题跋和朱红印章。",
+      "palette": {
+        "bg": "oklch(0.95 0.015 85)",
+        "surface": "oklch(0.92 0.02 85)",
+        "ink": "oklch(0.2 0.005 60)",
+        "muted": "oklch(0.48 0.008 60)",
+        "line": "oklch(0.72 0.01 70)",
+        "accent": "oklch(0.5 0.17 28)",
+        "onAccent": "oklch(0.97 0.01 85)",
+        "accent2": "oklch(0.55 0.05 220)",
+        "accent3": "oklch(0.68 0.06 70)"
+      },
+      "colorWords": [
+        "sumi ink black",
+        "diluted grey wash",
+        "seal red",
+        "azurite blue",
+        "rice paper"
+      ],
+      "colorUsage": "墨色分浓淡做层级，朱红只做一方印章大小的 CTA 或标记，石青极少量。",
+      "texture": {
+        "kind": "wash",
+        "level": 0.5,
+        "desc": "宣纸上的淡墨晕染，边缘柔和"
+      },
+      "motifs": [
+        "远山",
+        "留白",
+        "朱红印章",
+        "竖排题跋"
+      ],
+      "motifsEn": [
+        "misty distant mountains",
+        "empty space",
+        "red seal stamp",
+        "vertical calligraphy inscription"
+      ],
+      "medium": "Chinese ink wash painting, Song dynasty, monochrome ink on rice paper, dry brush texture",
+      "dont": [
+        "高饱和色",
+        "硬投影",
+        "满版填充"
+      ],
+      "negative": [
+        "saturated color",
+        "hard shadow",
+        "busy composition",
+        "western perspective",
+        "3d render"
+      ]
+    },
+    {
+      "id": "gongbi",
+      "name": "工笔花鸟",
+      "en": "Gongbi Bird-and-Flower",
+      "aliases": [
+        "工笔花鸟",
+        "工笔",
+        "花鸟画",
+        "Gongbi",
+        "Bird-and-Flower"
+      ],
+      "era": "五代至宋 · 中国",
+      "group": "east",
+      "roles": [
+        "surface"
+      ],
+      "essence": "工整细线勾勒，层层渲染，花鸟细节精确，大片素绢留白。",
+      "intro": "工笔花鸟在五代和两宋达到高峰，黄筌、宋徽宗是代表。它用均匀的细线勾出轮廓，再一层层渲染设色，花瓣和羽毛都精确到可以辨认。",
+      "palette": {
+        "bg": "oklch(0.94 0.02 80)",
+        "surface": "oklch(0.9 0.03 75)",
+        "ink": "oklch(0.24 0.02 50)",
+        "muted": "oklch(0.45 0.02 50)",
+        "line": "oklch(0.55 0.03 50)",
+        "accent": "oklch(0.5 0.15 10)",
+        "onAccent": "oklch(0.96 0.015 80)",
+        "accent2": "oklch(0.5 0.06 220)",
+        "accent3": "oklch(0.78 0.1 85)"
+      },
+      "colorWords": [
+        "rouge red",
+        "indigo blue",
+        "gamboge yellow",
+        "aged silk",
+        "fine ink line"
+      ],
+      "colorUsage": "大面积素绢留白，胭脂红做主色和 CTA，花青、藤黄只出现在小面积细节里。",
+      "texture": {
+        "kind": "silk",
+        "level": 0.3,
+        "desc": "绢本经纬纹"
+      },
+      "motifs": [
+        "折枝花卉",
+        "工整细线",
+        "鸟羽细节",
+        "题款与印章"
+      ],
+      "motifsEn": [
+        "a single flowering branch",
+        "fine even outlines",
+        "detailed bird feathers",
+        "a small blank red seal"
+      ],
+      "medium": "Chinese gongbi bird-and-flower painting, Song dynasty, meticulous fine outlines, layered washes on silk",
+      "dont": [
+        "粗笔触",
+        "大面积满色",
+        "硬阴影"
+      ],
+      "negative": [
+        "rough brushstrokes",
+        "busy background",
+        "hard shadow",
+        "photorealistic"
+      ]
+    },
+    {
+      "id": "ukiyo-e",
+      "name": "浮世绘",
+      "en": "Ukiyo-e",
+      "aliases": [
+        "浮世绘",
+        "Ukiyo-e",
+        "ukiyoe",
+        "木版画"
+      ],
+      "era": "17–19 世纪 · 日本江户",
+      "group": "east",
+      "roles": [
+        "surface"
+      ],
+      "essence": "木版套色：平涂色块、细黑轮廓线、普鲁士蓝与朱红，天空和海面带单色晕染。",
+      "intro": "浮世绘是日本江户时代的风俗画，以木版画最为人熟知，描绘市井生活、歌舞伎和风景。葛饰北斋的《神奈川冲浪里》用普鲁士蓝印出巨浪，后来影响了欧洲印象派。",
+      "palette": {
+        "bg": "oklch(0.93 0.03 85)",
+        "surface": "oklch(0.89 0.035 80)",
+        "ink": "oklch(0.22 0.04 255)",
+        "muted": "oklch(0.42 0.04 250)",
+        "line": "oklch(0.3 0.04 255)",
+        "accent": "oklch(0.42 0.11 245)",
+        "onAccent": "oklch(0.96 0.02 85)",
+        "accent2": "oklch(0.6 0.18 35)",
+        "accent3": "oklch(0.74 0.11 75)"
+      },
+      "colorWords": [
+        "Prussian blue",
+        "vermilion",
+        "ochre",
+        "washi cream",
+        "sumi black"
+      ],
+      "colorUsage": "普鲁士蓝做主色面和 CTA，朱红只做印章式小块，赭黄做次级面板。",
+      "texture": {
+        "kind": "paper",
+        "level": 0.5,
+        "desc": "和纸纤维纹，带木版压印感"
+      },
+      "motifs": [
+        "巨浪",
+        "霞形云带",
+        "松枝",
+        "题签框"
+      ],
+      "motifsEn": [
+        "great waves",
+        "banded clouds",
+        "pine branches",
+        "title cartouche"
+      ],
+      "medium": "ukiyo-e woodblock print, Edo period, flat color areas, fine black keylines, bokashi gradation, washi paper",
+      "dont": [
+        "写实光影",
+        "霓虹色",
+        "3D 效果",
+        "大面积渐变（只允许天空或海面的单色晕染）"
+      ],
+      "negative": [
+        "photorealistic",
+        "neon",
+        "3d render",
+        "lens flare",
+        "heavy gradient"
+      ]
+    },
+    {
+      "id": "baroque",
+      "name": "巴洛克",
+      "en": "Baroque",
+      "aliases": [
+        "巴洛克",
+        "Baroque",
+        "明暗对照",
+        "Chiaroscuro"
+      ],
+      "era": "17 世纪 · 欧洲",
+      "group": "classic",
+      "roles": [
+        "surface"
+      ],
+      "essence": "明暗对照：深色背景里一束强光照亮主体，深红、金色与暖色肌肤。",
+      "intro": "巴洛克兴起于 17 世纪的罗马，追求运动感和戏剧性。卡拉瓦乔、伦勃朗把明暗对照推到极致：一束光从暗处照亮人物，其余都沉进阴影里。",
+      "palette": {
+        "bg": "oklch(0.16 0.015 50)",
+        "surface": "oklch(0.22 0.025 45)",
+        "ink": "oklch(0.92 0.03 80)",
+        "muted": "oklch(0.74 0.04 75)",
+        "line": "oklch(0.62 0.1 75)",
+        "accent": "oklch(0.45 0.15 25)",
+        "onAccent": "oklch(0.95 0.02 80)",
+        "accent2": "oklch(0.72 0.12 78)",
+        "accent3": "oklch(0.68 0.07 50)"
+      },
+      "colorWords": [
+        "deep shadow brown",
+        "crimson",
+        "gold leaf",
+        "warm flesh ochre"
+      ],
+      "colorUsage": "近黑的暖褐做底，浅色文字；深红做 CTA，金色做细线和标题点缀。",
+      "texture": {
+        "kind": "vignette",
+        "level": 0.6,
+        "desc": "一束侧光，四周压暗"
+      },
+      "motifs": [
+        "一束侧光",
+        "深红帷幕",
+        "金色雕饰",
+        "戏剧性的姿态"
+      ],
+      "motifsEn": [
+        "single raking light",
+        "crimson drapery",
+        "gilded carving",
+        "dramatic gestures"
+      ],
+      "medium": "Baroque oil painting, dramatic chiaroscuro, single raking light from upper left, deep shadows, rich crimson and gold",
+      "dont": [
+        "平光",
+        "浅色背景",
+        "扁平矢量"
+      ],
+      "negative": [
+        "flat lighting",
+        "bright background",
+        "flat vector",
+        "pastel"
+      ]
+    },
+    {
+      "id": "rococo",
+      "name": "洛可可",
+      "en": "Rococo",
+      "aliases": [
+        "洛可可",
+        "Rococo"
+      ],
+      "era": "18 世纪 · 法国",
+      "group": "classic",
+      "roles": [
+        "surface"
+      ],
+      "essence": "轻盈甜美：粉蓝、粉红、象牙与金色，贝壳形曲线和花环，宫廷的午后。",
+      "intro": "洛可可流行于 18 世纪的法国宫廷，华托、弗拉戈纳尔是代表。它比巴洛克更轻盈甜美，用粉彩色、贝壳形曲线和花环描绘贵族的闲适生活。",
+      "palette": {
+        "bg": "oklch(0.96 0.015 30)",
+        "surface": "oklch(0.92 0.03 220)",
+        "ink": "oklch(0.3 0.04 20)",
+        "muted": "oklch(0.46 0.04 20)",
+        "line": "oklch(0.72 0.08 80)",
+        "accent": "oklch(0.5 0.1 350)",
+        "onAccent": "oklch(0.97 0.012 30)",
+        "accent2": "oklch(0.8 0.06 220)",
+        "accent3": "oklch(0.83 0.07 10)"
+      },
+      "colorWords": [
+        "powder blue",
+        "blush pink",
+        "ivory",
+        "gilded gold",
+        "dusty rose"
+      ],
+      "colorUsage": "象牙粉做底，粉蓝做面板，深玫瑰做 CTA，金色只做卷草细线。",
+      "texture": {
+        "kind": "paper",
+        "level": 0.3,
+        "desc": "柔和的纸纹"
+      },
+      "motifs": [
+        "贝壳形曲线",
+        "花环与丝带",
+        "花园秋千",
+        "金色卷草"
+      ],
+      "motifsEn": [
+        "rocaille shell curves",
+        "garlands and ribbons",
+        "a garden swing",
+        "gilded scrollwork"
+      ],
+      "medium": "Rococo painting, 18th century French, pastel pink and powder blue, soft feathery brushwork, gilded ornament",
+      "dont": [
+        "粗重黑线",
+        "冷峻几何",
+        "高饱和原色"
+      ],
+      "negative": [
+        "heavy black lines",
+        "brutal geometry",
+        "primary colors",
+        "dark mood"
+      ]
+    },
+    {
+      "id": "impressionism",
+      "name": "印象派",
+      "en": "Impressionism",
+      "aliases": [
+        "印象派",
+        "印象主义",
+        "Impressionism",
+        "Impressionist"
+      ],
+      "era": "1860s–1890s · 法国",
+      "group": "classic",
+      "roles": [
+        "surface"
+      ],
+      "essence": "画光而不是画物：碎笔触、互补色并置、阴影也是彩色的，几乎不用黑。",
+      "intro": "印象派 1874 年在巴黎首次联展，名字来自莫奈的《印象·日出》。画家到户外写生，用碎笔触和明亮的互补色捕捉一瞬间的光，连阴影都是彩色的。",
+      "palette": {
+        "bg": "oklch(0.95 0.025 95)",
+        "surface": "oklch(0.91 0.04 130)",
+        "ink": "oklch(0.28 0.05 265)",
+        "muted": "oklch(0.45 0.05 250)",
+        "line": "oklch(0.8 0.04 200)",
+        "accent": "oklch(0.48 0.12 255)",
+        "onAccent": "oklch(0.97 0.02 95)",
+        "accent2": "oklch(0.72 0.1 150)",
+        "accent3": "oklch(0.82 0.1 60)"
+      },
+      "colorWords": [
+        "cobalt blue",
+        "sage green",
+        "peach light",
+        "lilac shadow",
+        "no black"
+      ],
+      "colorUsage": "文字用深紫蓝代替黑，钴蓝做主色，绿和桃色以碎色斑形式出现在背景。",
+      "texture": {
+        "kind": "dapple",
+        "level": 0.45,
+        "desc": "碎笔触色斑，像水面上的光"
+      },
+      "motifs": [
+        "水面倒影",
+        "碎笔触",
+        "户外阳光",
+        "睡莲"
+      ],
+      "motifsEn": [
+        "light reflections on water",
+        "broken brushstrokes",
+        "dappled sunlight",
+        "water lilies"
+      ],
+      "medium": "French impressionist oil painting, en plein air, visible broken brushstrokes, complementary colors",
+      "dont": [
+        "纯黑",
+        "硬边线",
+        "大面积平涂"
+      ],
+      "negative": [
+        "pure black",
+        "hard edges",
+        "flat vector",
+        "sharp detail",
+        "studio lighting"
+      ]
+    },
+    {
+      "id": "pointillism",
+      "name": "点彩派",
+      "en": "Pointillism",
+      "aliases": [
+        "点彩派",
+        "点彩",
+        "新印象派",
+        "Pointillism",
+        "Neo-Impressionism"
+      ],
+      "era": "1886–1900s · 法国",
+      "group": "classic",
+      "roles": [
+        "surface"
+      ],
+      "essence": "用纯色小点并置，让眼睛在远处自己混色；画面明亮、安静、秩序井然。",
+      "intro": "点彩派由修拉在 1880 年代提出，代表作是《大碗岛的星期天下午》。它依据色彩科学，把纯色小点并排点在画布上，让颜色在观众眼中自己混合。",
+      "palette": {
+        "bg": "oklch(0.95 0.02 95)",
+        "surface": "oklch(0.9 0.04 200)",
+        "ink": "oklch(0.3 0.06 270)",
+        "muted": "oklch(0.45 0.06 260)",
+        "line": "oklch(0.75 0.05 220)",
+        "accent": "oklch(0.5 0.12 260)",
+        "onAccent": "oklch(0.97 0.015 95)",
+        "accent2": "oklch(0.75 0.12 140)",
+        "accent3": "oklch(0.8 0.12 60)"
+      },
+      "colorWords": [
+        "ultramarine dots",
+        "spring green dots",
+        "orange dots",
+        "violet shadow",
+        "sunlit cream"
+      ],
+      "colorUsage": "浅底上撒满三色小点，群青做 CTA 和文字强调；不用大色块。",
+      "texture": {
+        "kind": "stipple",
+        "level": 0.6,
+        "desc": "密集的纯色小点"
+      },
+      "motifs": [
+        "纯色小点并置",
+        "河岸与阳伞",
+        "午后公园",
+        "剪影般的人物"
+      ],
+      "motifsEn": [
+        "juxtaposed dots of pure color",
+        "riverbank with parasols",
+        "a park on a sunny afternoon",
+        "silhouetted figures"
+      ],
+      "medium": "Pointillist painting, Neo-Impressionism, thousands of small dots of pure color, optical mixing, calm luminous scene",
+      "dont": [
+        "平涂大色块",
+        "粗黑轮廓",
+        "混浊调色"
+      ],
+      "negative": [
+        "flat color",
+        "black outlines",
+        "muddy colors",
+        "brush strokes"
+      ]
+    },
+    {
+      "id": "art-nouveau",
+      "name": "新艺术运动",
+      "en": "Art Nouveau",
+      "aliases": [
+        "新艺术运动",
+        "新艺术",
+        "Art Nouveau",
+        "Jugendstil"
+      ],
+      "era": "1890–1910 · 欧洲",
+      "group": "classic",
+      "roles": [
+        "surface"
+      ],
+      "essence": "鞭线般的有机曲线：花草藤蔓、光环圆框、柔和的金与鼠尾草绿。",
+      "intro": "新艺术运动在 1890 到 1910 年间席卷欧洲，穆夏的海报和巴黎地铁入口是代表。它从植物里提炼出鞭子般的曲线，把艺术带进建筑、家具和日用品。",
+      "palette": {
+        "bg": "oklch(0.94 0.03 90)",
+        "surface": "oklch(0.9 0.04 100)",
+        "ink": "oklch(0.25 0.04 150)",
+        "muted": "oklch(0.45 0.04 140)",
+        "line": "oklch(0.55 0.07 75)",
+        "accent": "oklch(0.44 0.08 160)",
+        "onAccent": "oklch(0.95 0.03 90)",
+        "accent2": "oklch(0.72 0.1 70)",
+        "accent3": "oklch(0.62 0.1 20)"
+      },
+      "colorWords": [
+        "sage green",
+        "muted gold",
+        "dusty rose",
+        "cream",
+        "olive ink"
+      ],
+      "colorUsage": "橄榄墨色做文字，鼠尾草绿做主色，暗金做细线和装饰框，玫瑰色少量点缀。",
+      "texture": {
+        "kind": "paper",
+        "level": 0.35,
+        "desc": "石版海报的暖纸纹"
+      },
+      "motifs": [
+        "鞭线曲线",
+        "花草藤蔓",
+        "光环圆框",
+        "孔雀羽"
+      ],
+      "motifsEn": [
+        "whiplash curves",
+        "floral vines",
+        "decorative halo",
+        "peacock feathers"
+      ],
+      "medium": "Art Nouveau lithograph poster, Belle Epoque, flowing whiplash lines, ornamental floral borders",
+      "dont": [
+        "直角硬切",
+        "霓虹色",
+        "冷峻几何"
+      ],
+      "negative": [
+        "hard geometry",
+        "neon",
+        "brutalism",
+        "3d render"
+      ]
+    },
+    {
+      "id": "fauvism",
+      "name": "野兽派",
+      "en": "Fauvism",
+      "aliases": [
+        "野兽派",
+        "野兽主义",
+        "Fauvism",
+        "Fauve",
+        "Fauves"
+      ],
+      "era": "1905–1910 · 法国",
+      "group": "modern",
+      "roles": [
+        "surface"
+      ],
+      "essence": "颜色不必像真的：朱红配翠绿、钴蓝配橙，粗笔触平涂，情绪比写实重要。",
+      "intro": "野兽派 1905 年在巴黎秋季沙龙亮相，因用色狂野被评论家称为野兽。马蒂斯、德兰是代表，颜色不再模仿现实，而是直接表达情绪。",
+      "palette": {
+        "bg": "oklch(0.94 0.05 85)",
+        "surface": "oklch(0.85 0.1 165)",
+        "ink": "oklch(0.22 0.06 285)",
+        "muted": "oklch(0.4 0.08 285)",
+        "line": "oklch(0.45 0.16 260)",
+        "accent": "oklch(0.55 0.22 33)",
+        "onAccent": "oklch(0.98 0.02 85)",
+        "accent2": "oklch(0.55 0.15 155)",
+        "accent3": "oklch(0.65 0.22 350)"
+      },
+      "colorWords": [
+        "vermilion",
+        "viridian",
+        "cobalt",
+        "hot pink",
+        "deep violet instead of black"
+      ],
+      "colorUsage": "互补色直接相撞：朱红 CTA 放在翠绿面板上；文字用深紫代替黑；钴蓝做轮廓线。",
+      "texture": {
+        "kind": "dapple",
+        "level": 0.6,
+        "desc": "粗笔触色块，颜色彼此碰撞"
+      },
+      "motifs": [
+        "非写实的固有色（绿色的脸、红色的树）",
+        "粗轮廓线",
+        "大块平涂",
+        "互补色并置"
+      ],
+      "motifsEn": [
+        "non-naturalistic color",
+        "bold contour lines",
+        "flat color patches",
+        "complementary color clash"
+      ],
+      "medium": "Fauvism oil painting, 1905, wild non-naturalistic colors, thick visible brushstrokes, simplified forms",
+      "dont": [
+        "写实固有色",
+        "灰调",
+        "精细光影"
+      ],
+      "negative": [
+        "realistic colors",
+        "muted grey palette",
+        "fine shading",
+        "photorealistic"
+      ]
+    },
+    {
+      "id": "expressionism",
+      "name": "表现主义",
+      "en": "Expressionism",
+      "aliases": [
+        "表现主义",
+        "德国表现主义",
+        "Expressionism",
+        "Expressionist"
+      ],
+      "era": "1905–1920s · 德国",
+      "group": "modern",
+      "roles": [
+        "surface"
+      ],
+      "essence": "用扭曲的形体和刺眼的颜色表达焦虑；木刻般粗粝的刀痕，城市在倾斜。",
+      "intro": "表现主义 1905 年前后在德国兴起，桥社和青骑士是代表团体。它扭曲形体、放大刺眼的颜色，用木刻般粗粝的线条表达焦虑和内心体验。",
+      "palette": {
+        "bg": "oklch(0.92 0.04 95)",
+        "surface": "oklch(0.85 0.08 120)",
+        "ink": "oklch(0.17 0.02 300)",
+        "muted": "oklch(0.38 0.05 300)",
+        "line": "oklch(0.17 0.02 300)",
+        "accent": "oklch(0.5 0.2 25)",
+        "onAccent": "oklch(0.98 0.01 95)",
+        "accent2": "oklch(0.45 0.15 290)",
+        "accent3": "oklch(0.7 0.16 60)"
+      },
+      "colorWords": [
+        "acid green",
+        "blood red",
+        "bruised violet",
+        "sickly yellow",
+        "black woodcut"
+      ],
+      "colorUsage": "病态的黄绿做底和面板，血红做 CTA，紫色压暗边角；颜色之间不调和。",
+      "texture": {
+        "kind": "gouge",
+        "level": 0.5,
+        "desc": "木刻刀痕般的斜向粗线"
+      },
+      "motifs": [
+        "扭曲的街道与建筑",
+        "木刻刀痕",
+        "尖锐的阴影",
+        "呐喊般的面孔"
+      ],
+      "motifsEn": [
+        "distorted streets and buildings",
+        "woodcut gouge marks",
+        "jagged shadows",
+        "anguished faces"
+      ],
+      "medium": "German Expressionist woodcut and painting, jagged distorted forms, harsh acid colors, raw gouged lines",
+      "dont": [
+        "和谐柔和",
+        "精致细节",
+        "平稳对称"
+      ],
+      "negative": [
+        "harmonious",
+        "delicate",
+        "calm",
+        "photorealistic"
+      ]
+    },
+    {
+      "id": "surrealism",
+      "name": "超现实主义",
+      "en": "Surrealism",
+      "aliases": [
+        "超现实主义",
+        "超现实",
+        "Surrealism",
+        "Surrealist"
+      ],
+      "era": "1924–1940s · 法国",
+      "group": "modern",
+      "roles": [
+        "surface"
+      ],
+      "essence": "梦的逻辑：精确写实的物体出现在不可能的场景里，长影子、空旷地平线和渐变的天。",
+      "intro": "超现实主义随 1924 年布勒东的宣言诞生，受弗洛伊德梦的理论影响。达利、马格利特把精确写实的物体放进不可能的场景，呈现潜意识的逻辑。",
+      "palette": {
+        "bg": "oklch(0.9 0.04 70)",
+        "surface": "oklch(0.85 0.05 230)",
+        "ink": "oklch(0.22 0.03 260)",
+        "muted": "oklch(0.42 0.04 250)",
+        "line": "oklch(0.55 0.05 250)",
+        "accent": "oklch(0.45 0.12 250)",
+        "onAccent": "oklch(0.97 0.015 70)",
+        "accent2": "oklch(0.72 0.11 60)",
+        "accent3": "oklch(0.6 0.06 30)"
+      },
+      "colorWords": [
+        "desert sand",
+        "twilight blue",
+        "amber light",
+        "clay",
+        "long violet shadows"
+      ],
+      "colorUsage": "沙色做底，天蓝做面板，深蓝做 CTA；琥珀色只用在受光面。",
+      "texture": {
+        "kind": "sky",
+        "level": 0.5,
+        "desc": "从上往下褪开的天色"
+      },
+      "motifs": [
+        "空旷地平线",
+        "长长的投影",
+        "漂浮的物体",
+        "融化的钟"
+      ],
+      "motifsEn": [
+        "an empty horizon",
+        "long cast shadows",
+        "floating objects",
+        "melting clocks"
+      ],
+      "medium": "Surrealist oil painting, dreamlike impossible scene, hyper-precise rendering, vast desert horizon, twilight sky",
+      "dont": [
+        "杂乱拼贴",
+        "粗糙笔触",
+        "平面装饰"
+      ],
+      "negative": [
+        "collage",
+        "rough brushwork",
+        "flat pattern",
+        "cartoon"
+      ]
+    },
+    {
+      "id": "pop",
+      "name": "波普",
+      "en": "Pop Art",
+      "aliases": [
+        "波普",
+        "波普艺术",
+        "Pop Art",
+        "Pop"
+      ],
+      "era": "1950s–1960s · 英国 / 美国",
+      "group": "modern",
+      "roles": [
+        "surface"
+      ],
+      "essence": "把漫画和广告搬进画廊：本戴点、粗黑轮廓、平涂三原色和重复。",
+      "intro": "波普艺术 1950 年代起于英国、1960 年代盛于美国，沃霍尔和利希滕斯坦是代表。它把广告、漫画和日用商品搬进画廊，用丝网印刷和本戴点模仿批量生产。",
+      "palette": {
+        "bg": "oklch(0.98 0.01 95)",
+        "surface": "oklch(0.92 0.12 100)",
+        "ink": "oklch(0.15 0 0)",
+        "muted": "oklch(0.35 0 0)",
+        "line": "oklch(0.15 0 0)",
+        "accent": "oklch(0.56 0.23 27)",
+        "onAccent": "oklch(0.99 0 0)",
+        "accent2": "oklch(0.9 0.18 100)",
+        "accent3": "oklch(0.55 0.16 240)"
+      },
+      "colorWords": [
+        "comic red",
+        "process yellow",
+        "cyan blue",
+        "black outlines"
+      ],
+      "colorUsage": "红黄蓝平涂，黄色可大面积铺底，所有色块加粗黑轮廓。",
+      "texture": {
+        "kind": "halftone",
+        "level": 0.6,
+        "desc": "本戴点网点，点径明显"
+      },
+      "motifs": [
+        "本戴点",
+        "对话气泡",
+        "漫画格",
+        "重复排列"
+      ],
+      "motifsEn": [
+        "Ben-Day dots",
+        "speech bubbles",
+        "comic panels",
+        "serial repetition"
+      ],
+      "medium": "1960s pop art, comic book panel, screen print, bold black outlines, flat primary colors",
+      "dont": [
+        "低饱和",
+        "细线",
+        "柔和渐变"
+      ],
+      "negative": [
+        "muted colors",
+        "thin lines",
+        "soft gradient",
+        "photorealistic"
+      ]
+    }
+  ],
+  "groups": {
+    "east": "东方",
+    "classic": "西方古典",
+    "modern": "二十世纪"
+  }
+}

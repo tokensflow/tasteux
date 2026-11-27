@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>网页设计风格与 AI 提示词生成器｜流派混合 Style Mix</title>
+  <meta name="description" content="把艺术流派的布局与配色混成网页设计风格，实时预览，并导出代码提示词、生图提示词、DESIGN.md 和示例 HTML，也可安装为 Agent 技能。">
+  <link rel="canonical" href="https://tasteux.com/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="流派混合 Style Mix">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="网页设计风格与 AI 提示词生成器｜流派混合 Style Mix">
+  <meta property="og:description" content="把艺术流派的布局与配色混成网页设计风格，实时预览，并导出代码提示词、生图提示词、DESIGN.md 和示例 HTML，也可安装为 Agent 技能。">
+  <meta property="og:url" content="https://tasteux.com/">
+  <meta property="og:image" content="https://tasteux.com/img/fauvism.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="野兽派风格的 AI 生成示意图">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="网页设计风格与 AI 提示词生成器｜流派混合 Style Mix">
+  <meta name="twitter:description" content="混合艺术流派，导出网页设计规则与 AI 提示词。">
+  <meta name="twitter:image" content="https://tasteux.com/img/fauvism.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://tasteux.com/#page","url":"https://tasteux.com/","name":"网页设计风格与 AI 提示词生成器｜流派混合 Style Mix","inLanguage":"zh-CN","mainEntity":{"@id":"https://tasteux.com/#app"}},{"@type":"WebApplication","@id":"https://tasteux.com/#app","name":"流派混合 Style Mix","url":"https://tasteux.com/","applicationCategory":"DesignApplication","operatingSystem":"Web","inLanguage":"zh-CN","description":"混合艺术流派的布局与配色，输出网页设计规则、代码提示词和生图提示词。"}]}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&family=JetBrains+Mono:wght@400;500&display=optional" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="preview.css">
+  <script>document.documentElement.classList.add("js")</script>
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip" href="#workbench">跳到混合工作台</a>
+
+  <header class="bar">
+    <a class="brand" href="#showcase">流派混合 <em lang="en">Style Mix</em></a>
+    <nav aria-label="页面">
+      <a href="#workbench">混合</a>
+      <a href="#plates">图鉴</a>
+      <a href="#install">安装</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="showcase" class="hero" aria-labelledby="hero-title">
+      <header class="hero-head"><div><p>网页设计风格与 AI 提示词生成器</p><h1 id="hero-title">把两个艺术流派，混成一套网页风格。</h1></div><a href="#workbench">去混合你的风格 <span aria-hidden="true">↓</span></a></header>
+      <div id="hero-carousel"></div>
+    </section>
+    <section id="workbench" class="room" aria-labelledby="bench-title">
+      <div class="bench">
+        <div class="bench-intro">
+          <p class="bench-summary">网页设计风格与 AI 提示词生成器 · 24 种艺术流派</p>
+          <h2 id="bench-title" tabindex="-1">先选骨架定排版，再选表皮定颜色</h2>
+          <p class="rule"><b>骨架</b>决定排版、字体和动效；<b>表皮</b>决定配色、质感和画面。</p>
+          <p class="bench-about">实时预览，导出代码提示词、生图提示词、DESIGN.md 和示例 HTML。<a href="guides/art-movement-web-design/">第一次使用？看教程 →</a></p>
+          <noscript><p class="bench-about">工作台需要 JavaScript；下方图鉴、流派用法和使用教程无需 JavaScript 也能阅读。</p></noscript>
+        </div>
+
+        <div class="bench-stage" id="bench-stage">
+          <div class="stage-head">
+            <h2>预览 <span>一家独立书店的首页</span></h2>
+            <button class="btn btn-sm" type="button" id="compare-toggle" aria-pressed="false" aria-controls="stage-view" hidden>对比本次改动</button>
+          </div>
+          <div class="frame">
+            <div class="mat stage-view" id="stage-view">
+              <figure class="stage-fig" id="prev-fig" hidden>
+                <div class="thumb" id="stage-prev"></div>
+                <figcaption id="prev-cap"></figcaption>
+              </figure>
+              <figure class="stage-fig">
+                <div class="thumb" id="stage"></div>
+                <figcaption id="now-cap" hidden></figcaption>
+              </figure>
+            </div>
+          </div>
+          <p class="note"><span class="note-k">这次变了什么</span><span id="note" aria-live="polite"></span><a class="to-duo" href="#duo">认识这两个流派 ↓</a></p>
+          <section class="duo" id="duo" aria-labelledby="duo-title" hidden>
+            <h3 class="duo-k" id="duo-title">认识这两个流派</h3>
+            <div class="duo-cols" id="duo-cols"></div>
+          </section>
+          <div class="label" id="label"></div>
+        </div>
+
+        <div class="bench-steps">
+          <div class="step" role="group" aria-labelledby="step1-title">
+            <div class="step-head">
+              <h3 id="step1-title"><span class="step-no" aria-hidden="true">1</span>选骨架</h3>
+              <span class="step-cap">定排版、字体、动效</span>
+              <span class="step-count" id="structure-count"></span>
+            </div>
+            <div class="skels" id="pick-structure"></div>
+          </div>
+
+          <div class="step" role="group" aria-labelledby="step2-title">
+            <div class="step-head">
+              <h3 id="step2-title"><span class="step-no" aria-hidden="true">2</span>选表皮</h3>
+              <span class="step-cap">定配色、质感、画面</span>
+              <span class="step-count" id="surface-count"></span>
+            </div>
+            <div class="skin-groups" id="skin-groups" role="group" aria-label="跳到分组"></div>
+            <div class="skins" id="pick-surface"></div>
+          </div>
+
+          <div class="step" role="group" aria-labelledby="step3-title">
+            <div class="step-head">
+              <h3 id="step3-title"><span class="step-no" aria-hidden="true">3</span>复制提示词，下载文件</h3>
+              <span class="step-cap" id="code-title"></span>
+            </div>
+            <div class="sheet">
+              <div class="sheet-bar">
+                <div class="tabs" role="tablist" aria-label="提示词用途">
+                  <button class="tab" type="button" role="tab" id="tab-code" aria-controls="panel-code" aria-selected="true">写代码用</button>
+                  <button class="tab" type="button" role="tab" id="tab-image" aria-controls="panel-image" aria-selected="false" tabindex="-1">生图用</button>
+                </div>
+                <button class="btn btn-sm" type="button" id="copy-prompt" data-copy="code-out">复制</button>
+              </div>
+              <div class="panel" role="tabpanel" id="panel-code" aria-labelledby="tab-code">
+                <p class="panel-meta">贴给 Claude、Cursor、v0</p>
+                <pre id="code-out" tabindex="0"></pre>
+              </div>
+              <div class="panel" role="tabpanel" id="panel-image" aria-labelledby="tab-image" hidden>
+                <p class="panel-meta">贴给 Midjourney、GPT-Image、Stable Diffusion · <span lang="en">English</span></p>
+                <label class="subject">
+                  <span>画面主题</span>
+                  <input id="subject" type="text" spellcheck="false" placeholder="a poster for an independent bookstore called Paper Pages">
+                </label>
+                <pre id="image-out" tabindex="0"></pre>
+              </div>
+            </div>
+            <div class="takeaway" role="group" aria-labelledby="takeaway-k">
+              <span class="takeaway-k" id="takeaway-k">下载文件</span>
+              <button class="btn btn-sm" type="button" id="export-html">下载书店示例 .html</button>
+              <button class="btn btn-sm" type="button" id="export-md">下载 DESIGN.md</button>
+              <p class="takeaway-note">示例页是独立的 HTML 文件，主视觉已内嵌，可以直接打开或改。字体从 Google Fonts 联网加载，离线时会用系统字体。</p>
+              <p class="takeaway-msg" id="export-msg" role="status" aria-live="polite"></p>
+            </div>
+            <a class="to-install" href="#install">或者把整套规则装进 Agent →</a>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="button" id="swap">骨架和表皮互换</button>
+            <button class="btn" type="button" id="shuffle">随机一组</button>
+          </div>
+          <p class="hint" id="swap-hint" aria-live="polite"></p>
+          <div class="label-slot" id="label-slot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plates" class="chapter">
+      <header class="chapter-head">
+        <h2 id="plates-title">图鉴：24 个画派</h2>
+        <p>每张图版讲清一个画派：年代、主张、颜色和质感。看中哪个，点“用作骨架”或“用作表皮”，回到上面的工作台。</p>
+      </header>
+
+      <div class="group-head">
+        <h3 id="structure-title">能当骨架的画派</h3>
+        <p>这些画派自带一套版面语法：网格怎么分，标题放哪，元素朝哪个方向倾斜。图鉴预览是它们的纯粹形态，骨架和表皮都用自己的。</p>
+      </div>
+      <div class="plates plates-structure" id="plates-structure"></div>
+
+      <div class="group-head">
+        <h3 id="surface-title">只做表皮的画派</h3>
+        <p>这些画派的力量在颜色、笔触和画面题材上，没有可以照搬的版面结构，所以要借别人的骨架。色块从左到右是面板色、主色、两个辅色和文字色。</p>
+      </div>
+      <div class="plates plates-surface" id="plates-surface"></div>
+    </section>
+
+    <section id="learn" class="chapter" aria-labelledby="learn-title">
+      <header class="chapter-head">
+        <h2 id="learn-title">从流派到网页</h2>
+        <p>不只认识画派，也看它们怎样变成布局、配色和可执行的提示词。主视觉是 AI 生成的风格示意，不是历史作品的复制。</p>
+      </header>
+      <div class="reading-list" id="reading-list"></div>
+    </section>
+
+    <section id="install" class="chapter">
+      <header class="chapter-head">
+        <h2>安装：把整套规则装进 Agent</h2>
+        <p>提供 Pi、Claude Code 和 Codex 版本，共用标准 SKILL.md、24 个流派的数据与混合规则。装好后可以在 Agent 里直接生成 DESIGN.md、代码和生图提示词；技能本身不需要额外 API key。</p>
+      </header>
+
+      <div class="skill-versions" id="skill-versions"></div>
+      <p class="skill-portable">三个下载包内容相同，安装目录和调用方式不同；只需安装你使用的版本。下方命令适用于 macOS / Linux，遇到已有技能目录会停止，不覆盖你的修改。</p>
+      <div class="install">
+        <div>
+          <div class="targets" role="group" aria-label="安装位置" id="targets"></div>
+          <div class="sheet">
+            <header><span id="target-path"></span><button class="btn btn-sm" type="button" data-copy="install-out">复制</button></header>
+            <pre id="install-out"></pre>
+          </div>
+          <div class="install-usage"><p id="skill-activation"></p><code id="skill-invocation"></code><a id="selected-skill-download" class="btn btn-sm" href="/skill/downloads/style-mix-pi.zip" download="style-mix-pi.zip">下载当前版本 .zip</a></div>
+          <p class="files">单独下载：
+            <a href="../skill/SKILL.md" download>SKILL.md</a>
+            <a href="../skill/schools.json" download>schools.json</a>
+            <a href="../skill/references/mixing.md" download>mixing.md</a>
+          </p>
+        </div>
+        <div class="say">
+          <h3>装好以后这样说</h3>
+          <ul>
+            <li>用包豪斯 × 野兽派给我的咖啡店做一个落地页</li>
+            <li>敦煌壁画风格，生图提示词：一只猫蹲在屋顶上</li>
+            <li>至上主义 × 青绿山水，只要 DESIGN.md</li>
+            <li>风格派的骨架，配点彩派的颜色，改一下现在这个设置页</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <span>流派混合 <em lang="en">Style Mix</em></span>
+    <span id="colophon-count"></span>
+    <a href="../skill/schools.json">数据：skill/schools.json</a>
+  </footer>
+
+  <template id="pv-tpl">
+    <div class="pv" data-structure="bauhaus" data-texture="none">
+      <div class="pv-tex" aria-hidden="true"></div>
+      <div class="pv-page">
+        <header class="pv-nav">
+          <span class="pv-logo">Paper Pages</span>
+          <span class="pv-links"><span>新书</span><span>活动</span><span>会员</span></span>
+        </header>
+        <section class="pv-hero">
+          <p class="pv-kicker">独立书店 · 2026 秋</p>
+          <h2 class="pv-title"><span>Read</span><span>Slowly</span></h2>
+          <p class="pv-lede">每周三晚上，我们关掉一半的灯，只留下书和读书的人。</p>
+          <span class="pv-cta">预约到店</span>
+        </section>
+        <div class="pv-art" aria-hidden="true"><i class="d1"></i><i class="d2"></i><i class="d3"></i><i class="d4"></i></div>
+        <figure class="pv-img" aria-hidden="true"><picture><source type="image/webp"><img alt="" width="1200" height="800" loading="lazy" decoding="async"></picture></figure>
+        <section class="pv-cells">
+          <article class="pv-cell c1"><b>12</b><h3>本周新书</h3><p>从诗集到菜谱，店员每周亲手挑选。</p></article>
+          <article class="pv-cell c2"><b>周三</b><h3>夜读会</h3><p>二十个座位，一本书，读到打烊。</p></article>
+          <article class="pv-cell c3"><b>¥99</b><h3>年度会员</h3><p>全年九折，生日送一本店员推荐。</p></article>
+        </section>
+        <footer class="pv-foot">上海 · 徐汇区 · 每天 10:00–22:00</footer>
+      </div>
+    </div>
+  </template>
+</body>
+</html>

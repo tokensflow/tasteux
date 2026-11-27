@@ -1,0 +1,64 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: deploy/package-lock.json
+
+      - name: Install system dependencies (ImageMagick, cwebp, zip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp zip
+          if ! command -v magick >/dev/null 2>&1; then
+            printf '%s\n' '#!/bin/sh' 'if [ "$1" = "identify" ]; then shift; exec identify "$@"; fi' 'exec convert "$@"' | sudo tee /usr/local/bin/magick > /dev/null
+            sudo chmod +x /usr/local/bin/magick
+          fi
+          magick -version
+          cwebp -version
+
+      - name: Cache responsive images
+        uses: actions/cache@v4
+        with:
+          path: .cache/responsive-images
+          key: responsive-images-${{ hashFiles('site/img/**', 'scripts/assets.mjs') }}
+          restore-keys: responsive-images-
+
+      - name: Run verification and tests
+        run: |
+          node scripts/check-schools.mjs skill/schools.json
+          node --test scripts/*.test.mjs
+
+      - name: Install deploy dependencies
+        working-directory: deploy
+        run: npm install --no-audit --no-fund
+
+      - name: Check Cloudflare Token
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN secret is not configured in GitHub repository secrets. Please configure it in Settings -> Secrets and variables -> Actions to enable automatic deployment."
+            exit 1
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Deploy to Cloudflare Workers
+        run: |
+          export PATH="$GITHUB_WORKSPACE/deploy/node_modules/.bin:$PATH"
+          ./scripts/deploy.sh
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || '9fd06e936555bfcf0350918fc0b3f338' }}
