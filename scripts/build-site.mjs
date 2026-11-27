@@ -19,6 +19,8 @@ const EN = "/en/";
 // 中英首页互为 hreflang 备选，x-default 指中文首页。
 const hreflang = `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}${HOME}">\n  <link rel="alternate" hreflang="en" href="${ORIGIN}${EN}">\n  <link rel="alternate" hreflang="x-default" href="${ORIGIN}${HOME}">`;
 const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
+// Google AdSense 发布商 ID（ca-pub-…）。留空则不输出广告代码和 ads.txt。
+const ADSENSE_CLIENT = "";
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`;
@@ -144,6 +146,8 @@ export async function buildSite(output) {
   await fs.cp(path.join(root, "skill"), path.join(output, "skill"), { recursive: true, filter });
   await buildSkillPackages(output);
   const assets = await buildAssets(output, data);
+  const adsense = ADSENSE_CLIENT ? `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>\n</head>` : "</head>";
+  const publish = (file, html) => fs.writeFile(file, versionPage(html, assets).replace("</head>", adsense));
   const template = await fs.readFile(path.join(root, "site/index.html"), "utf8");
   let home = template;
   home = replaceOnce(home, /<link rel="canonical" href="https:\/\/tasteux\.com\/">/, `<link rel="canonical" href="${ORIGIN}${HOME}">\n  ${hreflang}`);
@@ -160,11 +164,11 @@ export async function buildSite(output) {
   home = replaceOnce(home, /<span id="colophon-count"><\/span>/, `<span id="colophon-count">${data.schools.length} 个画派 · 调色板均通过 WCAG AA 对比度校验</span>`);
   const reading = `<a class="reading-item" href="guides/art-movement-web-design/"><h3>使用教程：从流派到 AI 提示词</h3><p>选骨架、配表皮、看预览，再把设计规则交给代码工具。</p></a>` + FEATURED_IDS.map((id) => `<a class="reading-item" href="schools/${id}/"><h3>${esc(byId[id].name)}网页设计</h3><p>${esc(schoolNotes[id].lede)}</p></a>`).join("");
   home = replaceOnce(home, /<div class="reading-list" id="reading-list"><\/div>/, `<div class="reading-list" id="reading-list">${reading}</div>`);
-  await fs.writeFile(path.join(output, "index.html"), versionPage(home, assets));
+  await publish(path.join(output, "index.html"), home);
   for (const id of FEATURED_IDS) {
     const dir = path.join(output, "schools", id);
     await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, "index.html"), versionPage(schoolPage(template, byId[id], byId, assets.imageBase), assets));
+    await publish(path.join(dir, "index.html"), schoolPage(template, byId[id], byId, assets.imageBase));
   }
   const description = "用流派混合选择网页布局和配色，生成代码提示词、生图提示词与 DESIGN.md，再交给 Claude Code、Cursor 或 v0。包含包豪斯 × 野兽派示例和检查清单。";
   const guide = page(template, { title: `${GUIDE_TITLE}｜流派混合`, description, url: GUIDE, article: true, graph: [
@@ -173,14 +177,14 @@ export async function buildSite(output) {
   ] }, "使用教程", guideBody(byId));
   const guideDir = path.join(output, "guides/art-movement-web-design");
   await fs.mkdir(guideDir, { recursive: true });
-  await fs.writeFile(path.join(guideDir, "index.html"), versionPage(guide, assets));
+  await publish(path.join(guideDir, "index.html"), guide);
   const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、广告和安装 Skill 时数据会经过谁。";
   const privacy = page(template, { title: "隐私政策｜流派混合 Style Mix", description: privacyDescription, url: PRIVACY, graph: [
     { "@type": "WebPage", name: "隐私政策", description: privacyDescription, inLanguage: "zh-CN", url: ORIGIN + PRIVACY },
     breadcrumbs(PRIVACY, "隐私政策"),
   ] }, "隐私政策", privacyBody());
   await fs.mkdir(path.join(output, "privacy"), { recursive: true });
-  await fs.writeFile(path.join(output, "privacy/index.html"), versionPage(privacy, assets));
+  await publish(path.join(output, "privacy/index.html"), privacy);
   const enDescription = "Style Mix mixes two art movements into one web design system: one sets layout, type and motion, the other color, texture and motifs. Exports DESIGN.md, coding and image prompts. Agent skill for Claude Code and Codex.";
   const enHome = page(template, { title: "Style Mix: mix two art movements into a web design system", description: enDescription, url: EN, en: true, image: "ukiyo-e", imageAlt: "AI-generated illustration in the Ukiyo-e style", graph: [
     { "@type": "WebPage", name: "Style Mix", description: enDescription, inLanguage: "en", url: ORIGIN + EN },
@@ -188,7 +192,7 @@ export async function buildSite(output) {
     { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Style Mix", item: ORIGIN + EN }] },
   ] }, "Style Mix", enHomeBody(data));
   await fs.mkdir(path.join(output, "en"), { recursive: true });
-  await fs.writeFile(path.join(output, "en/index.html"), versionPage(enHome, assets));
+  await publish(path.join(output, "en/index.html"), enHome);
   const pages = [HOME, EN, ...FEATURED_IDS.map(schoolPath), GUIDE];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
@@ -214,6 +218,7 @@ export async function buildSite(output) {
 ${FEATURED_IDS.map((id) => `- [${byId[id].name}网页设计](${ORIGIN}${schoolPath(id)}): ${schoolNotes[id].lede}`).join("\n")}
 `);
   await fs.writeFile(path.join(output, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+  if (ADSENSE_CLIENT) await fs.writeFile(path.join(output, "ads.txt"), `google.com, ${ADSENSE_CLIENT.replace(/^ca-/, "")}, DIRECT, f08c47fec0942fa0\n`);
   await fs.writeFile(path.join(output, "_redirects"), "/site / 301\n/site/ / 301\n/site/* /:splat 301\n");
   return pages;
 }
