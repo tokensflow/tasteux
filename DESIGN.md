@@ -72,6 +72,16 @@ components:
 
 ## 适用范围
 官网 tasteux.com 的页面外壳：顶栏、首屏标题区、章节标题、按钮、安装区。图鉴图版、轮播海报和工作台预览展示的是其他组合，按各自流派的数据渲染，不归本文件管；流派原作按"原作"一节放在 `figure[data-original]` 里。
+页面模板（和首页共用 `style.css` 外壳、同一套顶栏和页脚，全部算管）：
+
+| 模板 | 示例网址 | 管不管 |
+|---|---|---|
+| 首页（中文） | `/` | 管 |
+| 英文首页 | `/en/` | 管 |
+| 教程文章 | `/guides/art-movement-web-design/` | 管 |
+| 流派详情页（6 个同一模板） | `/schools/ukiyo-e/` | 管 |
+| 隐私政策 | `/privacy/` | 管 |
+
 检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`
 
 ## 色彩
@@ -233,3 +243,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | GEO（不改页面）：build-site 生成 `/llms.txt`：一句话定位（骨架/表皮、规则固定、每次结果一样）、安装命令、skill 文件、教程和已发布流派页，数量从 schools.json 取。测试保证其中每个链接都指向构建产物、并覆盖 sitemap 里的内容页。页面无变化，未截图。 | 无 |
 | 2026-11-27 | 新页面（隐私政策，不含作者信息）：build-site 生成 `/privacy/`，正文在 editorial.mjs，写明工作台不上传、本站不设 Cookie、Cloudflare 托管、Google Fonts、计划中的 AdSense 和退出个性化广告的方法；首页和文章页页脚加"隐私政策"链接，页脚链接最小高度 24px（顺带消掉 390px 的点击目标提醒）。没进 sitemap 和 llms.txt。联系方式等关于页定稿再补。baseline 认可的变化：links + privacy/。文章页仍是旧外壳（衬线标题、未加载 Oswald），属于下一轮。 | 无 |
 | 2026-11-27 | 新页面（英文首页）：按决定记录第 2 条，build-site 生成 `/en/`（正文在 editorial.mjs：骨架/表皮、产出、流派清单从 schools.json 取、一行安装、工作台暂只有中文）。中英首页互写 hreflang（x-default 指中文），`/en/` 进 sitemap 和 llms.txt；中文首页导航加 EN。AGENTS.md 的\"UI 只用中文\"改为\"中文为主，英文放 /en/\"（viki 已同意）。baseline 认可的变化：links + en/。英文页沿用文章页旧外壳，和隐私页一起留给下一轮。 | 无 |
+| 2026-11-27 | 配合 skill e210bfa（多页面检查、列出页面模板）：适用范围改成按页面模板列出 5 类，全部算管；以后验收一次传 5 个示例网址给 check.mjs，基线按页面存。此时文章类 4 个模板（/en/、教程、流派页、/privacy/）仍是旧外壳，check 报衬线 h1、Oswald 未加载、颜色不在调色板里，记为待办，下面几轮逐个改。 | 待办：文章页外壳 |
