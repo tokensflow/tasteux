@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // 在真实浏览器里按 DESIGN.md 检查页面：1440px 和 390px 截图，加上对比度、圆角、阴影、配色、字体、溢出、焦点环、减少动态效果和 SEO 保留检查。
-// 用法：node scripts/check.mjs <网址或 HTML 文件> [--design DESIGN.md | --mix 主+副] [--out 截图目录]
+// 用法：node scripts/check.mjs <网址或 HTML 文件>... [--design DESIGN.md | --mix 主+副] [--out 截图目录]
 //       [--ignore 选择器] [--shot 选择器]... [--save-baseline 基线.json | --baseline 基线.json] [--allow radius,shadow,...] [--json]
+// 一次可以查多个页面（每个页面模板一个网址）；基线按页面路径分开存在同一个文件里，--save-baseline 只覆盖这次查的页面。
 // --ignore：DESIGN.md 不管的区域（比如展示别的风格的展品），不检查；DESIGN.md"适用范围"里"检查时排除：`选择器`"会自动读取。
 // 需要 Node 22+ 和本机的 Chrome / Chromium / Edge（找不到时设 CHROME_PATH）。不装任何依赖。
 import { spawn } from "node:child_process";
@@ -20,7 +21,7 @@ const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", 
 
 // ---------- 参数 ----------
 function parseArgs(argv) {
-  const opts = { allow: new Set(), ignore: [], shots: [] };
+  const opts = { allow: new Set(), ignore: [], shots: [], targets: [] };
   const take = (i) => {
     if (argv[i + 1] == null) throw new Error(`${argv[i]} 需要一个值`);
     return argv[i + 1];
@@ -37,9 +38,9 @@ function parseArgs(argv) {
     else if (a === "--save-baseline") opts.saveBaseline = take(i++);
     else if (a === "--allow") take(i++).split(",").forEach((x) => opts.allow.add(x.trim()));
     else if (a.startsWith("--")) throw new Error(`不认识的参数：${a}`);
-    else opts.target = a;
+    else opts.targets.push(a);
   }
-  if (!opts.target) throw new Error("用法：node scripts/check.mjs <网址或 HTML 文件> [--design DESIGN.md | --mix 主+副] [--out 目录] [--ignore 选择器] [--shot 选择器] [--save-baseline 文件 | --baseline 文件] [--allow 项目] [--json]");
+  if (!opts.targets.length) throw new Error("用法：node scripts/check.mjs <网址或 HTML 文件>... [--design DESIGN.md | --mix 主+副] [--out 目录] [--ignore 选择器] [--shot 选择器] [--save-baseline 文件 | --baseline 文件] [--allow 项目] [--json]");
   for (const x of opts.allow) if (!CHECKS.includes(x)) throw new Error(`--allow 只接受：${CHECKS.join(", ")}`);
   return opts;
 }
@@ -413,80 +414,108 @@ function diffSnapshot(before, after) {
 }
 
 // ---------- 运行 ----------
+// 基线里每个页面的键：网址取路径和查询串（换域名、换端口不算变化），本地文件取相对当前目录的路径
+const pageKey = (target) => (/^[a-z]+:\/\//i.test(target) && !target.startsWith("file:") ? (({ pathname, search }) => pathname + search)(new URL(target)) : path.relative(process.cwd(), path.resolve(target.replace(/^file:\/\//, ""))));
+
+async function readBaseline(file, firstKey) {
+  const data = JSON.parse(await fs.readFile(file, "utf8"));
+  return data.pages ?? { [firstKey]: data }; // 旧版基线只存一个页面，算作第一个页面的
+}
+
+async function checkPage(b, target, opts, spec, out, baseline, saved) {
+  const key = pageKey(target);
+  const url = /^[a-z]+:\/\//i.test(target) ? target : pathToFileURL(path.resolve(target)).href;
+  await fs.mkdir(out, { recursive: true });
+  const findings = [];
+  const shots = [];
+  for (const view of WIDTHS) {
+    await open(b, url, view);
+    const fold = path.join(out, `${view.width}-fold.png`);
+    await shoot(b, fold);
+    shots.push(fold);
+    const broken = await loadImages(b, "body");
+    if (broken.length) findings.push({ check: "images", level: "FAIL", msg: `${broken.length} 张图片加载失败`, samples: [...new Set(broken)].slice(0, 5), width: view.width });
+    for (const [i, clip] of (await overviewClips(b, view)).entries()) {
+      const file = path.join(out, `${view.width}-overview-${i + 1}.png`);
+      await shoot(b, file, clip);
+      shots.push(file);
+    }
+    for (const [i, selector] of opts.shots.entries()) {
+      const clip = await sectionClip(b, selector);
+      if (!clip) { findings.push({ check: "structure", level: "WARN", msg: `--shot 找不到 ${selector}`, samples: [], width: view.width }); continue; }
+      const file = path.join(out, `${view.width}-section-${i + 1}.png`);
+      await shoot(b, file, clip);
+      shots.push(file);
+    }
+    for (const f of await b.evaluate(audit, spec)) findings.push({ ...f, width: view.width });
+    if (!view.mobile) {
+      // 键盘焦点：按 Tab 走前 12 个可聚焦元素，每个都要有看得见的焦点环
+      const bad = [];
+      for (let i = 0; i < 12; i++) {
+        for (const type of ["keyDown", "keyUp"]) await b.send("Input.dispatchKeyEvent", { type, key: "Tab", code: "Tab", windowsVirtualKeyCode: 9 });
+        const r = await b.evaluate(() => {
+          const el = document.activeElement;
+          if (!el || el === document.body) return null;
+          const cs = getComputedStyle(el);
+          const ring = (cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) >= 1) || cs.boxShadow !== "none";
+          const name = el.tagName.toLowerCase() + (el.id ? `#${el.id}` : el.classList.length ? `.${el.classList[0]}` : "");
+          return { name, ring, width: cs.outlineStyle !== "none" ? parseFloat(cs.outlineWidth) : null };
+        });
+        if (!r) break;
+        if (!r.ring) bad.push(`${r.name} 没有焦点环`);
+        else if (r.width !== null && r.width < 2) bad.push(`${r.name} 焦点环只有 ${r.width}px`);
+      }
+      if (bad.length) findings.push({ check: "focus", level: "FAIL", msg: "键盘焦点看不清（DESIGN.md 要求 2px 焦点环）", samples: [...new Set(bad)].slice(0, 5), width: view.width });
+      const snap = await b.evaluate(snapshot);
+      if (saved) saved[key] = snap;
+      if (baseline && !baseline[key]) findings.push({ check: "baseline", level: "WARN", msg: `基线里没有 ${key}：新页面先确认内容，再用 --save-baseline 把它加进基线`, samples: [], width: view.width });
+      else if (baseline) {
+        const changes = diffSnapshot(baseline[key], snap);
+        if (changes.length) findings.push({ check: "baseline", level: "FAIL", msg: `${changes.length} 处风格以外的内容变了（标题、meta、JSON-LD、链接或脚本）`, samples: changes.slice(0, 8), width: view.width });
+      }
+    }
+  }
+  // 减少动态效果：模拟 prefers-reduced-motion: reduce，页面上不应该还有在跑的动画
+  await open(b, url, WIDTHS[0], true);
+  const moving = await b.evaluate(() => document.getAnimations().filter((a) => a.playState === "running" && (a.effect?.getComputedTiming().duration ?? 0) > 50).map((a) => `${a.animationName ?? a.constructor.name} on ${a.effect?.target?.tagName?.toLowerCase() ?? "?"}`));
+  if (moving.length) findings.push({ check: "motion", level: "FAIL", msg: `减少动态效果时还有 ${moving.length} 个动画在跑`, samples: [...new Set(moving)], width: 1440 });
+  return { findings: findings.map((f) => ({ ...f, page: key })), shots };
+}
+
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   const m = resolve(await readMix(opts));
   const spec = { ...specFor(m), ignore: opts.ignore };
-  const url = /^[a-z]+:\/\//i.test(opts.target) ? opts.target : pathToFileURL(path.resolve(opts.target)).href;
-  const out = path.resolve(opts.out ?? ".style-mix/check");
-  await fs.mkdir(out, { recursive: true });
+  const root = path.resolve(opts.out ?? ".style-mix/check");
+  const keys = opts.targets.map(pageKey);
+  const baseline = opts.baseline ? await readBaseline(opts.baseline, keys[0]) : null;
+  const saved = opts.saveBaseline ? (existsSync(opts.saveBaseline) ? await readBaseline(opts.saveBaseline, keys[0]) : {}) : null;
   const findings = [];
   const shots = [];
   const b = await launch();
   try {
-    for (const view of WIDTHS) {
-      await open(b, url, view);
-      const fold = path.join(out, `${view.width}-fold.png`);
-      await shoot(b, fold);
-      shots.push(fold);
-      const broken = await loadImages(b, "body");
-      if (broken.length) findings.push({ check: "images", level: "FAIL", msg: `${broken.length} 张图片加载失败`, samples: [...new Set(broken)].slice(0, 5), width: view.width });
-      for (const [i, clip] of (await overviewClips(b, view)).entries()) {
-        const file = path.join(out, `${view.width}-overview-${i + 1}.png`);
-        await shoot(b, file, clip);
-        shots.push(file);
-      }
-      for (const [i, selector] of opts.shots.entries()) {
-        const clip = await sectionClip(b, selector);
-        if (!clip) { findings.push({ check: "structure", level: "WARN", msg: `--shot 找不到 ${selector}`, samples: [], width: view.width }); continue; }
-        const file = path.join(out, `${view.width}-section-${i + 1}.png`);
-        await shoot(b, file, clip);
-        shots.push(file);
-      }
-      for (const f of await b.evaluate(audit, spec)) findings.push({ ...f, width: view.width });
-      if (!view.mobile) {
-        // 键盘焦点：按 Tab 走前 12 个可聚焦元素，每个都要有看得见的焦点环
-        const bad = [];
-        for (let i = 0; i < 12; i++) {
-          for (const type of ["keyDown", "keyUp"]) await b.send("Input.dispatchKeyEvent", { type, key: "Tab", code: "Tab", windowsVirtualKeyCode: 9 });
-          const r = await b.evaluate(() => {
-            const el = document.activeElement;
-            if (!el || el === document.body) return null;
-            const cs = getComputedStyle(el);
-            const ring = (cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) >= 1) || cs.boxShadow !== "none";
-            const name = el.tagName.toLowerCase() + (el.id ? `#${el.id}` : el.classList.length ? `.${el.classList[0]}` : "");
-            return { name, ring, width: cs.outlineStyle !== "none" ? parseFloat(cs.outlineWidth) : null };
-          });
-          if (!r) break;
-          if (!r.ring) bad.push(`${r.name} 没有焦点环`);
-          else if (r.width !== null && r.width < 2) bad.push(`${r.name} 焦点环只有 ${r.width}px`);
-        }
-        if (bad.length) findings.push({ check: "focus", level: "FAIL", msg: "键盘焦点看不清（DESIGN.md 要求 2px 焦点环）", samples: [...new Set(bad)].slice(0, 5), width: view.width });
-        const snap = await b.evaluate(snapshot);
-        if (opts.saveBaseline) await fs.writeFile(opts.saveBaseline, `${JSON.stringify(snap, null, 2)}\n`);
-        if (opts.baseline) {
-          const changes = diffSnapshot(JSON.parse(await fs.readFile(opts.baseline, "utf8")), snap);
-          if (changes.length) findings.push({ check: "baseline", level: "FAIL", msg: `${changes.length} 处风格以外的内容变了（标题、meta、JSON-LD、链接或脚本）`, samples: changes.slice(0, 8), width: view.width });
-        }
-      }
+    for (const [i, target] of opts.targets.entries()) {
+      // 多个页面时每页的截图放进自己的子目录，名字取自页面路径
+      const out = opts.targets.length > 1 ? path.join(root, `${i + 1}-${keys[i].replace(/[^\w\u4e00-\u9fff-]+/g, "_").replace(/^_+|_+$/g, "") || "index"}`) : root;
+      const r = await checkPage(b, target, opts, spec, out, baseline, saved);
+      findings.push(...r.findings);
+      shots.push(...r.shots);
     }
-    // 减少动态效果：模拟 prefers-reduced-motion: reduce，页面上不应该还有在跑的动画
-    await open(b, url, WIDTHS[0], true);
-    const moving = await b.evaluate(() => document.getAnimations().filter((a) => a.playState === "running" && (a.effect?.getComputedTiming().duration ?? 0) > 50).map((a) => `${a.animationName ?? a.constructor.name} on ${a.effect?.target?.tagName?.toLowerCase() ?? "?"}`));
-    if (moving.length) findings.push({ check: "motion", level: "FAIL", msg: `减少动态效果时还有 ${moving.length} 个动画在跑`, samples: [...new Set(moving)], width: 1440 });
   } finally {
     await b.close();
   }
+  if (saved) await fs.writeFile(opts.saveBaseline, `${JSON.stringify({ pages: saved }, null, 2)}\n`);
 
   const kept = findings.filter((f) => !opts.allow.has(f.check));
   const fails = kept.filter((f) => f.level === "FAIL").length;
   const warns = kept.filter((f) => f.level === "WARN").length;
   const skipped = [...(opts.allow.size ? [`按 --allow 跳过 ${[...opts.allow].join("、")}`] : []), ...(opts.ignore.length ? [`不检查 ${opts.ignore.join("、")}`] : [])];
-  const verdict = `CHECK: ${fails ? "FAIL" : "PASS"} · ${m.S.id}+${m.F.id} · ${fails} 项未通过，${warns} 项提醒${skipped.length ? `；${skipped.join("；")}` : ""}`;
+  const pages = opts.targets.length > 1 ? ` · ${opts.targets.length} 个页面` : "";
+  const verdict = `CHECK: ${fails ? "FAIL" : "PASS"} · ${m.S.id}+${m.F.id}${pages} · ${fails} 项未通过，${warns} 项提醒${skipped.length ? `；${skipped.join("；")}` : ""}`;
   if (opts.json) process.stdout.write(`${JSON.stringify({ verdict, structure: m.S.id, surface: m.F.id, findings: kept, screenshots: shots }, null, 2)}\n`);
   else {
     const lines = [verdict, ""];
-    for (const f of kept) lines.push(`${f.level} [${f.check}] ${f.width}px：${f.msg}`, ...f.samples.map((s) => `    ${s}`));
+    for (const f of kept) lines.push(`${f.level} [${f.check}] ${pages ? `${f.page} ` : ""}${f.width}px：${f.msg}`, ...f.samples.map((s) => `    ${s}`));
     if (!kept.length) lines.push("没有发现问题。仍然要逐张看截图：质感、母题和整体观感只能靠眼睛。");
     lines.push("", "截图（fold 是首屏原尺寸；overview 是分段缩小的整页，只用来查布局断裂；section 是 --shot 的区块）：", ...shots.map((s) => `  ${s}`));
     process.stdout.write(`${lines.join("\n")}\n`);

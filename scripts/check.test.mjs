@@ -73,14 +73,28 @@ test("browser check passes a page that follows DESIGN.md and fails each broken r
     assert.match(ok.verdict, /^CHECK: PASS · bauhaus\+fauvism/);
     for (const shot of ok.screenshots) assert.ok((await fs.stat(shot)).size > 0);
 
+    // 基线按页面路径存，所以同一页面的改版都写进 good.html
     // 只有构建指纹目录变了，不算内容变化
-    const rebuilt = await check(dir, "rebuilt", good.replace("0123456789ab", "fedcba987654"), "--design", design, "--baseline", path.join(dir, "baseline.json"));
+    const rebuilt = await check(dir, "good", good.replace("0123456789ab", "fedcba987654"), "--design", design, "--baseline", path.join(dir, "baseline.json"));
     assert.equal(rebuilt.code, 0, JSON.stringify(rebuilt.findings, null, 2));
 
-    const broken = await check(dir, "bad", bad, "--design", design, "--baseline", path.join(dir, "baseline.json"));
+    const broken = await check(dir, "good", bad, "--design", design, "--baseline", path.join(dir, "baseline.json"));
     assert.equal(broken.code, 1);
     assert.deepEqual([...failed(broken)].sort(), ["baseline", "contrast", "focus", "gradient", "images", "motion", "originals", "overflow", "radius", "shadow", "structure"]);
     assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("改过的描述"))));
+
+    // 多页面：一次查两页，基线按页面分开。旧页面照常比对；新页面只提醒没有基线；再存基线时追加新页面，不丢旧页面
+    const privacy = path.join(dir, "privacy.html");
+    await fs.writeFile(privacy, good.replace("<title>Fixture</title>", "<title>隐私</title>"));
+    const both = await check(dir, "good", good, privacy, "--design", design, "--baseline", path.join(dir, "baseline.json"));
+    assert.equal(both.code, 0, JSON.stringify(both.findings, null, 2));
+    assert.match(both.verdict, /· 2 个页面 ·/);
+    assert.deepEqual(both.findings.filter((f) => f.check === "baseline").map((f) => [f.level, f.page]), [["WARN", path.relative(process.cwd(), privacy)]]);
+    await check(dir, "privacy", good.replace("<title>Fixture</title>", "<title>隐私</title>"), "--design", design, "--save-baseline", path.join(dir, "baseline.json"));
+    const pages = Object.keys(JSON.parse(await fs.readFile(path.join(dir, "baseline.json"), "utf8")).pages);
+    assert.equal(pages.length, 2);
+    const changed = await check(dir, "good", good.replace("原来的描述", "改过的描述"), privacy, "--design", design, "--baseline", path.join(dir, "baseline.json"));
+    assert.deepEqual(changed.findings.filter((f) => f.check === "baseline").map((f) => [f.level, path.basename(f.page)]), [["FAIL", "good.html"]]);
 
     // 极简主义只允许一个强调色：.dot 的 --accent3 和 .glass 的 --accent2 都要报出来，玻璃效果也要报
     const extra = (r) => [...new Set(r.findings.filter((f) => f.check === "palette" && f.level === "FAIL").map((f) => f.msg.match(/--accent\d/)[0]))].sort();
