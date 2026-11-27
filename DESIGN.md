@@ -231,3 +231,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 改一个区块（首屏）：按营销策划决定记录第 3 条换导语：去掉"每一组还附带生图提示词"（留在工作台第 ③ 步），换成"规则写死，不取平均，同一组合每次结果一样"。baseline 认可的变化：无（标题和链接不变）。 | 无 |
 | 2026-11-27 | SEO（不改页面）：sitemap 每个 URL 加 `<lastmod>`，取内容源文件（site/、schools.json、editorial.mjs、build-site.mjs）最后一次提交的日期；没有 git 历史时不写，避免把构建时间当更新时间。部署工作流改为完整拉取历史（fetch-depth: 0）。页面无变化，未截图。 | 无 |
 | 2026-11-27 | GEO（不改页面）：build-site 生成 `/llms.txt`：一句话定位（骨架/表皮、规则固定、每次结果一样）、安装命令、skill 文件、教程和已发布流派页，数量从 schools.json 取。测试保证其中每个链接都指向构建产物、并覆盖 sitemap 里的内容页。页面无变化，未截图。 | 无 |
+| 2026-11-27 | 新页面（隐私政策，不含作者信息）：build-site 生成 `/privacy/`，正文在 editorial.mjs，写明工作台不上传、本站不设 Cookie、Cloudflare 托管、Google Fonts、计划中的 AdSense 和退出个性化广告的方法；首页和文章页页脚加"隐私政策"链接，页脚链接最小高度 24px（顺带消掉 390px 的点击目标提醒）。没进 sitemap 和 llms.txt。联系方式等关于页定稿再补。baseline 认可的变化：links + privacy/。文章页仍是旧外壳（衬线标题、未加载 Oswald），属于下一轮。 | 无 |

@@ -89,3 +89,20 @@ export function guideBody(byId) {
     </div>
   </article>`;
 }
+
+// 隐私政策正文。联系方式等作者信息等关于页定稿后再补。
+export const PRIVACY_UPDATED = "2026-11-27";
+export function privacyBody() {
+  return `<article>
+    <header class="article-head"><p class="article-kicker">隐私政策 · 更新于 <time datetime="${PRIVACY_UPDATED}">${PRIVACY_UPDATED}</time></p><h1>隐私政策</h1><p class="article-lede">流派混合不需要注册，也不收集你在工作台里的选择。下面写清楚访问本站时，哪些数据会经过谁。</p></header>
+    <div class="article-body">
+      <section><h2>工作台不上传任何东西</h2><p>选骨架、选表皮、生成提示词和 DESIGN.md，全部在你的浏览器里计算，不调用任何模型，也不发到我们的服务器。分享链接里的组合写在网址的 <code>#</code> 后面，这一段不会随请求发给服务器。</p><p>本站自己不设 Cookie，不用 localStorage，也没有装访问统计。点"复制"时，浏览器只把文字写进你的剪贴板。</p></section>
+      <section><h2>托管：Cloudflare</h2><p>网站托管在 Cloudflare。和所有网站一样，每次请求都会让 Cloudflare 看到你的 IP 地址、浏览器标识和访问的网址，用于送达页面、缓存和防御攻击。Cloudflare 如何处理这些数据，见 <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare 隐私政策</a>。</p></section>
+      <section><h2>字体：Google Fonts</h2><p>页面和预览用到的字体从 Google Fonts 加载，你的浏览器会直接向 Google 的服务器请求字体文件，Google 因此会看到你的 IP 地址。见 <a href="https://policies.google.com/privacy">Google 隐私权政策</a>。</p></section>
+      <section><h2>广告：Google AdSense</h2><p>本站计划用 Google AdSense 展示广告来维持运营，工具本身一直免费。广告开启后，Google 及其合作伙伴会使用 Cookie，根据你访问本站和其他网站的记录投放广告。</p><p>你可以在 <a href="https://adssettings.google.com/">Google 广告设置</a>里关闭个性化广告，也可以在 <a href="https://www.aboutads.info/choices/">aboutads.info</a> 关闭第三方供应商的个性化广告 Cookie。Google 怎样使用合作网站上的数据，见 <a href="https://policies.google.com/technologies/partner-sites">这一页</a>。来自欧洲经济区、英国和瑞士的访客，会先看到 Google 的同意提示，再决定是否允许。</p></section>
+      <section><h2>安装 Skill</h2><p>用 <code>npx skills add</code> 安装时，文件从 GitHub 下载；用 curl 或 ZIP 安装时，文件从本站下载，只留下上面说的 Cloudflare 访问记录。装好以后，Skill 在你自己的电脑上运行，不会把你的项目或对话发给我们。</p></section>
+      <section><h2>图片</h2><p>首页和图鉴里的原作是公有领域作品，图片文件放在本站，不从博物馆网站加载。图注里的馆藏链接只有你点击时才会打开。</p></section>
+      <section><h2>政策变更</h2><p>这份政策有改动时，会更新本页顶部的日期。</p></section>
+    </div>
+  </article>`;
+}

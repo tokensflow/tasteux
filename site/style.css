@@ -674,6 +674,7 @@ html:not(.js) .quick-install .btn { display: none; }
   color: var(--c-muted);
   border-top: 3px solid var(--c-ink);
 }
+.colophon a { display: inline-flex; align-items: center; min-height: 24px; }
 
 /* 一次性进场 */
 .js .reveal { opacity: 1; transform: none; transition: opacity 600ms var(--ease), transform 600ms var(--ease); }

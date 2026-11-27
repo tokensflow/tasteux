@@ -3,7 +3,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { FEATURED_IDS, esc, plateMarkup, structurePickerMarkup, surfacePickerMarkup, groupPickerMarkup } from "../site/catalog.mjs";
-import { schoolNotes, guideBody } from "./editorial.mjs";
+import { schoolNotes, guideBody, privacyBody } from "./editorial.mjs";
 import { imageMarkup } from "../site/images.mjs";
 import { buildAssets, versionPage } from "./assets.mjs";
 import { heroMarkup } from "../site/hero.mjs";
@@ -14,6 +14,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const ORIGIN = "https://tasteux.com";
 const HOME = "/";
 const GUIDE = "/guides/art-movement-web-design/";
+const PRIVACY = "/privacy/";
 const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
@@ -74,7 +75,7 @@ function page(template, metadata, name, content) {
     <nav class="breadcrumbs" aria-label="面包屑"><a href="/">流派混合</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>
     ${content}
   </main>
-  <footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a></footer>
+  <footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${PRIVACY}">隐私政策</a></footer>
 </body>
 </html>
 `;
@@ -168,6 +169,13 @@ export async function buildSite(output) {
   const guideDir = path.join(output, "guides/art-movement-web-design");
   await fs.mkdir(guideDir, { recursive: true });
   await fs.writeFile(path.join(guideDir, "index.html"), versionPage(guide, assets));
+  const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、广告和安装 Skill 时数据会经过谁。";
+  const privacy = page(template, { title: "隐私政策｜流派混合 Style Mix", description: privacyDescription, url: PRIVACY, graph: [
+    { "@type": "WebPage", name: "隐私政策", description: privacyDescription, inLanguage: "zh-CN", url: ORIGIN + PRIVACY },
+    breadcrumbs(PRIVACY, "隐私政策"),
+  ] }, "隐私政策", privacyBody());
+  await fs.mkdir(path.join(output, "privacy"), { recursive: true });
+  await fs.writeFile(path.join(output, "privacy/index.html"), versionPage(privacy, assets));
   const pages = [HOME, ...FEATURED_IDS.map(schoolPath), GUIDE];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
