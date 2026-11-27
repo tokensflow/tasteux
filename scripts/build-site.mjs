@@ -180,7 +180,7 @@ export async function buildSite(output) {
   const guideDir = path.join(output, "guides/art-movement-web-design");
   await fs.mkdir(guideDir, { recursive: true });
   await publish(path.join(guideDir, "index.html"), guide);
-  const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、广告和安装 Skill 时数据会经过谁。";
+  const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、Google AdSense 广告与同意设置，以及安装 Skill 时数据会经过谁。";
   const privacy = page(template, { title: "隐私政策｜tasteux Style Mix", description: privacyDescription, url: PRIVACY, graph: [
     { "@type": "WebPage", name: "隐私政策", description: privacyDescription, inLanguage: "zh-CN", url: ORIGIN + PRIVACY },
     breadcrumbs(PRIVACY, "隐私政策"),
