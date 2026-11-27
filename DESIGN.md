@@ -105,7 +105,7 @@ components:
 - 正文：font-family: "PT Sans", "PingFang SC", "Noto Sans SC", sans-serif；字重 400
 - 中文标题：拉丁标题字体没有中文字形，中文会落到回退字体，所以中文标题单独指定 700–900 字重，和拉丁标题的分量一致；字距不要用负值
 - 中文大标题不套用全大写和窄体：中文用 900 字重、字距 0 到 0.05em；要窄体的分量感时，在中文大标题上方配一行全大写的拉丁小标题。不要用 font-stretch、transform: scaleX 压扁汉字，也不要用 skewX 或 oblique 做伪斜体；骨架要求倾斜时用 rotate 把整块标题转过去。
-- Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
+- Google Fonts：Oswald:wght@700 / PT Sans:wght@400;700
 
 ## 布局
 - 栅格：倾斜 -8° 到 -15° 的对角网格，主轴从左下冲向右上
@@ -136,9 +136,9 @@ components:
 - 不裁掉题款和印章，不加滤镜、混合模式或半透明，不铺质感，不在画面上压文字。可以整幅缩放，横卷可以只取一段，但要在图注里写明是局部。
 - 下载后存进项目，不要直接热链博物馆的图片地址。
 
-- 《神奈川冲浪里》 Under the Wave off Kanagawa，葛饰北斋 Katsushika Hokusai，1830–33。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/24645
-- 《见附·天龙川渡船》 Mitsuke: Ferries Crossing the Tenryu River，歌川广重 Utagawa Hiroshige，约 1837–42。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/4368
-- 《山下白雨》 Shower Below the Summit，葛饰北斋 Katsushika Hokusai，约 1830–33。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/87008
+- 《神奈川冲浪里》 Under the Wave off Kanagawa，葛饰北斋 Katsushika Hokusai，1830–33。芝加哥艺术博物馆，CC0。出处：https://www.artic.edu/artworks/24645
+- 《见附·天龙川渡船》 Mitsuke: Ferries Crossing the Tenryu River，歌川广重 Utagawa Hiroshige，约 1837–42。芝加哥艺术博物馆，CC0。出处：https://www.artic.edu/artworks/4368
+- 《山下白雨》 Shower Below the Summit，葛饰北斋 Katsushika Hokusai，约 1830–33。芝加哥艺术博物馆，CC0。出处：https://www.artic.edu/artworks/87008
 
 ## 动效
 沿斜线快速滑入，果断停住，220ms cubic-bezier(0.2, 0.8, 0.2, 1)。按下时也要有反馈。用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。
@@ -187,7 +187,7 @@ components:
 标题：Oswald 700，全大写，字距 0.01em
 正文：PT Sans 400
 中文回退："PingFang SC", "Noto Sans SC", sans-serif；中文标题 700–900 字重，字距不用负值。中文大标题不套用全大写和窄体：中文用 900 字重、字距 0 到 0.05em；要窄体的分量感时，在中文大标题上方配一行全大写的拉丁小标题。不要用 font-stretch、transform: scaleX 压扁汉字，也不要用 skewX 或 oblique 做伪斜体；骨架要求倾斜时用 rotate 把整块标题转过去。
-Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
+Google Fonts：Oswald:wght@700 / PT Sans:wght@400;700
 
 【布局】
 栅格：倾斜 -8° 到 -15° 的对角网格，主轴从左下冲向右上
@@ -244,5 +244,6 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 新页面（隐私政策，不含作者信息）：build-site 生成 `/privacy/`，正文在 editorial.mjs，写明工作台不上传、本站不设 Cookie、Cloudflare 托管、Google Fonts、计划中的 AdSense 和退出个性化广告的方法；首页和文章页页脚加"隐私政策"链接，页脚链接最小高度 24px（顺带消掉 390px 的点击目标提醒）。没进 sitemap 和 llms.txt。联系方式等关于页定稿再补。baseline 认可的变化：links + privacy/。文章页仍是旧外壳（衬线标题、未加载 Oswald），属于下一轮。 | 无 |
 | 2026-11-27 | 新页面（英文首页）：按决定记录第 2 条，build-site 生成 `/en/`（正文在 editorial.mjs：骨架/表皮、产出、流派清单从 schools.json 取、一行安装、工作台暂只有中文）。中英首页互写 hreflang（x-default 指中文），`/en/` 进 sitemap 和 llms.txt；中文首页导航加 EN。AGENTS.md 的\"UI 只用中文\"改为\"中文为主，英文放 /en/\"（viki 已同意）。baseline 认可的变化：links + en/。英文页沿用文章页旧外壳，和隐私页一起留给下一轮。 | 无 |
 | 2026-11-27 | 配合 skill e210bfa（多页面检查、列出页面模板）：适用范围改成按页面模板列出 5 类，全部算管；以后验收一次传 5 个示例网址给 check.mjs，基线按页面存。此时文章类 4 个模板（/en/、教程、流派页、/privacy/）仍是旧外壳，check 报衬线 h1、Oswald 未加载、颜色不在调色板里，记为待办，下面几轮逐个改。 | 待办：文章页外壳 |
-| 2026-11-27 | 改一个模板组（文章类外壳：教程、流派页、/privacy/、/en/）：page() 给 `<html>` 加 `doc` 类并铺和纸质感层；style.css 在 `.doc` 上设 DESIGN.md 色板，把外壳的 --c-* 映射到它，标题 Oswald / 中文 900、拉丁标题全大写 700、首屏标题 rotate(-8deg)（390 用 -4deg）、贯穿全宽的普鲁士蓝斜带、3–5px 粗线、CTA 普鲁士蓝、h2 前朱红小块、页脚反相（--ink 底 --bg 字）、正文左对齐不居中。共用字体链接加 PT Sans 400/700。Oswald 只加载实际用到的 700，不加载 DESIGN.md 列出的 500：多声明 500 后，check.mjs 用 400 字重探测会落到未加载的 500 字面而误报，已反馈 skill 线程。5 页一起 check：文章类 4 页 0 提醒；首页 6 条提醒是首页自己的旧色和正文字体，留给首页配色轮。baseline 无变化。 | 字体只载 Oswald 700（原因见左） |
+| 2026-11-27 | 改一个模板组（文章类外壳：教程、流派页、/privacy/、/en/）：page() 给 `<html>` 加 `doc` 类并铺和纸质感层；style.css 在 `.doc` 上设 DESIGN.md 色板，把外壳的 --c-* 映射到它，标题 Oswald / 中文 900、拉丁标题全大写 700、首屏标题 rotate(-8deg)（390 用 -4deg）、贯穿全宽的普鲁士蓝斜带、3–5px 粗线、CTA 普鲁士蓝、h2 前朱红小块、页脚反相（--ink 底 --bg 字）、正文左对齐不居中。共用字体链接加 PT Sans 400/700。Oswald 只加载实际用到的 700，不加载 DESIGN.md 列出的 500：多声明 500 后，check.mjs 用 400 字重探测会落到未加载的 500 字面而误报，已反馈 skill 线程。5 页一起 check：文章类 4 页 0 提醒；首页 6 条提醒是首页自己的旧色和正文字体，留给首页配色轮。baseline 无变化。 | 无（字体一条已由 skill 7919360 改成规则本身） |
 | 2026-11-27 | 改一个模板（首页配色）：首页 `<html>` 也加 `doc` 类，根元素上有了 --bg/--ink/--accent，正文换 PT Sans。工作台按反相规则：--c-room* 全部映射到 --ink 底、--bg 字和 --bg 细线，不再有调色板以外的深色；原来用 --c-room-seal 的三处小字（--accent2 在 --ink 上只有 4.04:1）改成 --bg 加粗。预览画框底 --ink、衬纸 --bg，警告字 --accent2。5 页一起 check：0 项未通过、0 项提醒。baseline 无变化。 | 无 |
+| 2026-11-27 | 配合 skill 7919360（字体检查按"任一字重加载即算"，构成主义只请求 Oswald 700）：用 mix.mjs 重新生成后同步了 Google Fonts 一行和原作出处的许可写法；上一行"只载 Oswald 700"的偏离随之取消。5 页 check：0 项未通过、0 项提醒。baseline 无变化。 | 无 |
