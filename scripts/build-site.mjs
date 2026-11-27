@@ -171,6 +171,24 @@ export async function buildSite(output) {
   const pages = [HOME, ...FEATURED_IDS.map(schoolPath), GUIDE];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
+  await fs.writeFile(path.join(output, "llms.txt"), `# Style Mix（流派混合）
+
+> 把两个艺术流派混成一套网页风格：一个管骨架（布局、字体、动效），一个管表皮（配色、质感、母题），每一项只归一个流派管，规则固定，同一组合每次结果一样。输出 DESIGN.md、代码提示词和网页插图用的生图提示词。也是一个 Agent Skill：\`npx skills add tokensflow/tasteux\`。
+
+共 ${data.schools.length} 个流派，其中 ${data.schools.filter(isStructure).length} 个能当骨架。网站：${ORIGIN}${HOME}
+
+## Skill
+- [SKILL.md](${ORIGIN}/skill/SKILL.md): 技能入口和工作流程
+- [mixing.md](${ORIGIN}/skill/references/mixing.md): 骨架和表皮怎么分工
+- [format.md](${ORIGIN}/skill/references/format.md): DESIGN.md 的格式
+- [schools.json](${ORIGIN}/skill/schools.json): 全部流派的颜色、字体、规则和原作出处
+
+## 教程
+- [${GUIDE_TITLE}](${ORIGIN}${GUIDE})
+
+## 流派
+${FEATURED_IDS.map((id) => `- [${byId[id].name}网页设计](${ORIGIN}${schoolPath(id)}): ${schoolNotes[id].lede}`).join("\n")}
+`);
   await fs.writeFile(path.join(output, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   await fs.writeFile(path.join(output, "_redirects"), "/site / 301\n/site/ / 301\n/site/* /:splat 301\n");
   return pages;
@@ -179,5 +197,5 @@ export async function buildSite(output) {
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {
   const output = path.resolve(process.argv[2] ?? path.join(root, ".cache/seo-preview"));
   const pages = await buildSite(output);
-  console.log(`已生成 ${pages.length} 个内容页、robots.txt 和 sitemap.xml：${output}`);
+  console.log(`已生成 ${pages.length} 个内容页、robots.txt、sitemap.xml 和 llms.txt：${output}`);
 }

@@ -90,6 +90,17 @@ test("every landing page has unique metadata and truthful structured data", asyn
   }
 });
 
+test("llms.txt links only to files the build publishes, including every sitemap page", async () => {
+  const llms = await fs.readFile(path.join(output, "llms.txt"), "utf8");
+  const links = [...llms.matchAll(/\]\((https:\/\/tasteux\.com\/[^)]*)\)/g)].map((m) => m[1]);
+  for (const link of links) {
+    const rel = new URL(link).pathname.slice(1);
+    await fs.access(path.join(output, rel.endsWith("/") ? rel + "index.html" : rel));
+  }
+  const sitemap = await fs.readFile(path.join(output, "sitemap.xml"), "utf8");
+  for (const [, loc] of sitemap.matchAll(/<loc>(.*?)<\/loc>/g)) if (loc !== `${origin}/`) assert.ok(links.includes(loc), `llms.txt 缺少 ${loc}`);
+});
+
 test("sitemap lists only canonical content pages and robots advertises it", async () => {
   const sitemap = await fs.readFile(path.join(output, "sitemap.xml"), "utf8");
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
