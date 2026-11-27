@@ -4,8 +4,28 @@ export const FEATURED_IDS = ["bauhaus", "memphis", "art-deco", "ukiyo-e", "dunhu
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const clause = (text) => text.split(/[，。；：]/)[0];
 
+// 选骨架的缩略图：每副骨架一张黑白几何线框（viewBox 90×76，和示例页同比例），只画版式，不放文字、不上色。
+// 图形取自 schools.json 里该骨架的 grid 规则：一眼分清网格、对角、中轴、拼贴和横带。
+const B = "#111";
+const box = (x, y, w, h, extra = "") => `<rect x="${x}" y="${y}" width="${w}" height="${h}"${extra}/>`;
+const frame = (x, y, w, h) => box(x, y, w, h, ` fill="none" stroke="${B}" stroke-width="1.6"`);
+const line = (x1, y1, x2, y2, w = 1.6) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${B}" stroke-width="${w}"/>`;
+export const SKELETON_WIREFRAMES = {
+  cubism: `<polygon points="8,10 46,6 40,40 4,34" fill="${B}"/><polygon points="34,18 82,12 86,46 30,52" fill="none" stroke="${B}" stroke-width="1.6"/><polygon points="14,40 52,36 58,68 10,70" fill="none" stroke="${B}" stroke-width="1.6"/><polygon points="48,44 84,50 78,70 44,66" fill="${B}"/><polygon points="40,24 60,20 64,42 44,46" fill="#fff" stroke="${B}" stroke-width="1.6"/>`,
+  futurism: `<g transform="skewX(-24)">${box(30, 10, 40, 12)}${box(44, 28, 34, 9)}${box(56, 43, 28, 7)}${box(66, 56, 22, 5)}</g>${line(4, 70, 30, 18, 1)}${line(12, 72, 40, 16, 1)}${line(20, 74, 50, 14, 1)}`,
+  suprematism: `${box(18, 10, 22, 22)}<g transform="rotate(-28 45 38)">${box(36, 38, 34, 6)}${box(44, 50, 22, 4)}${box(30, 26, 12, 3)}</g><g transform="rotate(-28 45 38)">${frame(52, 60, 10, 10)}</g><circle cx="72" cy="16" r="4" fill="${B}"/>`,
+  constructivism: `<polygon points="0,60 90,26 90,40 0,74" fill="${B}"/><g transform="rotate(-12 45 38)">${box(10, 8, 34, 14)}${frame(50, 10, 26, 22)}${box(14, 30, 4, 4)}${box(22, 30, 16, 2)}</g>${line(60, 76, 90, 54, 1)}`,
+  dada: `<g transform="rotate(8 25 22)">${box(8, 8, 34, 22)}</g><g transform="rotate(-14 62 20)">${frame(46, 8, 30, 24)}</g><g transform="rotate(-4 30 54)">${frame(10, 40, 40, 26)}${line(14, 46, 46, 46, 1)}${line(14, 52, 46, 52, 1)}${line(14, 58, 40, 58, 1)}</g><g transform="rotate(22 68 54)">${box(56, 44, 26, 18)}</g><circle cx="44" cy="34" r="6" fill="#fff" stroke="${B}" stroke-width="1.6"/>`,
+  "de-stijl": `${box(0, 0, 90, 76, ` fill="#fff"`)}${line(32, 0, 32, 76, 5)}${line(0, 26, 90, 26, 5)}${line(68, 26, 68, 76, 5)}${line(32, 54, 68, 54, 5)}${line(14, 26, 14, 76, 5)}${box(34.5, 28.5, 31, 23)}${box(70.5, 0, 19.5, 23.5, ` fill="#777"`)}`,
+  bauhaus: `${Array.from({ length: 13 }, (_, i) => line(6 + i * 6.5, 4, 6 + i * 6.5, 72, 0.4)).join("")}${box(6, 10, 39, 6)}${box(6, 20, 26, 3)}${box(6, 50, 78, 16)}${frame(51.5, 10, 32.5, 34)}<circle cx="67.75" cy="27" r="11" fill="${B}"/>${box(6, 30, 13, 6)}`,
+  "art-deco": `${frame(6, 4, 78, 68)}${frame(10, 8, 70, 60)}<polygon points="45,12 60,30 30,30" fill="${B}"/>${box(28, 34, 34, 4)}${box(34, 41, 22, 2)}${box(38, 47, 14, 6)}${line(16, 58, 74, 58, 1)}${box(18, 61, 14, 4)}${box(38, 61, 14, 4)}${box(58, 61, 14, 4)}`,
+  minimalism: `${box(14, 18, 30, 6)}${box(14, 30, 44, 1.6)}${box(14, 35, 40, 1.6)}${box(14, 40, 42, 1.6)}${frame(14, 50, 12, 5)}`,
+  memphis: `<g transform="rotate(-4 28 22)">${box(14, 14, 34, 18)}${box(10, 10, 34, 18, ` fill="#fff" stroke="${B}" stroke-width="1.6"`)}</g><g transform="rotate(5 64 48)">${box(53, 41, 26, 18, ` rx="6"`)}${box(50, 38, 26, 18, ` rx="6" fill="#fff" stroke="${B}" stroke-width="1.6"`)}</g><path d="M8 58 q5 -8 10 0 t10 0 t10 0" fill="none" stroke="${B}" stroke-width="2"/><circle cx="72" cy="16" r="7" fill="none" stroke="${B}" stroke-width="1.6"/><polygon points="30,66 38,52 46,66" fill="${B}"/>`,
+  dunhuang: `${box(0, 4, 90, 6)}${frame(4, 16, 82, 18)}${box(8, 20, 20, 10)}${box(34, 20, 20, 10)}${box(60, 20, 22, 10)}${box(0, 40, 90, 2)}${frame(4, 46, 82, 16)}${box(8, 50, 12, 8)}${box(26, 50, 12, 8)}${box(44, 50, 12, 8)}${box(62, 50, 20, 8)}${box(0, 68, 90, 6)}`,
+};
+
 export function structurePickerMarkup(schools) {
-  return schools.filter((s) => s.roles.includes("structure")).map((s) => `<button class="skel" type="button" data-role="s" data-id="${esc(s.id)}" aria-pressed="false"><div class="thumb"></div><span class="skel-name">${esc(s.name)}</span></button>`).join("");
+  return schools.filter((s) => s.roles.includes("structure")).map((s) => `<button class="skel" type="button" data-role="s" data-id="${esc(s.id)}" aria-pressed="false"><svg class="wire" viewBox="0 0 90 76" aria-hidden="true" fill="${B}">${SKELETON_WIREFRAMES[s.id]}</svg><span class="skel-name">${esc(s.name)}</span></button>`).join("");
 }
 
 export function groupPickerMarkup(schools, groups) {

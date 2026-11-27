@@ -10,31 +10,6 @@ const DEFAULT_MIX = ["bauhaus", "fauvism"];
 const DEFAULT_SUBJECT = "a poster for an independent bookstore called Paper Pages";
 const PV_WIDTH = 900;
 
-// ---------- 骨架缩略图的中性灰表皮 ----------
-const NEUTRAL = {
-  id: "neutral",
-  name: "中性灰",
-  img: false,
-  palette: {
-    bg: "oklch(0.95 0 0)",
-    surface: "oklch(0.88 0 0)",
-    ink: "oklch(0.24 0 0)",
-    muted: "oklch(0.46 0 0)",
-    line: "oklch(0.3 0 0)",
-    accent: "oklch(0.42 0 0)",
-    onAccent: "oklch(0.97 0 0)",
-    accent2: "oklch(0.78 0 0)",
-    accent3: "oklch(0.62 0 0)",
-  },
-  texture: { kind: "none", level: 0, desc: "" },
-  colorUsage: "",
-  medium: "",
-  motifs: [],
-  motifsEn: [],
-  dont: [],
-  negative: [],
-};
-
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const uniq = (list) => [...new Set(list)];
@@ -51,8 +26,6 @@ let fromLink = false;
 let last = null;
 let compareOn = false;
 const state = { s: DEFAULT_MIX[0], f: DEFAULT_MIX[1], target: TARGETS[0].id };
-
-// ---------- 颜色：OKLCH → 相对亮度 → WCAG 对比度 ----------
 
 // ---------- 混合规则（与 skill/references/mixing.md 一致） ----------
 const clause = (text) => text.split(/[，。；：]/)[0];
@@ -313,7 +286,6 @@ function renderPickers() {
   if (!sBox.children.length) sBox.innerHTML = structurePickerMarkup(schools);
   for (const s of structures) {
     const b = sBox.querySelector(`[data-id="${s.id}"]`);
-    b.querySelector(".thumb").replaceWith(thumb(s, NEUTRAL));
     b.addEventListener("pointerenter", () => loadFonts(s));
     b.addEventListener("focus", () => loadFonts(s));
   }

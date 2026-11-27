@@ -287,7 +287,7 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
 .step-cap { flex: 1; min-width: 0; font-size: 13px; color: var(--c-room-muted); }
 .step-count { font: 400 13px var(--f-sans); color: var(--c-room-muted); }
 
-/* ① 骨架：灰阶缩略页，只比较排版 */
+/* ① 骨架：黑白几何线框，只比较版式 */
 .skels { container-type: inline-size; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px 8px; }
 
 .skel {
@@ -303,15 +303,15 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
   cursor: pointer;
   transition: transform 120ms ease-out, color 160ms ease-out;
 }
-.skel .thumb { background: var(--c-room2); outline: 1px solid var(--c-room-rule); transition: outline-color 160ms ease-out; }
+.skel .wire { display: block; width: 100%; height: auto; aspect-ratio: 90 / 76; background: #fff; outline: 1px solid var(--c-room-rule); transition: outline-color 160ms ease-out; }
 .skel-name { font-size: 12.5px; line-height: 1.3; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .skel:active { transform: scale(0.97); }
 .skel[aria-pressed="true"] { color: var(--c-room-ink); }
-.skel[aria-pressed="true"] .thumb { outline: 2px solid var(--c-room-ink); outline-offset: 2px; }
+.skel[aria-pressed="true"] .wire { outline: 2px solid var(--c-room-ink); outline-offset: 2px; }
 .skel[aria-pressed="true"] .skel-name { font-weight: 600; }
 @media (hover: hover) {
   .skel:hover { color: var(--c-room-ink); }
-  .skel:not([aria-pressed="true"]):hover .thumb { outline-color: var(--c-room-muted); }
+  .skel:not([aria-pressed="true"]):hover .wire { outline-color: var(--c-room-muted); }
 }
 
 /* ② 表皮：横向滚动的画片 */
@@ -807,7 +807,7 @@ html:not(.js) .quick-install .btn { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; transform: none; transition: none; }
-  .btn, .skel, .skel .thumb, .grp, .skin, .skin-img, .tab, .bar nav a { transition: none; }
+  .btn, .skel, .skel .wire, .grp, .skin, .skin-img, .tab, .bar nav a { transition: none; }
   .skins, .skels { scroll-behavior: auto; }
 }
 
