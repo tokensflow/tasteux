@@ -14,7 +14,7 @@ const lum = (s) => {
 };
 const cr = (x, y) => { const [a, b] = [lum(x), lum(y)].sort((p, q) => q - p); return (a + 0.05) / (b + 0.05); };
 const req = ["id", "name", "en", "aliases", "era", "group", "roles", "essence", "intro", "palette", "colorWords", "colorUsage", "texture", "motifs", "motifsEn", "medium", "dont", "negative"];
-const sreq = ["dont", "negative", "grid", "composition", "rules", "radius", "border", "shadow", "density", "accentSlots", "textureCap", "type", "motion"];
+const sreq = ["dont", "negative", "grid", "composition", "rules", "radius", "border", "shadow", "density", "accentSlots", "textureCap", "type", "motion", "button", "reading"];
 let fail = 0;
 for (const s of data.schools) {
   for (const k of req) if (s[k] == null) { console.log(`${s.id}: missing ${k}`); fail++; }

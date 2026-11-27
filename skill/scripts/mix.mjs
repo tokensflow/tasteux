@@ -164,6 +164,18 @@ function originals(m) {
   ];
 }
 
+// 字体加载：同一个字体族在不同地方用不同的 font-display 各加载一次，页面滚到一半标题会换字体
+const FONT_LOAD = "整站只用一种 font-display（推荐 swap），每个字体族只请求一次：在每个页面的 <head> 里用同一条 Google Fonts 链接加载，并 preconnect fonts.gstatic.com；不要在某个区块或懒加载的模块里再请求一次";
+
+// 页面类型：展示页用骨架的全部规则；阅读页保留色彩、字体、边框、按钮、导航和页脚，去掉骨架的招牌动作
+function pageTypes(st) {
+  return [
+    "- 展示页（首页、落地页、作品或流派展示页）：用上面全部布局规则。",
+    `- 阅读页（文档、教程、关于、隐私、条款、文章）：色彩、字体、圆角、边框、按钮和展示页完全一样；${st.reading}。正文单栏，每行 35–45 个汉字或 60–75 个字母，质感强度减半，主视觉和装饰不压正文。`,
+    "- 导航和页脚全站一套：同样的条目、顺序和写法，只在各语言版本里翻译。",
+  ];
+}
+
 function codePrompt(m) {
   const { S, F } = m;
   const st = S.structure;
@@ -176,9 +188,11 @@ function codePrompt(m) {
     `标题：${t.display.family} ${t.display.weight}${t.display.transform === "uppercase" ? "，全大写" : ""}，字距 ${t.display.tracking}`,
     `正文：${t.body.family} ${t.body.weight}`,
     `中文回退：${t.zh}；中文标题 700–900 字重，字距不用负值${zhDisplay(t) ? `。${zhDisplay(t)}` : ""}`,
-    `Google Fonts：${t.google.join(" / ")}`, "",
+    `Google Fonts：${t.google.join(" / ")}`, `加载：${FONT_LOAD}`, "",
     "【布局】", `栅格：${st.grid}`, ...st.rules.map((r) => `- ${r}`), ...(m.pure ? [] : [ROLE_WORDS]),
-    `圆角 ${st.radius}；边框 ${st.border}；阴影 ${st.shadow}；密度 ${st.density}`, "",
+    `圆角 ${st.radius}；边框 ${st.border}；阴影 ${st.shadow}；密度 ${st.density}`,
+    `按钮：${st.button}`, "",
+    "【页面类型】", ...pageTypes(st), "",
     `【质感】${texture(m)}${m.kind === "none" ? "" : "，只铺在背景上，不盖住文字"}`,
     `【母题】${m.motifs.join("、")}。${motifRule(m)}`,
     ...(m.F.frames?.length ? [`【界面框式】${m.F.frames.join("；")}`] : []),
@@ -295,7 +309,7 @@ export function designDoc(m, subject = "{主题：按场景写一个具体画面
     "## 主张", m.thesis, "",
     "## 适用范围",
     "整个页面。",
-    "<!-- 多页面网站：逐个列出页面模板（首页、文章页、列表页、隐私页、各语言版本……），每个写一个示例网址和管或不管，比如「- 文章页 `/guide/`：管」。和首页共用一套外壳样式的页面默认算管；不管的写明原因。外壳和展品分开的网站（比如页面里展示别的风格的作品、截图、预览），写明这份规范只管哪部分，并把不归它管的区域写成一行：检查时排除：`.gallery`、`#preview`。check.mjs 会读这一行。 -->",
+    "<!-- 多页面网站：逐个列出页面模板（首页、文章页、列表页、隐私页、各语言版本……），每个写一个示例网址、管或不管、展示页还是阅读页（见「页面类型」），比如「- 隐私页 `/privacy/`：管，阅读页」。和首页共用一套外壳样式的页面默认算管；不管的写明原因。外壳和展品分开的网站（比如页面里展示别的风格的作品、截图、预览），写明这份规范只管哪部分，并把不归它管的区域写成一行：检查时排除：`.gallery`、`#preview`。check.mjs 会读这一行。 -->",
     "",
     "## 色彩", "```css", ...rootVars(m), "```", `用法：${F.colorUsage}`, accentRule(m), "",
     "## 字体",
@@ -303,9 +317,12 @@ export function designDoc(m, subject = "{主题：按场景写一个具体画面
     `- 正文：font-family: ${fontStack(t.body.family, t.zh)}；字重 ${t.body.weight}`,
     "- 中文标题：拉丁标题字体没有中文字形，中文会落到回退字体，所以中文标题单独指定 700–900 字重，和拉丁标题的分量一致；字距不要用负值",
     ...(zhDisplay(t) ? [`- ${zhDisplay(t)}`] : []),
-    `- Google Fonts：${t.google.join(" / ")}`, "",
+    `- Google Fonts：${t.google.join(" / ")}`,
+    `- 加载：${FONT_LOAD}`, "",
     "## 布局", `- 栅格：${st.grid}`, "- 规则：", ...st.rules.map((r) => `  - ${r}`), ...(m.pure ? [] : [`  - ${ROLE_WORDS}`]),
-    `- 圆角：${st.radius}；边框：${st.border}；阴影：${st.shadow}；密度：${st.density}`, "",
+    `- 圆角：${st.radius}；边框：${st.border}；阴影：${st.shadow}；密度：${st.density}`,
+    `- 按钮：${st.button}`, "",
+    "## 页面类型", ...pageTypes(st), "",
     "## 质感", texture(m),
     "强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。质感层铺在页面底色上、正文下层，不进卡片，不压文字，也不盖在原作上。",
     ...(m.kind === "none" ? [] : [`实现：复制本技能 references/textures.css，页面里放 \`<div class="texture" data-texture="${m.kind}" aria-hidden="true"></div>\`，在 :root 设 \`--tex-level: ${m.level};\`。`]), "",

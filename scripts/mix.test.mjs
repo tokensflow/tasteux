@@ -76,6 +76,22 @@ test("inverse blocks, Chinese display headings and textures follow fixed rules",
   const css = await fs.readFile(new URL("../skill/references/textures.css", import.meta.url), "utf8");
   const kinds = JSON.parse(await fs.readFile(new URL("../skill/schools.json", import.meta.url), "utf8")).textureKinds;
   for (const k of Object.keys(kinds)) assert.ok(css.includes(`[data-texture="${k}"]`), k);
+  // 噪点图块能无缝平铺：滤镜区域等于图块，且频率 × 图块宽度是整数，否则每个图块边上一道竖缝
+  for (const [, u] of css.matchAll(/url\("data:image\/svg\+xml,([^"]+)"\)/g)) {
+    const svg = decodeURIComponent(u);
+    if (!svg.includes("feTurbulence")) continue;
+    assert.match(svg, /<filter[^>]* x='0' y='0' width='100%' height='100%'/, svg);
+    const size = Number(svg.match(/width='(\d+)'/)[1]);
+    for (const f of svg.match(/baseFrequency='([^']+)'/)[1].split(" ").map(Number)) assert.ok(Math.abs(f * size - Math.round(f * size)) < 1e-9, `${f} × ${size}`);
+  }
+});
+
+test("each skeleton says how buttons and quiet reading pages look", async () => {
+  const doc = await run("constructivism", "ukiyo-e");
+  assert.match(doc, /- 按钮：主按钮是 --accent 实心色块.*无双层框/);
+  assert.match(doc, /## 页面类型[\s\S]*阅读页.*不放贯穿斜带，标题横排不倾斜/);
+  assert.match(doc, /导航和页脚全站一套/);
+  assert.match(doc, /整站只用一种 font-display/);
 });
 
 test("works keep license and source apart, with a representative first work", async () => {

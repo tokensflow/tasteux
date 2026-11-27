@@ -17,7 +17,7 @@ const WIDTHS = [
   { width: 1440, height: 900, mobile: false },
   { width: 390, height: 844, mobile: true },
 ];
-const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "images", "originals", "focus", "motion", "baseline"];
+const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "images", "originals", "focus", "motion", "baseline", "buttons", "nav", "texture"];
 
 // ---------- 参数 ----------
 function parseArgs(argv) {
@@ -142,7 +142,11 @@ async function open(b, url, view, reduceMotion = false) {
   await b.send("Emulation.setDeviceMetricsOverride", { width: view.width, height: view.height, deviceScaleFactor: 1, mobile: view.mobile });
   await b.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: reduceMotion ? "reduce" : "no-preference" }] });
   const loaded = b.event("Page.loadEventFired");
-  await b.send("Page.navigate", { url });
+  const { errorText } = await b.send("Page.navigate", { url });
+  if (errorText) {
+    loaded.catch(() => {}); // 错误页不会再触发 load，不等它
+    throw new Error(`打不开 ${url}：${errorText}`);
+  }
   await loaded;
   await b.evaluate(() => document.fonts.ready.then(() => new Promise((r) => setTimeout(r, 600))));
 }
@@ -291,6 +295,40 @@ function audit(spec) {
   }
   if (shadows.length) add("shadow", "FAIL", `${shadows.length} 处阴影不合规定：${spec.shadowText}`, shadows);
 
+  // 按钮：立体斜面（inset/outset/ridge/groove）、双线、内阴影、描边外再套一圈负 offset 的 outline，都是 Win95 / 早期 Bootstrap 的样子，不属于任何骨架的按钮写法
+  // 内阴影只在做成立体或内框时算：多层、带模糊或扩展、两个方向都偏移；单边的 inset 0 -2px 0 是选中下划线，不算
+  const insetFrame = (value) => {
+    const layers = splitShadow(value ?? "none").filter((x) => /\binset\b/.test(x)).map((x) => x.split(/\s+/).filter((v) => /px$/.test(v)).map(parseFloat));
+    return layers.length > 1 || layers.some(([x = 0, y = 0, blur = 0, spread = 0]) => blur || spread || (x && y));
+  };
+  const buttons = shown.filter((el) => el.matches("button, [role=button], input[type=submit], input[type=button], a[class*='btn'], a[class*='button'], a[class*='cta']") && el !== document.activeElement);
+  const bevel = [];
+  for (const el of buttons) {
+    const cs = styles.get(el);
+    const styled = [cs.borderTopStyle, cs.borderRightStyle, cs.borderBottomStyle, cs.borderLeftStyle].find((x) => ["inset", "outset", "ridge", "groove", "double"].includes(x));
+    if (styled) bevel.push(`${sel(el)} border-style: ${styled}`);
+    else if (insetFrame(cs.boxShadow)) bevel.push(`${sel(el)} box-shadow: ${cs.boxShadow}`);
+    else if (parseFloat(cs.borderTopWidth) > 0 && cs.borderTopStyle !== "none" && cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) > 0 && parseFloat(cs.outlineOffset) < 0) bevel.push(`${sel(el)} 描边内又套一圈 outline`);
+  }
+  if (bevel.length) add("buttons", "FAIL", `${bevel.length} 个按钮做成了立体或双层边框，按 DESIGN.md"布局"里的按钮写法做`, bevel);
+
+  // 质感平铺（"检查时排除"的区域也查：接缝在哪种风格里都是瑕疵）：SVG feTurbulence 的滤镜区域默认比图块大 10%–20%，stitchTiles 接不上，每个图块边上一道竖缝
+  const seams = new Set();
+  for (const el of all) {
+    const cs = styles.get(el);
+    for (const value of [cs.maskImage, cs.webkitMaskImage, cs.backgroundImage]) {
+      for (const [, u] of (value ?? "").matchAll(/url\("(data:image\/svg\+xml[^"]*)"\)/g)) {
+        let svg;
+        try { svg = decodeURIComponent(u.replace(/^data:image\/svg\+xml(;charset=[^,]*)?,/, "")); } catch { continue; }
+        if (!/feTurbulence/.test(svg)) continue;
+        const filters = svg.match(/<filter\b[^>]*>/g) ?? [];
+        const tiled = /stitchTiles=['"]stitch/.test(svg) && filters.every((f) => /\bx=['"]0['"]/.test(f) && /\by=['"]0['"]/.test(f) && /width=['"]100%['"]/.test(f) && /height=['"]100%['"]/.test(f));
+        if (!tiled) seams.add(sel(el));
+      }
+    }
+  }
+  if (seams.size) add("texture", "FAIL", "质感图块平铺有接缝：feTurbulence 要 stitchTiles=\"stitch\"，滤镜区域设成 x=0 y=0 width=100% height=100%（用 references/textures.css）", [...seams]);
+
   // 渐变文字、玻璃卡片、渐变背景
   const gradText = shown.filter((el) => { const cs = styles.get(el); return (cs.backgroundClip === "text" || cs.webkitBackgroundClip === "text") && cs.backgroundImage.includes("gradient"); });
   if (gradText.length) add("gradient", "FAIL", "用了渐变文字", gradText.map(sel));
@@ -336,6 +374,11 @@ function audit(spec) {
   const faces = [...document.fonts];
   const loaded = (f) => { const mine = faces.filter((x) => first(x.family) === f); return !mine.length || mine.some((x) => x.status === "loaded"); };
   for (const f of new Set([spec.display, spec.body])) if (!loaded(f)) add("fonts", "WARN", `${f} 没有加载成功，页面用的是回退字体`);
+  // 同一个字体族用两种 font-display 各加载了一次：先到的那次没赶上，后到的那次换上来，滚到一半标题就换字体
+  for (const f of new Set(faces.map((x) => first(x.family)))) {
+    const ways = new Set(faces.filter((x) => first(x.family) === f).map((x) => x.display));
+    if (ways.size > 1) add("fonts", "FAIL", `${f} 用 ${[...ways].join(" 和 ")} 两种 font-display 各加载了一次，整站只能用一种`);
+  }
 
   // 横向溢出
   const vw = document.documentElement.clientWidth;
@@ -429,7 +472,12 @@ async function readBaseline(file, firstKey) {
 }
 
 // 页面 HTML 原文（服务器返回的，或本地文件），不含脚本运行后插入的节点
-const source = async (url) => (url.startsWith("file:") ? fs.readFile(fileURLToPath(url), "utf8") : (await fetch(url)).text());
+const source = async (url) => {
+  if (url.startsWith("file:")) return fs.readFile(fileURLToPath(url), "utf8");
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`打不开 ${url}：HTTP ${res.status}`);
+  return res.text();
+};
 
 async function checkPage(b, target, opts, spec, out, baseline, saved) {
   const key = pageKey(target);
@@ -437,6 +485,7 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
   await fs.mkdir(out, { recursive: true });
   const findings = [];
   const shots = [];
+  let nav;
   for (const view of WIDTHS) {
     await open(b, url, view);
     const fold = path.join(out, `${view.width}-fold.png`);
@@ -476,6 +525,10 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
       }
       if (bad.length) findings.push({ check: "focus", level: "FAIL", msg: "键盘焦点看不清（DESIGN.md 要求 2px 焦点环）", samples: [...new Set(bad)].slice(0, 5), width: view.width });
       const snap = await b.evaluate(snapshot, await source(url));
+      nav = await b.evaluate(() => {
+        const el = document.querySelector("header nav, nav, [role=navigation]");
+        return { lang: document.documentElement.lang, items: el ? [...el.querySelectorAll("a[href]:not([hreflang]):not([lang])")].map((a) => `${a.textContent.trim().replace(/\s+/g, " ")} → ${new URL(a.href).pathname}${new URL(a.href).hash}`) : [] };
+      });
       if (saved) saved[key] = snap;
       if (baseline && !baseline[key]) findings.push({ check: "baseline", level: "WARN", msg: `基线里没有 ${key}：新页面先确认内容，再用 --save-baseline 把它加进基线`, samples: [], width: view.width });
       else if (baseline) {
@@ -488,7 +541,7 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
   await open(b, url, WIDTHS[0], true);
   const moving = await b.evaluate(() => document.getAnimations().filter((a) => a.playState === "running" && (a.effect?.getComputedTiming().duration ?? 0) > 50).map((a) => `${a.animationName ?? a.constructor.name} on ${a.effect?.target?.tagName?.toLowerCase() ?? "?"}`));
   if (moving.length) findings.push({ check: "motion", level: "FAIL", msg: `减少动态效果时还有 ${moving.length} 个动画在跑`, samples: [...new Set(moving)], width: 1440 });
-  return { findings: findings.map((f) => ({ ...f, page: key })), shots };
+  return { findings: findings.map((f) => ({ ...f, page: key })), shots, nav };
 }
 
 async function main() {
@@ -501,6 +554,7 @@ async function main() {
   const saved = opts.saveBaseline ? (existsSync(opts.saveBaseline) ? await readBaseline(opts.saveBaseline, keys[0]) : {}) : null;
   const findings = [];
   const shots = [];
+  const navs = [];
   const b = await launch();
   try {
     for (const [i, target] of opts.targets.entries()) {
@@ -509,6 +563,13 @@ async function main() {
       const r = await checkPage(b, target, opts, spec, out, baseline, saved);
       findings.push(...r.findings);
       shots.push(...r.shots);
+      navs.push({ page: keys[i], ...r.nav });
+    }
+    // 导航全站一套：同一语言的页面，导航条目、顺序和写法都要一样；语言切换链接（带 hreflang 或 lang）按页面指向译文，不比
+    for (const lang of new Set(navs.map((n) => n.lang))) {
+      const group = navs.filter((n) => n.lang === lang);
+      const sign = (n) => n.items.join(" | ");
+      for (const n of group.slice(1)) if (sign(n) !== sign(group[0])) findings.push({ check: "nav", level: "FAIL", msg: `${n.page} 的导航和 ${group[0].page} 不一样，全站要用同一套导航`, samples: [`${group[0].page}：${sign(group[0]) || "（没有导航）"}`, `${n.page}：${sign(n) || "（没有导航）"}`], width: 1440, page: n.page });
     }
   } finally {
     await b.close();
