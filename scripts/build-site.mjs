@@ -40,7 +40,7 @@ function seo({ title, description, url, image = "fauvism", imageAlt, graph, arti
   <link rel="canonical" href="${absolute}">${en ? `\n  ${hreflang}` : ""}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="${article ? "article" : "website"}">
-  <meta property="og:site_name" content="${en ? "Style Mix" : "流派混合 Style Mix"}">
+  <meta property="og:site_name" content="tasteux">
   <meta property="og:locale" content="${en ? "en_US" : "zh_CN"}">
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
@@ -58,7 +58,7 @@ function seo({ title, description, url, image = "fauvism", imageAlt, graph, arti
 
 function breadcrumbs(url, name) {
   return { "@type": "BreadcrumbList", itemListElement: [
-    { "@type": "ListItem", position: 1, name: "流派混合", item: ORIGIN + HOME },
+    { "@type": "ListItem", position: 1, name: "tasteux Style Mix", item: ORIGIN + HOME },
     { "@type": "ListItem", position: 2, name, item: ORIGIN + url },
   ] };
 }
@@ -78,12 +78,12 @@ function page(template, metadata, name, content) {
 <body>
   <div class="pv doc-tex" data-texture="paper" aria-hidden="true"><div class="pv-tex"></div></div>
   <a class="skip" href="#article">${en ? "Skip to content" : "跳到正文"}</a>
-  <header class="bar"><a class="brand" href="/">流派混合 <em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a><a href="${EN}" hreflang="en" lang="en">English</a>`}</nav></header>
+  <header class="bar"><a class="brand" href="/"><b>tasteux</b><em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a><a href="${EN}" hreflang="en" lang="en">English</a>`}</nav></header>
   <main class="article-page" id="article">
-    ${en ? "" : `<nav class="breadcrumbs" aria-label="面包屑"><a href="/">流派混合</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>`}
+    ${en ? "" : `<nav class="breadcrumbs" aria-label="面包屑"><a href="/">tasteux Style Mix</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>`}
     ${content}
   </main>
-  ${en ? `<footer class="colophon"><span>Style Mix</span><a href="/" hreflang="zh-CN" lang="zh-CN">中文版</a><a href="https://github.com/tokensflow/tasteux">GitHub</a><a href="${PRIVACY}" hreflang="zh-CN">Privacy (in Chinese)</a></footer>` : `<footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${ABOUT}">关于</a><a href="${PRIVACY}">隐私政策</a></footer>`}
+  ${en ? `<footer class="colophon"><span>Style Mix by <b>tasteux</b></span><a href="/" hreflang="zh-CN" lang="zh-CN">中文版</a><a href="https://github.com/tokensflow/tasteux">GitHub</a><a href="${PRIVACY}" hreflang="zh-CN">Privacy (in Chinese)</a></footer>` : `<footer class="colophon"><span><b>tasteux</b> 出品 · 流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${ABOUT}">关于</a><a href="${PRIVACY}">隐私政策</a></footer>`}
 </body>
 </html>
 `;
@@ -93,7 +93,7 @@ function schoolPage(template, s, byId, imageBase) {
   const note = schoolNotes[s.id];
   const S = isStructure(s) ? s : byId.minimalism;
   const url = schoolPath(s.id);
-  const title = `${s.name}网页设计：配色、${isStructure(s) ? "布局" : "质感"}与 AI 提示词｜流派混合`;
+  const title = `${s.name}网页设计：配色、${isStructure(s) ? "布局" : "质感"}与 AI 提示词｜tasteux Style Mix`;
   const description = `${s.name}（${s.en}）怎样用于网页设计？查看${isStructure(s) ? "布局和字体" : "配色和质感"}规则、适用场景与搭配建议，并在工作台预览、复制提示词和下载 DESIGN.md。`;
   const mixUrl = `${HOME}#mix=${S.id}+${s.id}`;
   const colors = Object.entries(s.palette).map(([key, color]) => `<li><span class="palette-swatch" style="background:${esc(color)}" aria-hidden="true"></span><code>--${esc(key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`))}</code><code>${esc(color)}</code></li>`).join("");
@@ -173,32 +173,32 @@ export async function buildSite(output) {
     await publish(path.join(dir, "index.html"), schoolPage(template, byId[id], byId, assets.imageBase));
   }
   const description = "用流派混合选择网页布局和配色，生成代码提示词、生图提示词与 DESIGN.md，再交给 Claude Code、Cursor 或 v0。包含包豪斯 × 野兽派示例和检查清单。";
-  const guide = page(template, { title: `${GUIDE_TITLE}｜流派混合`, description, url: GUIDE, article: true, graph: [
-    { "@type": "Article", headline: GUIDE_TITLE, description, inLanguage: "zh-CN", mainEntityOfPage: ORIGIN + GUIDE, image: `${ORIGIN}/img/fauvism.jpg`, author: { "@type": "Organization", name: "Style Mix", url: ORIGIN + HOME } },
+  const guide = page(template, { title: `${GUIDE_TITLE}｜tasteux Style Mix`, description, url: GUIDE, article: true, graph: [
+    { "@type": "Article", headline: GUIDE_TITLE, description, inLanguage: "zh-CN", mainEntityOfPage: ORIGIN + GUIDE, image: `${ORIGIN}/img/fauvism.jpg`, author: { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "tasteux", url: ORIGIN + HOME } },
     breadcrumbs(GUIDE, "使用教程"),
   ] }, "使用教程", guideBody(byId));
   const guideDir = path.join(output, "guides/art-movement-web-design");
   await fs.mkdir(guideDir, { recursive: true });
   await publish(path.join(guideDir, "index.html"), guide);
   const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、广告和安装 Skill 时数据会经过谁。";
-  const privacy = page(template, { title: "隐私政策｜流派混合 Style Mix", description: privacyDescription, url: PRIVACY, graph: [
+  const privacy = page(template, { title: "隐私政策｜tasteux Style Mix", description: privacyDescription, url: PRIVACY, graph: [
     { "@type": "WebPage", name: "隐私政策", description: privacyDescription, inLanguage: "zh-CN", url: ORIGIN + PRIVACY },
     breadcrumbs(PRIVACY, "隐私政策"),
   ] }, "隐私政策", privacyBody());
   await fs.mkdir(path.join(output, "privacy"), { recursive: true });
   await publish(path.join(output, "privacy/index.html"), privacy);
   const enDescription = "Style Mix mixes two art movements into one web design system: one sets layout, type and motion, the other color, texture and motifs. Exports DESIGN.md, coding and image prompts. Agent skill for Claude Code and Codex.";
-  const enHome = page(template, { title: "Style Mix: mix two art movements into a web design system", description: enDescription, url: EN, en: true, image: "ukiyo-e", imageAlt: "AI-generated illustration in the Ukiyo-e style", graph: [
+  const enHome = page(template, { title: "Style Mix by tasteux: mix two art movements into a web design system", description: enDescription, url: EN, en: true, image: "ukiyo-e", imageAlt: "AI-generated illustration in the Ukiyo-e style", graph: [
     { "@type": "WebPage", name: "Style Mix", description: enDescription, inLanguage: "en", url: ORIGIN + EN },
-    { "@type": "SoftwareApplication", name: "Style Mix", applicationCategory: "DesignApplication", operatingSystem: "macOS, Linux, Windows", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, url: ORIGIN + EN },
+    { "@type": "SoftwareApplication", name: "Style Mix", publisher: { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "tasteux", url: ORIGIN + HOME }, applicationCategory: "DesignApplication", operatingSystem: "macOS, Linux, Windows", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, url: ORIGIN + EN },
     { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Style Mix", item: ORIGIN + EN }] },
   ] }, "Style Mix", enHomeBody(data));
   await fs.mkdir(path.join(output, "en"), { recursive: true });
   await publish(path.join(output, "en/index.html"), enHome);
-  const aboutDescription = "流派混合（Style Mix）由 tokensflow 制作，源码公开在 GitHub。本页说明规则和原作从哪里来、是否收费，以及怎样通过 GitHub Issues 联系我们。";
-  const about = page(template, { title: "关于｜流派混合 Style Mix", description: aboutDescription, url: ABOUT, graph: [
-    { "@type": "AboutPage", name: "关于流派混合", description: aboutDescription, inLanguage: "zh-CN", url: ORIGIN + ABOUT, mainEntity: { "@id": `${ORIGIN}/#org` } },
-    { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "Style Mix", alternateName: "流派混合", url: ORIGIN + HOME, sameAs: [REPO, "https://github.com/tokensflow"], contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: ISSUES } },
+  const aboutDescription = "流派混合（Style Mix）是 tasteux 出品的工具，由 tokensflow 制作，源码公开在 GitHub。本页说明规则和原作从哪里来、是否收费，以及怎样通过 GitHub Issues 联系我们。";
+  const about = page(template, { title: "关于｜tasteux Style Mix", description: aboutDescription, url: ABOUT, graph: [
+    { "@type": "AboutPage", name: "关于 tasteux 和流派混合", description: aboutDescription, inLanguage: "zh-CN", url: ORIGIN + ABOUT, mainEntity: { "@id": `${ORIGIN}/#org` } },
+    { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "tasteux", url: ORIGIN + HOME, sameAs: [REPO, "https://github.com/tokensflow"], contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: ISSUES } },
     breadcrumbs(ABOUT, "关于"),
   ] }, "关于", aboutBody(data));
   await fs.mkdir(path.join(output, "about"), { recursive: true });
@@ -206,7 +206,7 @@ export async function buildSite(output) {
   const pages = [HOME, EN, ...FEATURED_IDS.map(schoolPath), GUIDE, ABOUT];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
-  await fs.writeFile(path.join(output, "llms.txt"), `# Style Mix（流派混合）
+  await fs.writeFile(path.join(output, "llms.txt"), `# Style Mix（流派混合）by tasteux
 
 > 把两个艺术流派混成一套网页风格：一个管骨架（布局、字体、动效），一个管表皮（配色、质感、母题），每一项只归一个流派管，规则固定，同一组合每次结果一样。输出 DESIGN.md、代码提示词和网页插图用的生图提示词。也是一个 Agent Skill：\`npx skills add tokensflow/tasteux\`。
 
@@ -225,7 +225,7 @@ export async function buildSite(output) {
 - [${GUIDE_TITLE}](${ORIGIN}${GUIDE})
 
 ## 关于
-- [关于流派混合](${ORIGIN}${ABOUT}): 作者 tokensflow、规则和原作的来源、联系方式（GitHub Issues）
+- [关于 tasteux 和流派混合](${ORIGIN}${ABOUT}): 作者 tokensflow、规则和原作的来源、联系方式（GitHub Issues）
 
 ## 流派
 ${FEATURED_IDS.map((id) => `- [${byId[id].name}网页设计](${ORIGIN}${schoolPath(id)}): ${schoolNotes[id].lede}`).join("\n")}

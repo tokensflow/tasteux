@@ -132,9 +132,9 @@ export const ABOUT_UPDATED = "2026-11-27";
 export function aboutBody(data) {
   const skeletons = data.schools.filter((s) => s.roles.includes("structure")).length;
   return `<article>
-    <header class="article-head"><p class="article-kicker">关于 · 更新于 <time datetime="${ABOUT_UPDATED}">${ABOUT_UPDATED}</time></p><h1>关于流派混合</h1><p class="article-lede">流派混合（Style Mix）把两个艺术流派混成一套网页风格：一个管骨架，一个管表皮，规则固定。它是一个网页工具，也是一个可以装进 Claude Code、Codex 的 Agent Skill。</p><a class="btn" href="${ISSUES}">在 GitHub 上提问题 →</a></header>
+    <header class="article-head"><p class="article-kicker">关于 · 更新于 <time datetime="${ABOUT_UPDATED}">${ABOUT_UPDATED}</time></p><h1>关于 tasteux 和流派混合</h1><p class="article-lede">tasteux 做和审美有关的设计工具。流派混合（Style Mix）是 tasteux 的第一个产品：把两个艺术流派混成一套网页风格：一个管骨架，一个管表皮，规则固定。它是一个网页工具，也是一个可以装进 Claude Code、Codex 的 Agent Skill。</p><a class="btn" href="${ISSUES}">在 GitHub 上提问题 →</a></header>
     <div class="article-body">
-      <section><h2>谁在做</h2><p>由 <a href="https://github.com/tokensflow">tokensflow</a> 制作和维护。网站和 Skill 的全部源码公开在 <a href="${REPO}">GitHub 仓库 tokensflow/tasteux</a>。</p></section>
+      <section><h2>谁在做</h2><p>tasteux 由 <a href="https://github.com/tokensflow">tokensflow</a> 制作和维护，网站就是 tasteux.com。Agent Skill 的名字仍叫 style-mix，安装命令不变。网站和 Skill 的全部源码公开在 <a href="${REPO}">GitHub 仓库 tokensflow/tasteux</a>。</p></section>
       <section><h2>规则从哪里来</h2><p>${data.schools.length} 个流派的颜色、字体、版式规则和禁忌都写在同一份数据文件 <a href="/skill/schools.json">schools.json</a> 里，其中 ${skeletons} 个能当骨架。混合方法写在 <a href="/skill/references/mixing.md">mixing.md</a>：每一项只归一个流派管，不取平均。</p><p>每个流派旁边放的原作都是公有领域作品，图注写明作者、年代、收藏方和许可。我们学的是流派的规则，不复刻名作构图；生图提示词只写流派名，不写艺术家名字。</p><p>本站自己也按这套规则做：外壳是构成主义 × 浮世绘，每次改版都用 Skill 自带的浏览器检查在 1440 和 390 两个宽度验收。</p></section>
       <section><h2>收费吗</h2><p>工具和 Skill 都免费。网站计划用 Google AdSense 展示广告来维持运营，数据怎么处理见<a href="/privacy/">隐私政策</a>。</p></section>
       <section id="contact"><h2>联系我们</h2><p>问题、建议、流派数据的错误，或者原作出处和许可有疑问，都请在 <a href="${ISSUES}">GitHub Issues</a> 里提。我们不通过邮件联系。</p></section>

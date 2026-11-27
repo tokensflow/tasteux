@@ -767,6 +767,11 @@ html:not(.js) .quick-install .btn { display: none; }
 @media (max-width: 640px) {
   .bar { gap: 8px; }
   .brand em { display: none; }
+  .doc .brand em { display: inline-block; }
+  .doc .brand b { font-size: 19px; }
+  .doc .brand { gap: 6px; }
+  .doc .bar nav { gap: 0; }
+  .doc .bar nav a { padding: 0 7px; }
   .bar nav a { padding: 0 10px; }
   .plates-surface, .reading-list { grid-template-columns: minmax(0, 1fr); }
   .article-facts { grid-template-columns: 70px minmax(0, 1fr); gap: 10px 12px; }
@@ -800,8 +805,11 @@ html:not(.js) .quick-install .btn { display: none; }
 .doc :focus-visible { outline-color: var(--accent); }
 .doc .skip { background: var(--ink); color: var(--bg); }
 .doc .bar { background: var(--bg); border-bottom: 5px solid var(--line); }
-.doc .brand { font-weight: 900; }
-.doc .brand em { font-style: normal; font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; color: var(--accent); }
+/* 品牌字标：tasteux 是主品牌（Oswald 700 全大写），Style Mix 是产品名，做成普鲁士蓝方块标签 */
+.doc .brand { gap: 10px; }
+.doc .brand b { font: 700 22px/1 Oswald, var(--f-sans); text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink); }
+.doc .brand em { margin: 0; padding: 4px 8px; font: 700 12px/1 Oswald, var(--f-sans); font-style: normal; text-transform: uppercase; letter-spacing: 0.06em; color: var(--on-accent); background: var(--accent); }
+.doc .colophon b { font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; }
 .doc .bar nav a { color: var(--ink); font-weight: 700; }
 .doc h1, .doc h2, .doc h3 { font-weight: 900; letter-spacing: 0; }
 /* 拉丁标题：Oswald 700、全大写、字距 0.01em；中文标题保持 900 */
