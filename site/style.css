@@ -781,12 +781,14 @@ html:not(.js) .quick-install .btn { display: none; }
   .skins, .skels { scroll-behavior: auto; }
 }
 
-/* 文章类页面（教程、流派页、隐私、英文页）：构成主义 × 浮世绘，见 DESIGN.md。
+/* 全站外壳（首页和文章类页面都在 <html class="doc">）：构成主义 × 浮世绘，见 DESIGN.md。
    把外壳的 --c-* 变量换成 DESIGN.md 的色板，原有文章样式直接沿用，再加骨架规则。 */
 .doc {
   --bg: oklch(0.93 0.03 85); --surface: oklch(0.89 0.035 80); --ink: oklch(0.22 0.04 255); --muted: oklch(0.42 0.04 250);
   --line: oklch(0.3 0.04 255); --accent: oklch(0.42 0.11 245); --on-accent: oklch(0.96 0.02 85); --accent2: oklch(0.6 0.18 35);
   --c-paper: var(--bg); --c-paper2: var(--surface); --c-ink: var(--ink); --c-muted: var(--muted); --c-rule: var(--line); --c-seal: var(--accent);
+  /* 工作台是反相区块：--ink 做底，--bg 做字，次要文字也用 --bg；不另造深色 */
+  --c-room: var(--ink); --c-room2: var(--ink); --c-room3: var(--ink); --c-room-ink: var(--bg); --c-room-muted: var(--bg); --c-room-rule: var(--bg); --c-room-seal: var(--bg);
   --f-serif: Oswald, "PingFang SC", "Noto Sans SC", sans-serif;
   --f-latin: Oswald, "PT Sans", sans-serif;
   --f-sans: "PT Sans", "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", sans-serif;
@@ -824,6 +826,10 @@ html:not(.js) .quick-install .btn { display: none; }
 .doc .article-body pre { background: var(--surface); border-top: 0; border-left: 6px solid var(--accent); }
 .doc .colophon { background: var(--ink); color: var(--bg); border-top: 0; }
 .doc .colophon a, .doc .colophon span, .doc .colophon em { color: var(--bg); }
+.doc .frame { background: var(--ink); }
+.doc .mat { background: var(--bg); }
+.doc .label .warn { color: var(--accent2); }
+.doc :is(.bench-summary, .note-k, .takeaway-msg) { font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .doc .article-head .btn { transition: none; } }
 @media (max-width: 760px) {
   .doc .article-head { padding-bottom: 96px; }
