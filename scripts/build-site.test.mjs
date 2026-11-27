@@ -95,7 +95,7 @@ test("Chinese and English homepages declare each other with hreflang and the rig
   for (const [url, lang, locale] of [["/", "zh-CN", "zh_CN"], ["/en/", "en", "en_US"]]) {
     const html = await fs.readFile(pageFile(url), "utf8");
     for (const link of expected) assert.ok(html.includes(`<link rel="alternate" ${link}>`), `${url} 缺少 ${link}`);
-    assert.ok(html.includes(`<html lang="${lang}">`));
+    assert.ok(html.includes(`<html lang="${lang}"`));
     assert.ok(html.includes(`property="og:locale" content="${locale}"`));
   }
 });

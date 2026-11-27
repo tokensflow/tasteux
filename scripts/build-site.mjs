@@ -64,10 +64,10 @@ function breadcrumbs(url, name) {
 
 function page(template, metadata, name, content) {
   const en = metadata.en;
-  const assets = template.match(/<link rel="preconnect"[\s\S]*?<link rel="stylesheet" href="style.css">/)[0]
-    .replace('href="style.css"', 'href="/style.css"');
+  const assets = template.match(/<link rel="preconnect"[\s\S]*?<link rel="stylesheet" href="preview.css">/)[0]
+    .replace('href="style.css"', 'href="/style.css"').replace('href="preview.css"', 'href="/preview.css"');
   return `<!doctype html>
-<html lang="${en ? "en" : "zh-CN"}">
+<html lang="${en ? "en" : "zh-CN"}" class="doc">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,6 +75,7 @@ function page(template, metadata, name, content) {
   ${assets}
 </head>
 <body>
+  <div class="pv doc-tex" data-texture="paper" aria-hidden="true"><div class="pv-tex"></div></div>
   <a class="skip" href="#article">${en ? "Skip to content" : "跳到正文"}</a>
   <header class="bar"><a class="brand" href="/">流派混合 <em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a><a href="${EN}" hreflang="en" lang="en">English</a>`}</nav></header>
   <main class="article-page" id="article">
