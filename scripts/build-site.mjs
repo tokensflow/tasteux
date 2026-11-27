@@ -7,6 +7,8 @@ import { schoolNotes, guideBody, privacyBody, enHomeBody, aboutBody, ISSUES, REP
 import { imageMarkup } from "../site/images.mjs";
 import { buildAssets, versionPage } from "./assets.mjs";
 import { heroMarkup } from "../site/hero.mjs";
+import { paletteVars } from "../site/palette.mjs";
+import { fontsHref } from "../site/fonts.mjs";
 import { skillVersionsMarkup } from "../site/install.mjs";
 import { buildSkillPackages } from "./skill-packages.mjs";
 
@@ -96,6 +98,28 @@ function page(template, metadata, name, content) {
 `;
 }
 
+// 流派页上的网页预览：与工作台同一个示例页（index.html 的 #pv-tpl），按骨架和表皮在构建时上色，不靠 JS。
+function previewMarkup(template, S, F, imageBase) {
+  const st = S.structure;
+  const level = Math.min(F.texture.level, st.textureCap);
+  const vars = {
+    ...paletteVars(F.palette, st.accentSlots),
+    "--font-display": `"${st.type.display.family}", ${st.type.zh}`,
+    "--font-body": `"${st.type.body.family}", ${st.type.zh}`,
+    "--display-weight": st.type.display.weight,
+    "--display-transform": st.type.display.transform,
+    "--display-tracking": st.type.display.tracking,
+    "--tex-level": level,
+  };
+  const style = Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(";");
+  const tpl = template.match(/<template id="pv-tpl">\s*([\s\S]*?)\s*<\/template>/)[1];
+  const pv = replaceOnce(tpl, /<div class="pv" [^>]*>/, `<div class="pv" data-structure="${esc(S.id)}" data-texture="${level ? esc(F.texture.kind) : "none"}"${F.img === false ? ' data-img="none"' : ""} style="${esc(style)}" aria-hidden="true">`)
+    .replace(/<figure class="pv-img"[\s\S]*?<\/figure>/, () => `<figure class="pv-img" aria-hidden="true">${F.img === false ? "" : imageMarkup(F.id, { imageBase, alt: "", sizes: "(max-width: 640px) 160px, 320px" })}</figure>`);
+  // 示例页的标题不进流派页的标题大纲：静态副本里换成普通元素，样式不变。
+  const flat = pv.replace(/<h2 class="pv-title">([\s\S]*?)<\/h2>/, '<p class="pv-title">$1</p>').replace(/<h3>([\s\S]*?)<\/h3>/g, '<p class="pv-h">$1</p>');
+  return `<link rel="stylesheet" href="${esc(fontsHref(st.type.google))}"><div class="thumb">${flat}</div>`;
+}
+
 function schoolPage(template, s, byId, imageBase) {
   const note = schoolNotes[s.id];
   const S = isStructure(s) ? s : byId.minimalism;
@@ -112,6 +136,7 @@ function schoolPage(template, s, byId, imageBase) {
     : `<p>${esc(s.name)}在这套规则里只做表皮：提供配色、质感、母题和生图媒介，不决定网页布局与字体。单独使用时，由极简主义提供骨架；也可以在工作台另选骨架。</p><p>默认骨架：${esc(S.structure.grid)}。标题字体 ${esc(S.structure.type.display.family)}，正文 ${esc(S.structure.type.body.family)}。这是本项目的网页设计转译，不是对原流派历史的分类。</p>`;
   const content = `<article>
     <header class="article-head"><p class="article-kicker">${esc(s.en)} · ${esc(s.era)}</p><h1>${esc(s.name)}怎样变成网页风格</h1><p class="article-lede">${esc(note.lede)}</p><a class="btn" href="${mixUrl}">在工作台试用${esc(s.name)}</a></header>
+    <figure class="school-pv">${previewMarkup(template, S, s, imageBase)}<figcaption>网页预览：${esc(S.name)}骨架 × ${esc(s.name)}表皮，和工作台用的是同一个书店示例页。${isStructure(s) ? `布局、字体和配色都来自${esc(s.name)}。` : `${esc(s.name)}只给配色、质感和插图，布局来自${esc(S.name)}。`}<a href="${mixUrl}">在工作台换一副${isStructure(s) ? "表皮" : "骨架"}</a></figcaption></figure>
     <figure class="article-visual">${imageMarkup(s.id, { imageBase, alt: `${s.name}风格的 AI 生成示意图`, sizes: "(max-width: 640px) calc(100vw - 40px), 900px", loading: "eager", priority: "high" })}<figcaption>AI 生成的风格示意，不是历史作品的复制。主视觉呈现${esc(s.name)}的颜色、质感与母题，实际网页布局由骨架决定。</figcaption></figure>
     <div class="article-body">
       <section><h2>先认识${esc(s.name)}</h2><p>${esc(s.intro)}</p><p>${esc(s.essence)}</p></section>

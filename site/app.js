@@ -2,6 +2,7 @@ import { plateMarkup, structurePickerMarkup, surfacePickerMarkup, groupPickerMar
 import { imageUrls, setImageSource, clearImageSource, fallbackImage } from "./images.mjs";
 import { createFontLoader, fontsHref } from "./fonts.mjs";
 import { heroMarkup, enhanceHero } from "./hero.mjs";
+import { contrast, readableOn, paletteVars } from "./palette.mjs";
 import { INSTALL_TARGETS as TARGETS, installCommand, targetButtonsMarkup, skillVersionsMarkup } from "./install.mjs";
 
 const DATA_URL = "../skill/schools.json";
@@ -52,27 +53,6 @@ let compareOn = false;
 const state = { s: DEFAULT_MIX[0], f: DEFAULT_MIX[1], target: TARGETS[0].id };
 
 // ---------- 颜色：OKLCH → 相对亮度 → WCAG 对比度 ----------
-function luminance(color) {
-  const [L, C, H] = color.match(/oklch\(([^)]+)\)/)[1].trim().split(/\s+/).map(Number);
-  const h = (H * Math.PI) / 180;
-  const a = C * Math.cos(h);
-  const b = C * Math.sin(h);
-  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
-  const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
-  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
-  const clamp = (v) => Math.min(1, Math.max(0, v));
-  const r = clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s);
-  const g = clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s);
-  const bl = clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s);
-  return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
-}
-
-function contrast(x, y) {
-  const [hi, lo] = [luminance(x), luminance(y)].sort((p, q) => q - p);
-  return (hi + 0.05) / (lo + 0.05);
-}
-
-const readableOn = (bg, candidates) => candidates.reduce((best, c) => (contrast(c, bg) > contrast(best, bg) ? c : best));
 
 // ---------- 混合规则（与 skill/references/mixing.md 一致） ----------
 const clause = (text) => text.split(/[，。；：]/)[0];
@@ -116,34 +96,10 @@ function mix(S, F) {
 const fontStack = (family, zh) => `"${family}", ${zh}`;
 
 // ---------- 把一个画派组合画到 .pv 元素上 ----------
-function setPalette(el, F) {
-  const p = F.palette;
-  const vars = {
-    "--bg": p.bg,
-    "--surface": p.surface,
-    "--ink": p.ink,
-    "--muted": p.muted,
-    "--line": p.line,
-    "--accent": p.accent,
-    "--on-accent": p.onAccent,
-    "--accent2": p.accent2,
-    "--accent3": p.accent3,
-    "--on-accent2": readableOn(p.accent2, [p.ink, p.onAccent, p.bg]),
-    "--on-accent3": readableOn(p.accent3, [p.ink, p.onAccent, p.bg]),
-    "--accent-text": contrast(p.accent, p.bg) >= 3 ? p.accent : p.ink,
-  };
-  for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
-}
-
-function slotted(p, slots) {
-  if (slots >= 3) return p;
-  return { ...p, accent2: slots < 2 ? p.surface : p.accent2, accent3: slots < 2 ? p.muted : p.accent2 };
-}
-
 function paint(el, S, F) {
   const m = mix(S, F);
   const t = S.structure.type;
-  setPalette(el, { palette: slotted(F.palette, S.structure.accentSlots) });
+  for (const [k, v] of Object.entries(paletteVars(F.palette, S.structure.accentSlots))) el.style.setProperty(k, v);
   el.style.setProperty("--font-display", fontStack(t.display.family, t.zh));
   el.style.setProperty("--font-body", fontStack(t.body.family, t.zh));
   el.style.setProperty("--display-weight", t.display.weight);
@@ -332,7 +288,7 @@ function renderPlates() {
       previews.observe(el);
     } else {
       const study = el.querySelector(".pv-study");
-      setPalette(study, s);
+      for (const [k, v] of Object.entries(paletteVars(s.palette, 3))) study.style.setProperty(k, v);
       study.style.setProperty("--tex-level", s.texture.level);
       study.dataset.texture = s.texture.kind;
       const img = study.querySelector(".study-img img");

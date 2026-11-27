@@ -8,7 +8,7 @@ import { IMAGE_WIDTHS } from "../site/images.mjs";
 
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL("../", import.meta.url));
-const assetFiles = ["app.js", "catalog.mjs", "images.mjs", "fonts.mjs", "hero.mjs", "install.mjs", "style.css", "preview.css", "favicon.svg"];
+const assetFiles = ["app.js", "catalog.mjs", "images.mjs", "fonts.mjs", "hero.mjs", "install.mjs", "palette.mjs", "style.css", "preview.css", "favicon.svg"];
 const hash = (parts) => {
   const digest = createHash("sha256");
   for (const part of parts) {
