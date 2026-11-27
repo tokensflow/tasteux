@@ -599,6 +599,11 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
 
 /* 安装 */
 .install { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr); gap: 40px clamp(32px, 5vw, 80px); padding-top: 18px; border-top: 1px solid var(--c-ink); }
+.quick-install { display: grid; gap: 12px; max-width: 46em; margin-bottom: 24px; }
+.quick-install h3 { font-size: 20px; }
+.quick-install p { color: var(--c-muted); font-size: 13px; }
+.quick-install pre { margin: 0; padding: 14px 16px; font: clamp(12px, 3.2vw, 14px)/1.6 var(--f-mono); white-space: pre; overflow-x: auto; }
+html:not(.js) .quick-install .btn { display: none; }
 .skill-versions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
 .skill-version { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; padding: 24px; border: 1px solid var(--c-rule); }
 .skill-version h3 { font-size: 20px; }
