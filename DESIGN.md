@@ -229,3 +229,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 配合 skill aff1a57：青绿山水图版的原作换成新的 works[0]《明皇幸蜀图》，重新下载；图注直接用新的 license 字段，去掉了官网这边去括号的处理。baseline 认可的变化：青绿出处链接从《千里江山图》卷首换成《明皇幸蜀图》。 | 无 |
 | 2026-11-27 | 改一个区块（安装）：仓库公开为 tokensflow/tasteux，\"一行安装\"命令改成 `npx skills add tokensflow/tasteux`（README 同步）。已在未登录的干净 HOME 实测可装。baseline 认可的变化：无（只改了 pre 里的命令文字）。 | 无 |
 | 2026-11-27 | 改一个区块（首屏）：按营销策划决定记录第 3 条换导语：去掉"每一组还附带生图提示词"（留在工作台第 ③ 步），换成"规则写死，不取平均，同一组合每次结果一样"。baseline 认可的变化：无（标题和链接不变）。 | 无 |
+| 2026-11-27 | SEO（不改页面）：sitemap 每个 URL 加 `<lastmod>`，取内容源文件（site/、schools.json、editorial.mjs、build-site.mjs）最后一次提交的日期；没有 git 历史时不写，避免把构建时间当更新时间。部署工作流改为完整拉取历史（fetch-depth: 0）。页面无变化，未截图。 | 无 |

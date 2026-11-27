@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # sitemap 的 lastmod 取自 git 提交日期
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4

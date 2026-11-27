@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { FEATURED_IDS, esc, plateMarkup, structurePickerMarkup, surfacePickerMarkup, groupPickerMarkup } from "../site/catalog.mjs";
 import { schoolNotes, guideBody } from "./editorial.mjs";
@@ -17,6 +18,11 @@ const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`;
+// 页面内容最后一次改动的日期，取自 git 提交；没有 git 历史时不写 lastmod，避免把构建时间当成更新时间。
+const CONTENT_SOURCES = ["site", "skill/schools.json", "scripts/editorial.mjs", "scripts/build-site.mjs"];
+function contentDate() {
+  try { return execFileSync("git", ["log", "-1", "--format=%cs", "--", ...CONTENT_SOURCES], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null; } catch { return null; }
+}
 const json = (value) => JSON.stringify(value).replace(/</g, "\\u003c");
 
 function seo({ title, description, url, image = "fauvism", imageAlt, graph, article = false }) {
@@ -163,7 +169,8 @@ export async function buildSite(output) {
   await fs.mkdir(guideDir, { recursive: true });
   await fs.writeFile(path.join(guideDir, "index.html"), versionPage(guide, assets));
   const pages = [HOME, ...FEATURED_IDS.map(schoolPath), GUIDE];
-  await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc></url>`).join("\n")}\n</urlset>\n`);
+  const lastmod = contentDate();
+  await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
   await fs.writeFile(path.join(output, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   await fs.writeFile(path.join(output, "_redirects"), "/site / 301\n/site/ / 301\n/site/* /:splat 301\n");
   return pages;

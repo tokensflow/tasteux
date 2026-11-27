@@ -7,7 +7,7 @@ import { buildSite } from "./build-site.mjs";
 import { FEATURED_IDS, plateMarkup } from "../site/catalog.mjs";
 import { IMAGE_WIDTHS } from "../site/images.mjs";
 import { buildAssets } from "./assets.mjs";
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { promisify } from "node:util";
 
 const origin = "https://tasteux.com";
@@ -95,7 +95,11 @@ test("sitemap lists only canonical content pages and robots advertises it", asyn
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
   assert.deepEqual(urls, pages.map((url) => origin + url));
   assert.ok(!sitemap.includes("#mix="));
-  assert.ok(!sitemap.includes("<lastmod>"));
+  // lastmod 是内容源文件最后一次提交的日期，不是构建时间。
+  const lastmods = [...sitemap.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].map((m) => m[1]);
+  assert.equal(lastmods.length, urls.length);
+  const committed = execFileSync("git", ["log", "-1", "--format=%cs", "--", "site", "skill/schools.json", "scripts/editorial.mjs", "scripts/build-site.mjs"], { encoding: "utf8" }).trim();
+  assert.ok(lastmods.every((d) => d === committed), `${lastmods} ≠ ${committed}`);
   const robots = await fs.readFile(path.join(output, "robots.txt"), "utf8");
   assert.ok(robots.includes(`Sitemap: ${origin}/sitemap.xml`));
   assert.ok(!robots.includes("Disallow:"));
