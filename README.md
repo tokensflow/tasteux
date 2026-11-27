@@ -10,7 +10,7 @@ Mix two art movements into one web design system. One movement sets the skeleton
 ## 安装 / Install
 
 ```sh
-npx skills add 24kHandsome1201/tasteux
+npx skills add tokensflow/tasteux
 ```
 
 支持 Claude Code、Codex、Pi 等 agent。官网安装区也提供 curl 命令和 zip 下载。

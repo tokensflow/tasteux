@@ -227,3 +227,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 改一个区块（图鉴）：有原作的 20 个流派，图版主视觉换成 schools.json `works[0]` 的原作（`figure[data-original]`，图注写作者、年代、收藏方和许可并链接出处，整幅 contain 不裁切）。能当骨架的 8 个改成\"原作 | 按它生成的网页\"左右对照；只做表皮的把 AI 示意图换成原作，下面留调色板和质感色条。极简、孟菲斯、超现实、波普没有原作，暂时还是 AI 示意图。baseline 认可的变化：新增 20 个原作出处链接。 | 无 |
 | 2026-11-27 | 配合 skill a5a2dab（敦煌可当骨架）：`site/preview.css` 加 `.pv[data-structure="dunhuang"]` 横向分栏版式（通栏横带、中心圆形背光、右侧一排拱形龛、底部供养人式窄带；窄画框单栏），骨架数量测试改为按数据计数。baseline 认可的变化：H3\"能当骨架的十个/只做表皮的十四个\"→\"十一个/十三个\"。 | 无 |
 | 2026-11-27 | 配合 skill aff1a57：青绿山水图版的原作换成新的 works[0]《明皇幸蜀图》，重新下载；图注直接用新的 license 字段，去掉了官网这边去括号的处理。baseline 认可的变化：青绿出处链接从《千里江山图》卷首换成《明皇幸蜀图》。 | 无 |
+| 2026-11-27 | 改一个区块（安装）：仓库公开为 tokensflow/tasteux，\"一行安装\"命令改成 `npx skills add tokensflow/tasteux`（README 同步）。已在未登录的干净 HOME 实测可装。baseline 认可的变化：无（只改了 pre 里的命令文字）。 | 无 |
