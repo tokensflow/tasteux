@@ -352,6 +352,16 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
 }
 .skin-group { display: flex; gap: 8px; }
 .skin-group + .skin-group { padding-left: 13px; margin-left: 5px; border-left: 1px solid var(--c-room-rule); }
+/* 桌面：24 种表皮按分组平铺成网格，一眼看全，不再横向滚动 */
+@media (min-width: 901px) {
+  .skin-groups { display: none; }
+  .skins { display: grid; gap: 14px; padding: 0; margin: 0; overflow: visible; }
+  .skin-group { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px 8px; }
+  .skin-group::before { content: attr(aria-label); content: attr(aria-label) / ""; grid-column: 1 / -1; font-size: 12px; letter-spacing: 0.08em; color: var(--c-room-muted); }
+  .skin-group + .skin-group { padding: 12px 0 0; margin: 0; border-left: 0; border-top: 1px solid var(--c-room-rule); }
+  .skins .skin { width: auto; min-width: 0; }
+  .skins .skin-name { gap: 4px; }
+}
 
 .skin {
   appearance: none;
