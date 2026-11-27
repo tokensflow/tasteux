@@ -75,7 +75,7 @@ function page(template, metadata, name, content) {
   const assets = template.match(/<link rel="preconnect"[\s\S]*?<link rel="stylesheet" href="preview.css">/)[0]
     .replace('href="style.css"', 'href="/style.css"').replace('href="preview.css"', 'href="/preview.css"');
   return `<!doctype html>
-<html lang="${en ? "en" : "zh-CN"}" class="doc">
+<html lang="${en ? "en" : "zh-CN"}" class="doc${metadata.reading ? " doc-reading" : ""}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -184,7 +184,7 @@ export async function buildSite(output) {
     await publish(path.join(dir, "index.html"), schoolPage(template, byId[id], byId, assets.imageBase));
   }
   const description = "用流派混合选择网页布局和配色，生成代码提示词、生图提示词与 DESIGN.md，再交给 Claude Code、Cursor 或 v0。包含包豪斯 × 野兽派示例和检查清单。";
-  const guide = page(template, { title: `${GUIDE_TITLE}｜tasteux Style Mix`, description, url: GUIDE, article: true, graph: [
+  const guide = page(template, { title: `${GUIDE_TITLE}｜tasteux Style Mix`, description, url: GUIDE, article: true, reading: true, graph: [
     { "@type": "Article", headline: GUIDE_TITLE, description, inLanguage: "zh-CN", mainEntityOfPage: ORIGIN + GUIDE, image: `${ORIGIN}/img/fauvism.jpg`, author: { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "tasteux", url: ORIGIN + HOME } },
     breadcrumbs(GUIDE, "使用教程"),
   ] }, "使用教程", guideBody(byId));
@@ -192,7 +192,7 @@ export async function buildSite(output) {
   await fs.mkdir(guideDir, { recursive: true });
   await publish(path.join(guideDir, "index.html"), guide);
   const privacyDescription = "流派混合不需要注册，工作台在浏览器里计算、不上传选择。本页说明托管、字体、Google AdSense 广告与同意设置，以及安装 Skill 时数据会经过谁。";
-  const privacy = page(template, { title: "隐私政策｜tasteux Style Mix", description: privacyDescription, url: PRIVACY, graph: [
+  const privacy = page(template, { title: "隐私政策｜tasteux Style Mix", description: privacyDescription, url: PRIVACY, reading: true, graph: [
     { "@type": "WebPage", name: "隐私政策", description: privacyDescription, inLanguage: "zh-CN", url: ORIGIN + PRIVACY },
     breadcrumbs(PRIVACY, "隐私政策"),
   ] }, "隐私政策", privacyBody());
@@ -207,7 +207,7 @@ export async function buildSite(output) {
   await fs.mkdir(path.join(output, "en"), { recursive: true });
   await publish(path.join(output, "en/index.html"), enHome);
   const aboutDescription = "流派混合（Style Mix）是 tasteux 出品的工具，由 tokensflow 制作，源码公开在 GitHub。本页说明规则和原作从哪里来、是否收费，以及怎样通过 GitHub Issues 联系我们。";
-  const about = page(template, { title: "关于｜tasteux Style Mix", description: aboutDescription, url: ABOUT, graph: [
+  const about = page(template, { title: "关于｜tasteux Style Mix", description: aboutDescription, url: ABOUT, reading: true, graph: [
     { "@type": "AboutPage", name: "关于 tasteux 和流派混合", description: aboutDescription, inLanguage: "zh-CN", url: ORIGIN + ABOUT, mainEntity: { "@id": `${ORIGIN}/#org` } },
     { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "tasteux", url: ORIGIN + HOME, sameAs: [REPO, "https://github.com/tokensflow"], contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: ISSUES } },
     breadcrumbs(ABOUT, "关于"),

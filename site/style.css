@@ -851,3 +851,12 @@ html:not(.js) .quick-install .btn { display: none; }
 .ad-slot ins.adsbygoogle { display: block; width: 100%; height: 250px; overflow: hidden; background: var(--c-paper2); border: 3px solid var(--c-ink); }
 .ad-slot:has(ins[data-ad-status="unfilled"]) { display: none; }
 .chapter .ad-slot { padding: 0; }
+
+/* 阅读页（教程、关于、隐私，见 DESIGN.md「页面类型」）：配色、字体、按钮不变；不放斜带，标题横排不倾斜；正文单栏，每行约 40 个汉字；质感减半。 */
+.doc-reading { --tex-level: 0.25; }
+.doc-reading .article-head { padding: 40px 0 12px; }
+.doc-reading .article-head::after { content: none; }
+.doc-reading .article-head h1 { transform: none; margin: 8px 0 0; max-width: 20em; }
+.doc-reading .article-head, .doc-reading .article-body { max-width: 40em; }
+.doc-reading .article-body { font-size: 16px; }
+@media (max-width: 760px) { .doc-reading .article-head { padding-bottom: 36px; } .doc-reading .article-head h1 { transform: none; } }
