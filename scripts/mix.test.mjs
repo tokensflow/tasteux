@@ -54,6 +54,8 @@ test("rules learned from the originals hold in the data", async () => {
   assert.match(sup, /主对角线倾斜（和竖直方向成约 20–35°）/);
   assert.doesNotMatch(sup, /各自倾斜 4–20°/);
   assert.match((await run("de-stijl")).split("## 布局")[1], /约占一成，不超过两成/);
+  const dh = await json("敦煌", "野兽派");
+  assert.equal(dh.structure, "dunhuang", "敦煌的横向分栏可以当骨架");
 });
 
 test("surface schools with public-domain originals list them with source and license", async () => {

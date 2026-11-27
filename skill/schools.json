@@ -1378,6 +1378,7 @@
       "era": "4–14 世纪 · 中国甘肃",
       "group": "east",
       "roles": [
+        "structure",
         "surface"
       ],
       "essence": "土红、石青、石绿和赭黄，墙面斑驳褪色；飞天的飘带和藻井的莲花。",
@@ -1430,6 +1431,55 @@
         "glossy",
         "3d render"
       ],
+      "structure": {
+        "dont": [
+          "斜线构图",
+          "随意散乱的排布",
+          "大圆角卡片"
+        ],
+        "negative": [
+          "diagonal composition",
+          "scattered layout",
+          "deep perspective"
+        ],
+        "grid": "横向分栏：页面由几条通栏横带组成，每条带里的内容横向排开",
+        "composition": "horizontal registers stacked top to bottom, repeated figures in a row, a central figure framed by a round halo, a narrow band of small figures along the bottom edge",
+        "rules": [
+          "页面由几条通栏横带组成，带与带之间用细色线或一条窄装饰带分开",
+          "每条带里同类内容横向重复排开，间距相等，像一排菩萨",
+          "每屏一个中心主体，用圆形背光框住，次要内容在左右对称排开",
+          "页面底部一条小图标或小人像的窄装饰带，像供养人行列",
+          "叙事内容按横带从左往右读，下一条带接着讲"
+        ],
+        "radius": "0（圆形背光作为图形可用）",
+        "border": "1–2px 土红或石青细线分带",
+        "shadow": "无",
+        "density": "饱满",
+        "accentSlots": 3,
+        "textureCap": 0.55,
+        "type": {
+          "display": {
+            "family": "Cormorant Garamond",
+            "weight": 700,
+            "transform": "none",
+            "tracking": "0.02em"
+          },
+          "body": {
+            "family": "EB Garamond",
+            "weight": 400
+          },
+          "google": [
+            "Cormorant Garamond:wght@700",
+            "EB Garamond:wght@400;600"
+          ],
+          "zh": "\"Songti SC\", \"Noto Serif SC\", serif"
+        },
+        "motion": {
+          "desc": "横移：内容沿横带从左往右展开，像展开一段壁画",
+          "easing": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "duration": "360ms"
+        }
+      },
       "frames": [
         "圆形背光框住中心主体",
         "底部一条重复小人像或几何纹的窄装饰带"
