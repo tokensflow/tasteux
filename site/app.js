@@ -336,6 +336,7 @@ function renderPlates() {
       study.style.setProperty("--tex-level", s.texture.level);
       study.dataset.texture = s.texture.kind;
       const img = study.querySelector(".study-img img");
+      if (!img) return;
       const mark = () => (study.dataset.img = img.naturalWidth ? "ok" : "none");
       img.addEventListener("load", mark);
       img.addEventListener("error", () => {
