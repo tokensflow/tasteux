@@ -860,3 +860,13 @@ html:not(.js) .quick-install .btn { display: none; }
 .doc-reading .article-head, .doc-reading .article-body { max-width: 40em; }
 .doc-reading .article-body { font-size: 16px; }
 @media (max-width: 760px) { .doc-reading .article-head { padding-bottom: 36px; } .doc-reading .article-head h1 { transform: none; } }
+
+/* 按钮（DESIGN.md 布局·按钮）：主按钮 = --accent 实心色块 + --on-accent 全大写窄体字，右侧接 --ink 实心箭头块（伪元素，无阴影）；
+   无描边、无双层框。次按钮 = 3px --ink 实线框；反相区块里线框用 --bg。 */
+.doc .btn { border: 3px solid var(--ink); font-weight: 700; }
+.doc .room .btn { border-color: var(--bg); }
+.doc .room .btn[aria-pressed="true"] { color: var(--ink); background: var(--bg); border-color: var(--bg); }
+.doc .article-head .btn, .doc .hero-go { position: relative; display: inline-flex; align-items: center; min-height: 52px; padding: 10px 74px 10px 22px; border: 0; background: var(--accent); color: var(--on-accent); font: 700 16px/1.2 Oswald, "PingFang SC", "Noto Sans SC", sans-serif; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; }
+.doc .article-head .btn::after, .doc .hero-go::after { content: "→"; position: absolute; top: 0; right: 0; bottom: 0; width: 52px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-size: 22px; }
+.doc .hero-go::after { content: "↓"; }
+.doc .hero-go span { display: none; }

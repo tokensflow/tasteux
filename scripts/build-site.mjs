@@ -111,7 +111,7 @@ function schoolPage(template, s, byId, imageBase) {
     ? `<p>${esc(s.structure.grid)}</p>${list(s.structure.rules)}<dl class="article-facts"><dt>标题字体</dt><dd>${esc(s.structure.type.display.family)} · ${s.structure.type.display.weight}</dd><dt>正文字体</dt><dd>${esc(s.structure.type.body.family)}</dd><dt>中文回退</dt><dd>${esc(s.structure.type.zh)}</dd><dt>界面形状</dt><dd>圆角 ${esc(s.structure.radius)}；边框 ${esc(s.structure.border)}；阴影 ${esc(s.structure.shadow)}</dd><dt>动效</dt><dd>${esc(s.structure.motion.desc)} · ${esc(s.structure.motion.duration)}</dd></dl>`
     : `<p>${esc(s.name)}在这套规则里只做表皮：提供配色、质感、母题和生图媒介，不决定网页布局与字体。单独使用时，由极简主义提供骨架；也可以在工作台另选骨架。</p><p>默认骨架：${esc(S.structure.grid)}。标题字体 ${esc(S.structure.type.display.family)}，正文 ${esc(S.structure.type.body.family)}。这是本项目的网页设计转译，不是对原流派历史的分类。</p>`;
   const content = `<article>
-    <header class="article-head"><p class="article-kicker">${esc(s.en)} · ${esc(s.era)}</p><h1>${esc(s.name)}怎样变成网页风格</h1><p class="article-lede">${esc(note.lede)}</p><a class="btn" href="${mixUrl}">在工作台试用${esc(s.name)} →</a></header>
+    <header class="article-head"><p class="article-kicker">${esc(s.en)} · ${esc(s.era)}</p><h1>${esc(s.name)}怎样变成网页风格</h1><p class="article-lede">${esc(note.lede)}</p><a class="btn" href="${mixUrl}">在工作台试用${esc(s.name)}</a></header>
     <figure class="article-visual">${imageMarkup(s.id, { imageBase, alt: `${s.name}风格的 AI 生成示意图`, sizes: "(max-width: 640px) calc(100vw - 40px), 900px", loading: "eager", priority: "high" })}<figcaption>AI 生成的风格示意，不是历史作品的复制。主视觉呈现${esc(s.name)}的颜色、质感与母题，实际网页布局由骨架决定。</figcaption></figure>
     <div class="article-body">
       <section><h2>先认识${esc(s.name)}</h2><p>${esc(s.intro)}</p><p>${esc(s.essence)}</p></section>

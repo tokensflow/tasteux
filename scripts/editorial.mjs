@@ -74,7 +74,7 @@ export function guideBody(byId) {
   const F = byId.fauvism;
   const example = `请用${S.name}的结构 × ${F.name}的色彩与质感，为一家独立书店实现响应式落地页。\n保留已有技术栈和真实业务文案。\n按我接下来提供的 DESIGN.md 设置布局、字体和 CSS 变量。\n不要把主视觉压在正文下面；保留焦点环，并检查正文与按钮的对比度。`;
   return `<article>
-    <header class="article-head"><p class="article-kicker">使用教程 · 网页设计与 AI 提示词</p><h1>如何把艺术流派变成网页设计与 AI 提示词</h1><p class="article-lede">先选负责排版的骨架，再选负责颜色的表皮。用对比预览确认两者的分工，再把规则复制给代码工具或生图工具。</p><a class="btn" href="/#mix=bauhaus+fauvism">从包豪斯 × 野兽派开始 →</a></header>
+    <header class="article-head"><p class="article-kicker">使用教程 · 网页设计与 AI 提示词</p><h1>如何把艺术流派变成网页设计与 AI 提示词</h1><p class="article-lede">先选负责排版的骨架，再选负责颜色的表皮。用对比预览确认两者的分工，再把规则复制给代码工具或生图工具。</p><a class="btn" href="/#mix=bauhaus+fauvism">从包豪斯 × 野兽派开始</a></header>
     <div class="article-body">
       <section><h2>工具的范围</h2><p>流派混合把艺术流派的特征整理成网页设计规则。工作台只在浏览器里生成提示词和文件，不调用任何模型；结果可以贴给 Claude Code、Cursor、v0 或支持英文提示词的生图工具。</p><p>骨架负责布局、字体、圆角、边框、阴影和动效；表皮负责调色板、质感、母题和生图媒介。每个维度只归一方，两套风格不取平均。</p></section>
       <section><h2>1. 选骨架：确定信息怎样排列</h2><p>在<a href="/#workbench">工作台</a>的灰阶缩略图里比较网格、标题和模块关系。先不要被颜色吸引：你的页面是短篇品牌介绍、活动落地页，还是需要清楚分组的信息页？</p><p><a href="/schools/bauhaus/">包豪斯</a>用模块组织信息，<a href="/schools/memphis/">孟菲斯</a>更偏错位和俏皮，<a href="/schools/art-deco/">装饰艺术</a>强调中轴与层叠。这里的骨架只描述网页设计规则，不概括整段艺术史。</p></section>
@@ -132,7 +132,7 @@ export const ABOUT_UPDATED = "2026-11-27";
 export function aboutBody(data) {
   const skeletons = data.schools.filter((s) => s.roles.includes("structure")).length;
   return `<article>
-    <header class="article-head"><p class="article-kicker">关于 · 更新于 <time datetime="${ABOUT_UPDATED}">${ABOUT_UPDATED}</time></p><h1>关于 tasteux 和流派混合</h1><p class="article-lede">tasteux 做和审美有关的设计工具。流派混合（Style Mix）是 tasteux 的第一个产品：把两个艺术流派混成一套网页风格：一个管骨架，一个管表皮，规则固定。它是一个网页工具，也是一个可以装进 Claude Code、Codex 的 Agent Skill。</p><a class="btn" href="${ISSUES}">在 GitHub 上提问题 →</a></header>
+    <header class="article-head"><p class="article-kicker">关于 · 更新于 <time datetime="${ABOUT_UPDATED}">${ABOUT_UPDATED}</time></p><h1>关于 tasteux 和流派混合</h1><p class="article-lede">tasteux 做和审美有关的设计工具。流派混合（Style Mix）是 tasteux 的第一个产品：把两个艺术流派混成一套网页风格：一个管骨架，一个管表皮，规则固定。它是一个网页工具，也是一个可以装进 Claude Code、Codex 的 Agent Skill。</p><a class="btn" href="${ISSUES}">在 GitHub 上提问题</a></header>
     <div class="article-body">
       <section><h2>谁在做</h2><p>tasteux 由 <a href="https://github.com/tokensflow">tokensflow</a> 制作和维护，网站就是 tasteux.com。Agent Skill 的名字仍叫 style-mix，安装命令不变。网站和 Skill 的全部源码公开在 <a href="${REPO}">GitHub 仓库 tokensflow/tasteux</a>。</p></section>
       <section><h2>规则从哪里来</h2><p>${data.schools.length} 个流派的颜色、字体、版式规则和禁忌都写在同一份数据文件 <a href="/skill/schools.json">schools.json</a> 里，其中 ${skeletons} 个能当骨架。混合方法写在 <a href="/skill/references/mixing.md">mixing.md</a>：每一项只归一个流派管，不取平均。</p><p>每个流派旁边放的原作都是公有领域作品，图注写明作者、年代、收藏方和许可。我们学的是流派的规则，不复刻名作构图；生图提示词只写流派名，不写艺术家名字。</p><p>本站自己也按这套规则做：外壳是构成主义 × 浮世绘，每次改版都用 Skill 自带的浏览器检查在 1440 和 390 两个宽度验收。</p></section>
