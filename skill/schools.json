@@ -546,7 +546,7 @@
             "weight": 400
           },
           "google": [
-            "Oswald:wght@500;700",
+            "Oswald:wght@700",
             "PT Sans:wght@400;700"
           ],
           "zh": "\"PingFang SC\", \"Noto Sans SC\", sans-serif"

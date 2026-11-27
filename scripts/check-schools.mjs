@@ -20,6 +20,14 @@ for (const s of data.schools) {
   for (const k of req) if (s[k] == null) { console.log(`${s.id}: missing ${k}`); fail++; }
   if (!data.textureKinds[s.texture.kind]) { console.log(`${s.id}: bad texture ${s.texture.kind}`); fail++; }
   if (s.roles.includes("structure")) for (const k of sreq) if (s.structure?.[k] == null) { console.log(`${s.id}: missing structure.${k}`); fail++; }
+  // Google Fonts 只请求用得到的字重：只当标题字体的族只要标题字重；document.fonts.check 在多请求的字重没加载时会误报
+  const t = s.structure?.type;
+  for (const g of t?.google ?? []) {
+    const [fam, w] = g.split(":wght@");
+    const weights = w ? w.split(";").map(Number) : [400];
+    if (fam === t.display.family && !weights.includes(t.display.weight)) { console.log(`${s.id}: ${g} lacks display weight ${t.display.weight}`); fail++; }
+    if (fam === t.display.family && fam !== t.body.family && weights.some((x) => x !== t.display.weight)) { console.log(`${s.id}: ${g} requests weights the display face never uses`); fail++; }
+  }
   const p = s.palette;
   const checks = [["ink/bg", p.ink, p.bg, 7], ["ink/surface", p.ink, p.surface, 4.5], ["muted/bg", p.muted, p.bg, 4.5], ["onAccent/accent", p.onAccent, p.accent, 4.5]];
   const out = checks.map(([n, a, b, min]) => { const v = cr(a, b); if (v < min) fail++; return `${n} ${v.toFixed(2)}${v < min ? " FAIL" : ""}`; });

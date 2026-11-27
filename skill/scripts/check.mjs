@@ -332,7 +332,10 @@ function audit(spec) {
   const h1 = document.querySelector("h1");
   if (h1 && first(getComputedStyle(h1).fontFamily) !== spec.display) add("fonts", "WARN", `h1 的字体是 ${first(getComputedStyle(h1).fontFamily)}，DESIGN.md 是 ${spec.display}`);
   if (first(getComputedStyle(document.body).fontFamily) !== spec.body) add("fonts", "WARN", `正文字体是 ${first(getComputedStyle(document.body).fontFamily)}，DESIGN.md 是 ${spec.body}`);
-  for (const f of new Set([spec.display, spec.body])) if (!document.fonts.check(`16px "${f}"`)) add("fonts", "WARN", `${f} 没有加载成功，页面用的是回退字体`);
+  // 页面声明了这个字体族时，只要有一个字重加载成功就算加载了；不能用 document.fonts.check，它按 400 去配，没用到的字重没加载也会误报
+  const faces = [...document.fonts];
+  const loaded = (f) => { const mine = faces.filter((x) => first(x.family) === f); return !mine.length || mine.some((x) => x.status === "loaded"); };
+  for (const f of new Set([spec.display, spec.body])) if (!loaded(f)) add("fonts", "WARN", `${f} 没有加载成功，页面用的是回退字体`);
 
   // 横向溢出
   const vw = document.documentElement.clientWidth;
