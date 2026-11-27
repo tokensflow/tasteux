@@ -274,3 +274,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 按钮（评审第 10 条，skill 6e0df6f 的按钮写法）：主按钮（首屏\"去混合你的风格\"、各页标题区按钮）改成 --accent 实心色块、Oswald 700 全大写、右侧 --ink 实心箭头块（::after），去掉 4px 粗框；文字里的\" →\"挪到箭头块。次按钮统一 3px --ink 实线框；工作台反相区块里用 --bg 线框，选中态 --bg 底 --ink 字，修掉深底深框的\"内凹\"感。6 页 check 0/0。 | 无 |
 | 2026-11-27 | 字体加载（评审第 5 条，skill 6e0df6f 的加载规则）：head 里那条 Google Fonts 链接从 display=optional 改成 swap（仍是非阻塞的 media=print/onload）；fonts.mjs 的懒加载器读出 head 已请求的字体族（Oswald、PT Sans 等），这些族不再请求第二次。整页滚到底：Oswald 只有 1 条请求，logo 不再中途换字体。性能测试加一条：已在 head 的族不重复请求。6 页 check 0/0。 | 无 |
 | 2026-11-27 | 文案（第二份评审）：教程第 2 步不再说敦煌壁画只做表皮，写明它两边都能当；/en/ 改成如实说明工作台导出的代码提示词和 DESIGN.md 是中文、只有生图提示词是英文。顺带核实：手机 390 顶栏溢出在统一导航那轮已修（各页 scrollWidth 390，EN 完整）。6 页 check 0/0。 | 无 |
+| 2026-11-27 | 工作台预览吸顶（第二份评审）：桌面右栏预览改为吸顶，比视口高时在栏内滚动，预览按视口高度限宽；手机吸顶区预览缩到 19svh、说明压成一行（完整内容仍由 aria-live 读出），吸顶区从屏幕 50% 降到 41%。对比模式仍不吸顶。6 页 check 0/0。 | 无 |

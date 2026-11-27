@@ -464,7 +464,17 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
   align-self: start;
   width: 100%;
   min-width: 0;
+  /* 桌面：预览随第 1–3 步吸顶；比视口高时（认识流派、标签）在栏内滚动 */
+  position: sticky;
+  top: calc(var(--bar-h) + 12px);
+  max-height: calc(100svh - var(--bar-h) - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-room-rule) transparent;
 }
+.bench-stage .frame { max-width: calc((100svh - var(--bar-h) - 210px) * 900 / 760 + 32px); margin-inline: auto; }
+.bench-stage:has(.is-compare) .frame { max-width: none; }
 
 .stage-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; margin-bottom: 8px; }
 .stage-head h2 { font-size: 15px; line-height: 1.4; }
@@ -738,10 +748,14 @@ html:not(.js) .quick-install .btn { display: none; }
     padding: 8px var(--gutter) 10px;
     background: var(--c-room);
     border-bottom: 1px solid var(--c-room-rule);
+    max-height: none;
+    overflow: visible;
   }
-  .bench-stage .frame { max-width: calc(23svh * 900 / 760 + 32px); margin-inline: auto; }
+  .bench-stage .frame { max-width: calc(19svh * 900 / 760 + 32px); }
   .stage-head { min-height: 36px; margin-bottom: 6px; }
-  .note { margin-top: 8px; padding: 6px 12px; font-size: 13px; line-height: 1.5; }
+  /* 手机：吸顶区只留一行说明，完整内容由 aria-live 读出 */
+  .note { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 6px; padding: 4px 12px; font-size: 13px; line-height: 1.5; }
+  #note { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .note-k { display: none; }
   .to-duo { display: inline-flex; align-items: center; justify-self: start; min-height: 24px; font-size: 12.5px; color: var(--c-room-muted); text-underline-offset: 3px; }
   @media (hover: hover) { .to-duo:hover { color: var(--c-room-ink); } }
