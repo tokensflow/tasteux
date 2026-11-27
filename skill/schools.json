@@ -132,7 +132,40 @@
           "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
           "duration": "220ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "早餐",
+          "en": "The Breakfast",
+          "artist": "胡安·格里斯 Juan Gris",
+          "year": "1915",
+          "page": "https://commons.wikimedia.org/wiki/File:Juan_Gris_-_The_Breakfast_(Le_Petit_D%C3%A9jeuner)_(1915).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Juan_Gris_-_The_Breakfast_(Le_Petit_D%C3%A9jeuner)_(1915).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "形的对比",
+          "en": "Contrast of Forms",
+          "artist": "费尔南·莱热 Fernand Léger",
+          "year": "1913",
+          "page": "https://commons.wikimedia.org/wiki/File:Contraste_de_formes%2C_1913_-_Fernand_L%C3%A9ger.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Contraste_de_formes%2C_1913_-_Fernand_L%C3%A9ger.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "风景",
+          "en": "Landscape",
+          "artist": "阿尔伯特·格莱兹 Albert Gleizes",
+          "year": "1912",
+          "page": "https://commons.wikimedia.org/wiki/File:Albert_Gleizes_-_Landscape_(Paysage)_(1912).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert_Gleizes_-_Landscape_(Paysage)_(1912).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "futurism",
@@ -244,7 +277,30 @@
           "easing": "cubic-bezier(0.2, 0.9, 0.1, 1)",
           "duration": "180ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "骑车人的动力",
+          "en": "Dynamism of a Cyclist",
+          "artist": "翁贝托·波丘尼 Umberto Boccioni",
+          "year": "1913",
+          "page": "https://commons.wikimedia.org/wiki/File:Umberto_Boccioni_-_Dynamism_of_a_Cyclist.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Umberto_Boccioni_-_Dynamism_of_a_Cyclist.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "足球运动员的动力",
+          "en": "Dynamism of a Soccer Player",
+          "artist": "翁贝托·波丘尼 Umberto Boccioni",
+          "year": "1913",
+          "page": "https://commons.wikimedia.org/wiki/File:WLA_moma_Umberto_Boccioni_Dynamism_of_a_Soccer_Player_1913.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/WLA_moma_Umberto_Boccioni_Dynamism_of_a_Soccer_Player_1913.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "suprematism",
@@ -263,7 +319,7 @@
         "structure",
         "surface"
       ],
-      "essence": "纯粹的几何形漂浮在白色虚空里，彼此倾斜、错落，没有地平线。",
+      "essence": "纯粹的几何形漂浮在暖白虚空里，沿一条主对角线错落，大块配细条，没有地平线。",
       "intro": "至上主义由马列维奇在 1915 年提出，代表作是《黑色方块》。它抛开一切具象，只留下漂浮在白色空间里的纯粹几何形，追求纯粹感觉的至高无上。",
       "palette": {
         "bg": "oklch(0.97 0.006 90)",
@@ -321,12 +377,12 @@
           "perspective",
           "symmetry"
         ],
-        "grid": "无网格：内容块是漂浮在白底上的几何面，各自倾斜 4–20°",
-        "composition": "floating geometric planes in white void, tilted at different angles, no horizon",
+        "grid": "无网格：内容块漂浮在暖白底上，多数沿同一条陡斜的主对角线（和竖直方向成约 20–35°）排列",
+        "composition": "floating geometric planes in a warm white void, most aligned along one steep diagonal, a few crossing at right angles, one large block against many thin bars, no horizon",
         "rules": [
-          "大面积白底就是空间，不分栏",
-          "内容块是倾斜角度各不相同的矩形色面",
-          "一个大黑方块或红色矩形做视觉重心",
+          "大面积暖白底就是空间，不分栏",
+          "多数色面沿同一条主对角线倾斜（和竖直方向成约 20–35°），少数与它垂直交叉，方块可以正放；不要每块各歪一个角度",
+          "一个大黑方块或红色矩形做视觉重心，周围配很多细长条，中等尺寸的块要少",
           "文字跟着所在色面一起倾斜"
         ],
         "radius": "0",
@@ -357,7 +413,40 @@
           "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
           "duration": "400ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "至上主义构图",
+          "en": "Suprematist Composition",
+          "artist": "卡济米尔·马列维奇 Kazimir Malevich",
+          "year": "1916",
+          "page": "https://commons.wikimedia.org/wiki/File:Suprematist_Composition_-_Kazimir_Malevich.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Suprematist_Composition_-_Kazimir_Malevich.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "至上主义",
+          "en": "Suprematism",
+          "artist": "卡济米尔·马列维奇 Kazimir Malevich",
+          "year": "1915",
+          "page": "https://commons.wikimedia.org/wiki/File:Suprematism_-_Abstract_Composition_(Malevich%2C_1915).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Suprematism_-_Abstract_Composition_(Malevich%2C_1915).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "无物象构图 1",
+          "en": "Non-Objective Composition 1",
+          "artist": "奥尔加·罗赞诺娃 Olga Rozanova",
+          "year": "1915",
+          "page": "https://commons.wikimedia.org/wiki/File:Non-Objective_Composition_1_(Rozanova%2C_1915).jpeg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Non-Objective_Composition_1_(Rozanova%2C_1915).jpeg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "constructivism",
@@ -467,7 +556,40 @@
           "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
           "duration": "220ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "红楔子打白军",
+          "en": "Beat the Whites with the Red Wedge",
+          "artist": "埃尔·利西茨基 El Lissitzky",
+          "year": "1919",
+          "page": "https://commons.wikimedia.org/wiki/File:Beat_the_Whites_with_the_Red_Wedge.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Beat_the_Whites_with_the_Red_Wedge.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "普朗 99",
+          "en": "Proun 99",
+          "artist": "埃尔·利西茨基 El Lissitzky",
+          "year": "1923–25",
+          "page": "https://commons.wikimedia.org/wiki/File:El_Lissitzky_-_Proun_99_-_1941.548_-_Yale_University_Art_Gallery.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/El_Lissitzky_-_Proun_99_-_1941.548_-_Yale_University_Art_Gallery.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "绘画建筑",
+          "en": "Painterly Architectonic",
+          "artist": "柳博芙·波波娃 Lyubov Popova",
+          "year": "1918",
+          "page": "https://commons.wikimedia.org/wiki/File:Lyubov_Popova_-_Painterly_Architectonics_-_1982.10_-_Dallas_Museum_of_Art.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lyubov_Popova_-_Painterly_Architectonics_-_1982.10_-_Dallas_Museum_of_Art.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "dada",
@@ -580,7 +702,30 @@
           "easing": "steps(2)",
           "duration": "120ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "Merz 50 构图",
+          "en": "Merz 50 Composition",
+          "artist": "库尔特·施维特斯 Kurt Schwitters",
+          "year": "1922",
+          "page": "https://commons.wikimedia.org/wiki/File:Kurt_Schwitters_-_%22Merz_50%22_Composition_-_Google_Art_Project.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Kurt_Schwitters_-_%22Merz_50%22_Composition_-_Google_Art_Project.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "纽约",
+          "en": "New York",
+          "artist": "弗朗西斯·毕卡比亚 Francis Picabia",
+          "year": "1915",
+          "page": "https://commons.wikimedia.org/wiki/File:Francis_Picabia%2C_1915%2C_New_York..jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Francis_Picabia%2C_1915%2C_New_York..jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "de-stijl",
@@ -620,7 +765,7 @@
         "white",
         "black"
       ],
-      "colorUsage": "大部分格子保持白色，三原色只占少数格子；黑色只出现在粗网格线和文字上。",
+      "colorUsage": "大部分格子保持白色或浅灰，三原色只占约一成的格子；黑色只出现在粗网格线和文字上。",
       "texture": {
         "kind": "none",
         "level": 0,
@@ -629,12 +774,14 @@
       "motifs": [
         "粗黑网格线",
         "不对称三原色矩形",
-        "大面积白格"
+        "大面积白格",
+        "成对的平行黑线"
       ],
       "motifsEn": [
         "thick black grid lines",
         "asymmetric primary-color rectangles",
-        "white fields"
+        "white fields",
+        "paired parallel black lines"
       ],
       "medium": "De Stijl neoplasticist painting, oil on canvas, flat unmodulated color",
       "dont": [
@@ -663,7 +810,8 @@
         "rules": [
           "整个页面被粗黑线切成大小不一的矩形格",
           "只有水平和垂直方向，禁止斜线和曲线",
-          "彩色格子少于三成，其余是白格",
+          "彩色格子约占一成，不超过两成；其余是白格和浅灰格",
+          "黑线不一定画到边，可以停在格子中间，也可以两条平行成对出现",
           "文字放在白格里，靠格子大小表达层级"
         ],
         "radius": "0",
@@ -694,7 +842,40 @@
           "easing": "cubic-bezier(0.3, 0, 0.2, 1)",
           "duration": "240ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "黄、黑、蓝、红、灰的菱形构图",
+          "en": "Lozenge Composition with Yellow, Black, Blue, Red, and Gray",
+          "artist": "皮特·蒙德里安 Piet Mondrian",
+          "year": "1921",
+          "page": "https://www.artic.edu/artworks/109819",
+          "image": "https://www.artic.edu/iiif/2/25f660ee-f1db-d13b-42a5-56df97c98ba7/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "构图第一号：灰与红",
+          "en": "Composition (No. 1) Gray-Red",
+          "artist": "皮特·蒙德里安 Piet Mondrian",
+          "year": "1935",
+          "page": "https://www.artic.edu/artworks/65821",
+          "image": "https://www.artic.edu/iiif/2/254c654f-354a-0f4f-28b5-8eb01a02e95c/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "构图 XX",
+          "en": "Composition XX",
+          "artist": "特奥·凡·杜斯堡 Theo van Doesburg",
+          "year": "1920",
+          "page": "https://commons.wikimedia.org/wiki/File:Theo_van_Doesburg_Composition_XX.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Theo_van_Doesburg_Composition_XX.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "bauhaus",
@@ -803,7 +984,30 @@
           "easing": "cubic-bezier(0.2, 0, 0, 1)",
           "duration": "200ms"
         }
-      }
+      },
+      "frames": [],
+      "works": [
+        {
+          "title": "构成第八号",
+          "en": "Composition VIII",
+          "artist": "瓦西里·康定斯基 Wassily Kandinsky",
+          "year": "1923",
+          "page": "https://commons.wikimedia.org/wiki/File:Wassily_Kandinsky_Composition_VIII.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Wassily_Kandinsky_Composition_VIII.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "老人头像",
+          "en": "Senecio",
+          "artist": "保罗·克利 Paul Klee",
+          "year": "1922",
+          "page": "https://commons.wikimedia.org/wiki/File:Paul_Klee%2C_1922%2C_Senecio%2C_oil_on_gauze%2C_40.3_%C3%97_37.4_cm%2C_Kunstmuseum_Basel.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Paul_Klee%2C_1922%2C_Senecio%2C_oil_on_gauze%2C_40.3_%C3%97_37.4_cm%2C_Kunstmuseum_Basel.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "art-deco",
@@ -913,7 +1117,32 @@
           "easing": "cubic-bezier(0.2, 0, 0, 1)",
           "duration": "480ms"
         }
-      }
+      },
+      "frames": [
+        "图片外一圈细线框，下方居中两行图注：大写标题加小号副标题（巴比耶的时装版画）"
+      ],
+      "works": [
+        {
+          "title": "科莫湖",
+          "en": "Lac de Côme",
+          "artist": "乔治·巴比耶 George Barbier",
+          "year": "1924",
+          "page": "https://commons.wikimedia.org/wiki/File:George_Barbier_-_Gazette_du_bon_ton_-_Lac_de_Come.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Barbier_-_Gazette_du_bon_ton_-_Lac_de_Come.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "阿尔忒弥斯",
+          "en": "Artémis",
+          "artist": "乔治·巴比耶 George Barbier",
+          "year": "1924",
+          "page": "https://commons.wikimedia.org/wiki/File:George_Barbier_-_Gazette_du_bon_ton_-_Art%C3%A9mis.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Barbier_-_Gazette_du_bon_ton_-_Art%C3%A9mis.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
+      ]
     },
     {
       "id": "minimalism",
@@ -1020,7 +1249,9 @@
           "easing": "ease-out",
           "duration": "150ms"
         }
-      }
+      },
+      "frames": [],
+      "works": []
     },
     {
       "id": "memphis",
@@ -1129,7 +1360,9 @@
           "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
           "duration": "260ms"
         }
-      }
+      },
+      "frames": [],
+      "works": []
     },
     {
       "id": "dunhuang",
@@ -1196,6 +1429,42 @@
         "pure white background",
         "glossy",
         "3d render"
+      ],
+      "frames": [
+        "圆形背光框住中心主体",
+        "底部一条重复小人像或几何纹的窄装饰带"
+      ],
+      "works": [
+        {
+          "title": "莫高窟第 217 窟北壁经变",
+          "en": "Mogao Cave 217, north wall",
+          "artist": "佚名",
+          "year": "约 707–710",
+          "page": "https://commons.wikimedia.org/wiki/File:Dunhuang217.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Dunhuang217.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "莫高窟第 428 窟说法图",
+          "en": "Mogao Cave 428, Buddha with bodhisattvas and apsaras",
+          "artist": "佚名",
+          "year": "北周",
+          "page": "https://commons.wikimedia.org/wiki/File:Buddha_flanked_by_bodhisattvas_with_flying_apsaras._Dunhuang_mural._Cave_428%2C_Northern_Zhou_dynasty..jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Buddha_flanked_by_bodhisattvas_with_flying_apsaras._Dunhuang_mural._Cave_428%2C_Northern_Zhou_dynasty..jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "萨埵太子本生图（第 428 窟）",
+          "en": "Jataka of Prince Mahasattva",
+          "artist": "佚名",
+          "year": "557–581",
+          "page": "https://commons.wikimedia.org/wiki/File:%E8%90%A8%E5%9F%B5%E5%A4%AA%E5%AD%90%E6%9C%AC%E7%94%9F%E5%9B%BE.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/%E8%90%A8%E5%9F%B5%E5%A4%AA%E5%AD%90%E6%9C%AC%E7%94%9F%E5%9B%BE.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
       ]
     },
     {
@@ -1263,6 +1532,42 @@
         "neon",
         "western perspective",
         "3d render"
+      ],
+      "frames": [
+        "横卷：超宽横条，两端留素绢色的装裱边",
+        "画心外一圈淡金细线"
+      ],
+      "works": [
+        {
+          "title": "千里江山图（卷首）",
+          "en": "A Thousand Li of Rivers and Mountains",
+          "artist": "王希孟",
+          "year": "1113",
+          "page": "https://commons.wikimedia.org/wiki/File:Wang_Ximeng_-_A_Thousand_Li_of_River_(Start).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Wang_Ximeng_-_A_Thousand_Li_of_River_(Start).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "明皇幸蜀图",
+          "en": "Emperor Minghuang's Journey to Shu",
+          "artist": "传李昭道",
+          "year": "宋摹本",
+          "page": "https://commons.wikimedia.org/wiki/File:Li_Zhaodao_Minhuan.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Li_Zhaodao_Minhuan.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "仙山图",
+          "en": "Mountains of the Immortals",
+          "artist": "陈汝言",
+          "year": "1300–1370",
+          "page": "https://clevelandart.org/art/1997.95",
+          "image": "https://openaccess-cdn.clevelandart.org/1997.95/1997.95_web.jpg",
+          "source": "克利夫兰艺术博物馆",
+          "license": "CC0（克利夫兰艺术博物馆）"
+        }
       ]
     },
     {
@@ -1333,6 +1638,42 @@
         "busy composition",
         "western perspective",
         "3d render"
+      ],
+      "frames": [
+        "立轴装裱：图片四周留宽边，上下两条深色锦缎色带（天头、地头）",
+        "横卷：超宽的横向长条，内容连续横向展开"
+      ],
+      "works": [
+        {
+          "title": "早春图",
+          "en": "Early Spring",
+          "artist": "郭熙",
+          "year": "1072",
+          "page": "https://commons.wikimedia.org/wiki/File:Guo_Xi_-_Early_Spring_(large).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Guo_Xi_-_Early_Spring_(large).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "溪山无尽图",
+          "en": "Streams and Mountains without End",
+          "artist": "佚名",
+          "year": "1100–1150",
+          "page": "https://clevelandart.org/art/1953.126",
+          "image": "https://openaccess-cdn.clevelandart.org/1953.126/1953.126_web.jpg",
+          "source": "克利夫兰艺术博物馆",
+          "license": "CC0（克利夫兰艺术博物馆）"
+        },
+        {
+          "title": "虎",
+          "en": "Tiger",
+          "artist": "牧溪",
+          "year": "约 1250–79",
+          "page": "https://clevelandart.org/art/1958.427.2",
+          "image": "https://openaccess-cdn.clevelandart.org/1958.427.2/1958.427.2_web.jpg",
+          "source": "克利夫兰艺术博物馆",
+          "license": "CC0（克利夫兰艺术博物馆）"
+        }
       ]
     },
     {
@@ -1400,6 +1741,42 @@
         "busy background",
         "hard shadow",
         "photorealistic"
+      ],
+      "frames": [
+        "团扇：圆形画框只装一张主图",
+        "册页：方形画心，四周留宽素绢边"
+      ],
+      "works": [
+        {
+          "title": "花篮图",
+          "en": "Basket of Flowers",
+          "artist": "李嵩",
+          "year": "南宋",
+          "page": "https://commons.wikimedia.org/wiki/File:Li_Song%2C_Basket_of_Flowers.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Li_Song%2C_Basket_of_Flowers.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "山茶蝶雀图（团扇）",
+          "en": "Camellia After a Snow",
+          "artist": "林椿",
+          "year": "南宋",
+          "page": "https://commons.wikimedia.org/wiki/File:Camellia_After_a_Snow.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Camellia_After_a_Snow.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "瑞鹤图",
+          "en": "Auspicious Cranes",
+          "artist": "赵佶",
+          "year": "1112",
+          "page": "https://commons.wikimedia.org/wiki/File:Auspicious_Cranes.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Auspicious_Cranes.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
       ]
     },
     {
@@ -1468,6 +1845,42 @@
         "3d render",
         "lens flare",
         "heavy gradient"
+      ],
+      "frames": [
+        "顶部一条普鲁士蓝向下褪开的晕染带（广重画顶的天空），可做顶栏",
+        "竖长的色块题签条贴在图片一角，只放短标题"
+      ],
+      "works": [
+        {
+          "title": "神奈川冲浪里",
+          "en": "Under the Wave off Kanagawa",
+          "artist": "葛饰北斋 Katsushika Hokusai",
+          "year": "1830–33",
+          "page": "https://www.artic.edu/artworks/24645",
+          "image": "https://www.artic.edu/iiif/2/b3974542-b9b4-7568-fc4b-966738f61d78/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "见附·天龙川渡船",
+          "en": "Mitsuke: Ferries Crossing the Tenryu River",
+          "artist": "歌川广重 Utagawa Hiroshige",
+          "year": "约 1837–42",
+          "page": "https://www.artic.edu/artworks/4368",
+          "image": "https://www.artic.edu/iiif/2/2920ee93-7e74-393e-c270-d58847eb9af7/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "山下白雨",
+          "en": "Shower Below the Summit",
+          "artist": "葛饰北斋 Katsushika Hokusai",
+          "year": "约 1830–33",
+          "page": "https://www.artic.edu/artworks/87008",
+          "image": "https://www.artic.edu/iiif/2/bbb6d024-f931-2e2f-eb95-750991834b1c/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        }
       ]
     },
     {
@@ -1533,6 +1946,39 @@
         "bright background",
         "flat vector",
         "pastel"
+      ],
+      "frames": [],
+      "works": [
+        {
+          "title": "戴金链的老人",
+          "en": "Old Man with a Gold Chain",
+          "artist": "伦勃朗 Rembrandt van Rijn",
+          "year": "1631",
+          "page": "https://www.artic.edu/artworks/95998",
+          "image": "https://www.artic.edu/iiif/2/3eaab3a3-2b47-9fdd-121c-050f6b8d9ccb/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "参孙被擒",
+          "en": "The Capture of Samson",
+          "artist": "鲁本斯 Peter Paul Rubens",
+          "year": "1609–10",
+          "page": "https://www.artic.edu/artworks/8953",
+          "image": "https://www.artic.edu/iiif/2/a8fd8a92-d5fd-bb98-5d70-f970ab1788b8/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "圣安德烈受难",
+          "en": "The Crucifixion of Saint Andrew",
+          "artist": "卡拉瓦乔 Caravaggio",
+          "year": "1606–07",
+          "page": "https://clevelandart.org/art/1976.2",
+          "image": "https://openaccess-cdn.clevelandart.org/1976.2/1976.2_web.jpg",
+          "source": "克利夫兰艺术博物馆",
+          "license": "CC0（克利夫兰艺术博物馆）"
+        }
       ]
     },
     {
@@ -1597,6 +2043,42 @@
         "brutal geometry",
         "primary colors",
         "dark mood"
+      ],
+      "frames": [
+        "椭圆画幅（布歇的田园画）",
+        "金色细线卷草边框"
+      ],
+      "works": [
+        {
+          "title": "他们在想葡萄吗？",
+          "en": "Are They Thinking about the Grape?",
+          "artist": "弗朗索瓦·布歇 François Boucher",
+          "year": "1747",
+          "page": "https://www.artic.edu/artworks/44742",
+          "image": "https://www.artic.edu/iiif/2/12662645-5164-4bb1-cfec-3517a4c9779c/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "田园游乐",
+          "en": "Fête champêtre",
+          "artist": "让-安托万·华托 Jean-Antoine Watteau",
+          "year": "1718–21",
+          "page": "https://www.artic.edu/artworks/107938",
+          "image": "https://www.artic.edu/iiif/2/f6eddea6-5789-b6f9-315c-50a08a7c4adc/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "着戏装的男子",
+          "en": "Portrait of a Man in Costume",
+          "artist": "让-奥诺雷·弗拉戈纳尔 Jean-Honoré Fragonard",
+          "year": "约 1767–68",
+          "page": "https://www.artic.edu/artworks/93900",
+          "image": "https://www.artic.edu/iiif/2/9b1c3d61-5f9b-c7a2-a5ea-f48248836160/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        }
       ]
     },
     {
@@ -1664,6 +2146,39 @@
         "flat vector",
         "sharp detail",
         "studio lighting"
+      ],
+      "frames": [],
+      "works": [
+        {
+          "title": "麦垛（夏末）",
+          "en": "Stacks of Wheat (End of Summer)",
+          "artist": "克劳德·莫奈 Claude Monet",
+          "year": "1890–91",
+          "page": "https://www.artic.edu/artworks/64818",
+          "image": "https://www.artic.edu/iiif/2/a38e2828-ec6f-ece1-a30f-70243449197b/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "睡莲",
+          "en": "Water Lilies",
+          "artist": "克劳德·莫奈 Claude Monet",
+          "year": "1906",
+          "page": "https://www.artic.edu/artworks/16568",
+          "image": "https://www.artic.edu/iiif/2/3c27b499-af56-f0d5-93b5-a7f2f1ad5813/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "圣阿德雷斯的海滩",
+          "en": "The Beach at Sainte-Adresse",
+          "artist": "克劳德·莫奈 Claude Monet",
+          "year": "1867",
+          "page": "https://www.artic.edu/artworks/14598",
+          "image": "https://www.artic.edu/iiif/2/95be2572-b53d-8e7b-abc9-10eb48d4fa5d/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        }
       ]
     },
     {
@@ -1731,6 +2246,41 @@
         "black outlines",
         "muddy colors",
         "brush strokes"
+      ],
+      "frames": [
+        "画面四周一圈点彩画成的深色边框（修拉给《大碗岛》加的边）"
+      ],
+      "works": [
+        {
+          "title": "大碗岛的星期天下午",
+          "en": "A Sunday on La Grande Jatte — 1884",
+          "artist": "乔治·修拉 Georges Seurat",
+          "year": "1884–86",
+          "page": "https://www.artic.edu/artworks/27992",
+          "image": "https://www.artic.edu/iiif/2/2d484387-2509-5e8e-2c43-22f9981972eb/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "莱桑德利",
+          "en": "Les Andelys, Côte d'Aval",
+          "artist": "保罗·西涅克 Paul Signac",
+          "year": "1886",
+          "page": "https://www.artic.edu/artworks/122130",
+          "image": "https://www.artic.edu/iiif/2/43fcfad0-8256-4923-9f9c-03ca90417907/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "卡巴松海滩",
+          "en": "Beach at Cabasson",
+          "artist": "亨利-埃德蒙·克罗斯 Henri-Edmond Cross",
+          "year": "1891–92",
+          "page": "https://www.artic.edu/artworks/100476",
+          "image": "https://www.artic.edu/iiif/2/16e53257-ade2-4f5d-3521-2bc9666bc4cf/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        }
       ]
     },
     {
@@ -1797,6 +2347,33 @@
         "neon",
         "brutalism",
         "3d render"
+      ],
+      "frames": [
+        "人物头后的圆形光环框",
+        "顶部是半圆拱的竖长画幅（穆夏的《四季》）",
+        "四周一圈植物纹装饰边"
+      ],
+      "works": [
+        {
+          "title": "黄道十二宫（《羽毛》）",
+          "en": "Zodiaque (La Plume)",
+          "artist": "阿尔丰斯·穆夏 Alphonse Mucha",
+          "year": "1896–97",
+          "page": "https://www.artic.edu/artworks/111986",
+          "image": "https://www.artic.edu/iiif/2/119dba14-acf2-cdcd-e9e6-b9cd38bc3aad/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "四季",
+          "en": "The Seasons",
+          "artist": "阿尔丰斯·穆夏 Alphonse Mucha",
+          "year": "1897",
+          "page": "https://www.artic.edu/artworks/97439",
+          "image": "https://www.artic.edu/iiif/2/cf64f14a-cc51-9a2d-2d9b-a882b504f222/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        }
       ]
     },
     {
@@ -1864,6 +2441,39 @@
         "muted grey palette",
         "fine shading",
         "photorealistic"
+      ],
+      "frames": [],
+      "works": [
+        {
+          "title": "戴帽子的女人",
+          "en": "Woman with a Hat",
+          "artist": "亨利·马蒂斯 Henri Matisse",
+          "year": "1905",
+          "page": "https://commons.wikimedia.org/wiki/File:Matisse-Woman-with-a-Hat.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Matisse-Woman-with-a-Hat.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "天竺葵静物",
+          "en": "Still Life with Geranium",
+          "artist": "亨利·马蒂斯 Henri Matisse",
+          "year": "1906",
+          "page": "https://www.artic.edu/artworks/87045",
+          "image": "https://www.artic.edu/iiif/2/d0049e0b-bd55-020e-aa8c-b137d06ae7df/full/843,/0/default.jpg",
+          "source": "芝加哥艺术博物馆",
+          "license": "CC0（芝加哥艺术博物馆）"
+        },
+        {
+          "title": "夜色中的议会大厦",
+          "en": "The Houses of Parliament at Night",
+          "artist": "安德烈·德兰 André Derain",
+          "year": "1906",
+          "page": "https://commons.wikimedia.org/wiki/File:Andre-Derain-The_Houses_of_Parliament_at_Night%2C_1906.webp",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Andre-Derain-The_Houses_of_Parliament_at_Night%2C_1906.webp?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
       ]
     },
     {
@@ -1930,6 +2540,39 @@
         "delicate",
         "calm",
         "photorealistic"
+      ],
+      "frames": [],
+      "works": [
+        {
+          "title": "街道，柏林",
+          "en": "Street, Berlin",
+          "artist": "恩斯特·路德维希·基希纳 Ernst Ludwig Kirchner",
+          "year": "1913",
+          "page": "https://commons.wikimedia.org/wiki/File:Ernst_Ludwig_Kirchner%2C_1913%2C_Street%2C_Berlin%2C_oil_on_canvas%2C_120.6_x_91.1_cm%2C_MoMA.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ernst_Ludwig_Kirchner%2C_1913%2C_Street%2C_Berlin%2C_oil_on_canvas%2C_120.6_x_91.1_cm%2C_MoMA.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "大蓝马",
+          "en": "The Large Blue Horses",
+          "artist": "弗朗茨·马尔克 Franz Marc",
+          "year": "1911",
+          "page": "https://commons.wikimedia.org/wiki/File:Large_Blue_Horses.jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Large_Blue_Horses.jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        },
+        {
+          "title": "波茨坦广场",
+          "en": "Potsdamer Platz",
+          "artist": "恩斯特·路德维希·基希纳 Ernst Ludwig Kirchner",
+          "year": "1914",
+          "page": "https://commons.wikimedia.org/wiki/File:Ernst_Ludwig_Kirchner_-_Potsdamer_Platz_(1914).jpg",
+          "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ernst_Ludwig_Kirchner_-_Potsdamer_Platz_(1914).jpg?width=1200",
+          "source": "Wikimedia Commons",
+          "license": "公有领域（Wikimedia Commons）"
+        }
       ]
     },
     {
@@ -1996,7 +2639,9 @@
         "rough brushwork",
         "flat pattern",
         "cartoon"
-      ]
+      ],
+      "frames": [],
+      "works": []
     },
     {
       "id": "pop",
@@ -2061,7 +2706,9 @@
         "thin lines",
         "soft gradient",
         "photorealistic"
-      ]
+      ],
+      "frames": [],
+      "works": []
     }
   ],
   "groups": {

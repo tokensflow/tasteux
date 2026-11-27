@@ -119,12 +119,22 @@ export function a11y(m) {
     `- --accent 上的文字用 --on-accent（${contrast(p.onAccent, p.accent).toFixed(2)}:1）。`,
     ...m.accents.slice(1).map((k) => `- ${onAccent(p, k)}。`),
     ...m.accents.map((k) => `- ${accentAsText(p, k)}。`),
+    inverse(p),
     "- 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。",
   ];
+}
+// 反相区块：--ink 做底、--bg 做字，颜色仍在调色板里，不另造深色
+function inverse(p) {
+  const muted = contrast(p.muted, p.ink);
+  return `- 反相区块（深色通栏，比如展厅、页脚）：--ink 做底，--bg 做字（${contrast(p.bg, p.ink).toFixed(2)}:1），${muted >= 4.5 ? `--muted 可做次要文字（${muted.toFixed(2)}:1）` : `次要文字也用 --bg，不用 --muted（只有 ${muted.toFixed(2)}:1）`}，按钮仍是 --accent 配 --on-accent；不要另造调色板以外的深色。`;
 }
 
 // ---------- 输出 ----------
 const ROLE_WORDS = "规则里的颜色词只表示角色：黑线 = --line，黑字 = --ink，白格 = --bg，彩色格 = 强调色。";
+// 全大写、窄体只对拉丁字母有意义；中文大标题的做法写死，免得各自发挥
+const zhDisplay = (t) => (t.display.transform === "uppercase" || /Condensed|Oswald|Bebas|Saira/.test(t.display.family)
+  ? "中文大标题不套用全大写和窄体：中文用 900 字重、字距 0 到 0.05em；要窄体的分量感时，在中文大标题上方配一行全大写的拉丁小标题。不要用 font-stretch、transform: scaleX 压扁汉字，也不要用 skewX 或 oblique 做伪斜体；骨架要求倾斜时用 rotate 把整块标题转过去。"
+  : "");
 const fontStack = (family, zh) => `"${family}", ${zh}`;
 const accentRule = (m) => m.accents.length < 3 && !m.pure
   ? `只使用 ${m.accents.length} 个强调色（${m.S.name}的规矩）。上面的用法如果提到更多颜色，以这一条为准。`
@@ -138,6 +148,22 @@ const motifRule = (m) => `母题首先用在主视觉和插图里。${m.pure ? "
 const motion = (st) => `${st.motion.desc}，${st.motion.duration} ${st.motion.easing}。按下时也要有反馈。用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。`;
 const texture = (m) => m.kind === "none" ? "无，纯平面" : `${m.F.texture.desc}，强度 ${m.level}${m.capped ? `（${m.F.name} ${m.F.texture.level} 被${m.S.name}上限 ${m.S.structure.textureCap} 截断）` : ""}`;
 
+// 表皮流派的公有领域原作：主视觉优先用它们，没有合适的才生图
+function originals(m) {
+  const works = m.F.works ?? [];
+  if (!works.length) return [];
+  return [
+    "## 原作",
+    `主视觉优先用${m.F.name}的公有领域原作，没有合适的才用下面的生图提示词。规则：`,
+    "- 放在 `<figure data-original>` 里，图片用 `<picture>` 或 `<img>`，`<figcaption>` 写作者、标题、年代、收藏方和许可，并链接到出处页。",
+    "- 不裁掉题款和印章，不加滤镜、混合模式或半透明，不铺质感，不在画面上压文字。可以整幅缩放，横卷可以只取一段，但要在图注里写明是局部。",
+    "- 下载后存进项目，不要直接热链博物馆的图片地址。",
+    "",
+    ...works.map((w) => `- 《${w.title}》${w.en ? ` ${w.en}` : ""}，${w.artist}，${w.year}。${w.license}。出处：${w.page}`),
+    "",
+  ];
+}
+
 function codePrompt(m) {
   const { S, F } = m;
   const st = S.structure;
@@ -149,12 +175,14 @@ function codePrompt(m) {
     "【字体】",
     `标题：${t.display.family} ${t.display.weight}${t.display.transform === "uppercase" ? "，全大写" : ""}，字距 ${t.display.tracking}`,
     `正文：${t.body.family} ${t.body.weight}`,
-    `中文回退：${t.zh}；中文标题 700–900 字重，字距不用负值`,
+    `中文回退：${t.zh}；中文标题 700–900 字重，字距不用负值${zhDisplay(t) ? `。${zhDisplay(t)}` : ""}`,
     `Google Fonts：${t.google.join(" / ")}`, "",
     "【布局】", `栅格：${st.grid}`, ...st.rules.map((r) => `- ${r}`), ...(m.pure ? [] : [ROLE_WORDS]),
     `圆角 ${st.radius}；边框 ${st.border}；阴影 ${st.shadow}；密度 ${st.density}`, "",
     `【质感】${texture(m)}${m.kind === "none" ? "" : "，只铺在背景上，不盖住文字"}`,
     `【母题】${m.motifs.join("、")}。${motifRule(m)}`,
+    ...(m.F.frames?.length ? [`【界面框式】${m.F.frames.join("；")}`] : []),
+    ...(m.F.works?.length ? [`【主视觉】优先用${m.F.name}的公有领域原作（见 DESIGN.md「原作」），写明出处和许可，不加滤镜、不铺质感、不裁题款。`] : []),
     `【动效】${motion(st)}`,
     `【禁止】${m.dont.join("、")}。不要使用渐变文字、默认玻璃卡片、通用圆角阴影卡片网格。`,
     "【无障碍】", ...a11y(m),
@@ -170,7 +198,7 @@ function imagePrompt(m, subject) {
   const composition = m.pure ? S.structure.composition : S.structure.composition.replace(/\bblack\b/g, "dark");
   const motifs = m.motifsEn.filter((x) => !TEXTY.test(x));
   const body = [subject, F.medium, composition, `palette of ${F.colorWords.join(", ")}`, ...(motifs.length ? [`featuring ${motifs.join(", ")}`] : [])].join(", ");
-  return `${body}\nNegative: ${uniq([...m.negative, ...noText(`${F.medium} ${composition}`)]).join(", ")}`;
+  return `${body}, original composition, do not reproduce any famous artwork\nNegative: ${uniq([...m.negative, ...noText(`${F.medium} ${composition}`)]).join(", ")}`;
 }
 
 function label(m) {
@@ -274,12 +302,16 @@ export function designDoc(m, subject = "{主题：按场景写一个具体画面
     `- 标题：font-family: ${fontStack(t.display.family, t.zh)}；字重 ${t.display.weight}；${t.display.transform === "uppercase" ? "全大写；" : ""}字距 ${t.display.tracking}`,
     `- 正文：font-family: ${fontStack(t.body.family, t.zh)}；字重 ${t.body.weight}`,
     "- 中文标题：拉丁标题字体没有中文字形，中文会落到回退字体，所以中文标题单独指定 700–900 字重，和拉丁标题的分量一致；字距不要用负值",
+    ...(zhDisplay(t) ? [`- ${zhDisplay(t)}`] : []),
     `- Google Fonts：${t.google.join(" / ")}`, "",
     "## 布局", `- 栅格：${st.grid}`, "- 规则：", ...st.rules.map((r) => `  - ${r}`), ...(m.pure ? [] : [`  - ${ROLE_WORDS}`]),
     `- 圆角：${st.radius}；边框：${st.border}；阴影：${st.shadow}；密度：${st.density}`, "",
     "## 质感", texture(m),
-    "强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。质感层铺在页面底色上、正文下层，不进卡片，不压文字。", "",
+    "强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。质感层铺在页面底色上、正文下层，不进卡片，不压文字，也不盖在原作上。",
+    ...(m.kind === "none" ? [] : [`实现：复制本技能 references/textures.css，页面里放 \`<div class="texture" data-texture="${m.kind}" aria-hidden="true"></div>\`，在 :root 设 \`--tex-level: ${m.level};\`。`]), "",
     "## 母题", m.motifs.join("、"), motifRule(m), "",
+    ...(F.frames?.length ? ["界面框式（可以直接做成顶栏、卡片边框、图片框，不进生图提示词）：", ...F.frames.map((x) => `- ${x}`), ""] : []),
+    ...originals(m),
     "## 动效", motion(st), "",
     "## 禁止", ...m.dont.map((d) => `- ${d}`), "- 渐变文字、默认玻璃卡片、通用圆角阴影卡片网格", "",
     "## 无障碍", ...a11y(m), "",

@@ -23,7 +23,8 @@ const base = `${vars}
   .dot { width: 80px; height: 80px; border-radius: 50%; background: var(--accent3); }`;
 const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fixture</title><meta name="description" content="原来的描述"><meta property="og:image" content="https://example.com/assets/0123456789ab/images/a.jpg"><style>${css}</style></head><body><main><h1>纸页书店</h1><div class="rule"></div><div class="card"><p>每周三晚上读书。</p><a class="cta" href="/join">预约到店</a></div><div class="card"><div class="dot"></div></div>${body}</main></body></html>`;
 
-const good = page(base, "");
+const art = `<figure data-original><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="200" height="120" alt="神奈川冲浪里"><figcaption>葛饰北斋《神奈川冲浪里》，芝加哥艺术博物馆，CC0。<a href="https://www.artic.edu/artworks/24645">出处</a></figcaption></figure>`;
+const good = page(base, art);
 const bad = page(`${base}
   .card { border-radius: 12px; box-shadow: 0 8px 24px oklch(0 0 0 / 0.2); }
   .grad { background: linear-gradient(90deg, var(--accent), var(--accent3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -31,7 +32,7 @@ const bad = page(`${base}
   .wide { width: 700px; height: 10px; background: var(--ink); }
   a:focus-visible { outline: none; }
   .spin { width: 20px; height: 20px; background: var(--ink); animation: spin 1s linear infinite; }
-  @keyframes spin { to { transform: rotate(1turn); } }`, `<p class="grad">渐变标题</p><p class="faint">看不清的说明文字</p><div class="wide"></div><div class="spin"></div>`, "").replace("原来的描述", "改过的描述");
+  @keyframes spin { to { transform: rotate(1turn); } }`, `<figure data-original style="filter: sepia(0.5)"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="200" height="120" alt="x"></figure><p class="grad">渐变标题</p><p class="faint">看不清的说明文字</p><div class="wide"></div><div class="spin"></div>`, "").replace("原来的描述", "改过的描述");
 const minimal = page(`${base} .glass { backdrop-filter: blur(8px); background: var(--accent2); }`, `<div class="glass">玻璃</div>`);
 
 async function chromeAvailable() {
@@ -74,7 +75,7 @@ test("browser check passes a page that follows DESIGN.md and fails each broken r
 
     const broken = await check(dir, "bad", bad, "--design", design, "--baseline", path.join(dir, "baseline.json"));
     assert.equal(broken.code, 1);
-    assert.deepEqual([...failed(broken)].sort(), ["baseline", "contrast", "focus", "gradient", "motion", "overflow", "radius", "shadow", "structure"]);
+    assert.deepEqual([...failed(broken)].sort(), ["baseline", "contrast", "focus", "gradient", "motion", "originals", "overflow", "radius", "shadow", "structure"]);
     assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("改过的描述"))));
 
     // 极简主义只允许一个强调色：.dot 的 --accent3 和 .glass 的 --accent2 都要报出来，玻璃效果也要报

@@ -16,7 +16,7 @@ const WIDTHS = [
   { width: 1440, height: 900, mobile: false },
   { width: 390, height: 844, mobile: true },
 ];
-const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "focus", "motion", "baseline"];
+const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "originals", "focus", "motion", "baseline"];
 
 // ---------- 参数 ----------
 function parseArgs(argv) {
@@ -327,6 +327,22 @@ function audit(spec) {
       return !inline && (r.width < 24 || r.height < 24);
     });
     if (small.length) add("targets", "WARN", `${small.length} 个可点元素小于 24×24px`, small.map((el) => `${sel(el)} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`));
+  }
+
+  // 原作：<figure data-original> 里的画不加滤镜、混合模式、半透明，要有写明出处的图注
+  for (const fig of document.querySelectorAll("[data-original]")) {
+    const img = fig.querySelector("img");
+    if (!img) continue;
+    const bad = [];
+    for (let n = img; n && n !== fig.parentElement; n = n.parentElement) {
+      const cs = getComputedStyle(n);
+      if (cs.filter !== "none") bad.push(`filter: ${cs.filter}`);
+      if (cs.mixBlendMode !== "normal") bad.push(`mix-blend-mode: ${cs.mixBlendMode}`);
+      if (Number(cs.opacity) < 1) bad.push(`opacity: ${cs.opacity}`);
+    }
+    if (bad.length) add("originals", "FAIL", "原作被加了滤镜、混合模式或半透明", [`${sel(fig)} ${bad.join("；")}`]);
+    const cap = fig.querySelector("figcaption");
+    if (!cap || !cap.querySelector("a[href]")) add("originals", "FAIL", "原作没有带出处链接的图注（figcaption 里写作者、标题、收藏方、许可并链接出处）", [sel(fig)]);
   }
 
   // 页面结构
