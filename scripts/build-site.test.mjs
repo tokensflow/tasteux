@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { after, before, test } from "node:test";
-import { buildSite } from "./build-site.mjs";
+import { buildSite, adSlotMarkup } from "./build-site.mjs";
 import { FEATURED_IDS, plateMarkup } from "../site/catalog.mjs";
 import { IMAGE_WIDTHS } from "../site/images.mjs";
 import { buildAssets } from "./assets.mjs";
@@ -271,4 +271,15 @@ test("initial picker geometry is static and external UI fonts are non-blocking",
     assert.ok(html.includes('display=optional" media="print" onload="this.media=\'all\'"'));
   }
   assert.ok((await fs.readFile(path.join(output, "style.css"), "utf8")).includes(".room #code-out { min-height: 320px; }"));
+});
+
+test("ad slots are fixed, labelled, off until a slot ID exists, and never enable Auto ads", async () => {
+  assert.equal(adSlotMarkup("ca-pub-1", ""), "");
+  const zh = adSlotMarkup("ca-pub-1", "42");
+  assert.ok(zh.includes('<p class="ad-label">广告</p>') && zh.includes('data-ad-slot="42"') && zh.includes('class="adsbygoogle"'));
+  assert.ok(adSlotMarkup("ca-pub-1", "42", true).includes(">Advertisement<"));
+  for (const url of ["/", "/en/", "/privacy/"]) {
+    const html = await fs.readFile(pageFile(url), "utf8");
+    assert.ok(!html.includes("enable_page_level_ads") && !html.includes("<!-- ad:"));
+  }
 });

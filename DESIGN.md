@@ -83,7 +83,7 @@ components:
 | 隐私政策 | `/privacy/` | 管 |
 | 关于 | `/about/` | 管 |
 
-检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`
+检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`、`.adsbygoogle`
 
 ## 色彩
 ```css
@@ -252,3 +252,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 改一处（品牌露出）：tasteux 当主品牌，Style Mix 当产品名。顶栏字标 = Oswald 700 全大写 TASTEUX + 普鲁士蓝方块标签 STYLE MIX（390 也显示，导航间距收到 7px 防止溢出）；页脚\"tasteux 出品 · 流派混合 Style Mix\"/ 英文\"Style Mix by tasteux\"；title 后缀改为\"｜tasteux Style Mix\"，og:site_name = tasteux，JSON-LD Organization 名 = tasteux（首页新增 Organization，WebApplication / SoftwareApplication 的 publisher 指向它），面包屑根 = tasteux Style Mix；关于页 h1 改为\"关于 tasteux 和流派混合\"并写明 skill 仍叫 style-mix。skill 名和安装命令不变。6 页 check：除 baseline 外 0 项；baseline 认可的变化：title/og/JSON-LD/面包屑/关于页 h1，以及 b0e74da 接入的 AdSense 脚本。剩下的 baseline FAIL 只有 AdSense 动态插入的广告 iframe（网址每次加载都带新的 lmt/dt/correlator），连续两次保存基线后仍变，是 check.mjs 的问题，已反馈 skill 线程。 | 无（广告 iframe 误报已由 skill e24c0dd 修复） |
 | 2026-11-27 | 配合 skill e24c0dd（baseline 的 scripts / iframes 只取页面 HTML 原文）：6 个页面模板重新 --save-baseline，连续两次复查都是 0 项未通过、0 项提醒；基线 scripts 只剩 app.js 和 adsbygoogle.js，iframes 为空。上一行品牌轮的偏离随之取消。 | 无 |
 | 2026-11-27 | 改一页（隐私政策，评审第 3 条）：广告已上线，不再写\"计划\"；写明广告只在固定位置并标注「广告」、首屏和工作台不放、Google 用 Cookie 投放和统计、退出个性化广告的方法；欧洲经济区 / 英国 / 瑞士访客看到 Google 认证的同意提示（需 viki 在 AdSense 后台发布\"欧洲法规\"消息），页内加\"更改广告同意设置\"按钮，只在 Google 同意组件就绪（googlefc CONSENT_API_READY）后显示并调用 showRevocationMessage。关于页\"计划\"同步改掉。6 页 check 0/0。baseline 认可的变化：隐私页 description。 | 无 |
+| 2026-11-27 | 新区块（固定广告位，viki 定\"固定位置，不用自动广告\"）：只在图鉴两组之间（`<!-- ad:plates -->`）和每页页脚上方；`aside.ad-slot` 上方一枚 --ink 底方块标签\"广告\"/\"Advertisement\"，下面 3px --line 粗框、高度固定 250px 的 `ins.adsbygoogle`，加载时不跳；没广告（unfilled）时整块收起。广告位 ID 在 build-site 的 AD_SLOTS，留空就不输出，现在两处都空，等 viki 建广告单元。代码里没有 enable_page_level_ads。适用范围的排除行加 `.adsbygoogle`（第三方广告内容不归本文件管）。用假 ID 构建验过 1440 / 390 无溢出、6 页 check 0/0，验完改回空。 | 无 |

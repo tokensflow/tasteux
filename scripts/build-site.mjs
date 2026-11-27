@@ -22,6 +22,13 @@ const hreflang = `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}${HOME}"
 const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
 // Google AdSense 发布商 ID（ca-pub-…）。留空则不输出广告代码和 ads.txt。
 const ADSENSE_CLIENT = "ca-pub-7118095537154296";
+// 固定广告位（AdSense 后台"按广告单元"建的展示广告的 data-ad-slot）。留空的广告位不输出。不用自动广告：代码里不写 enable_page_level_ads。
+const AD_SLOTS = { plates: "", footer: "" };
+// 广告位：固定高度占位，标注「广告」；没有广告 ID 或广告位 ID 时返回空字符串。
+export function adSlotMarkup(client, slot, en = false) {
+  if (!client || !slot) return "";
+  return `<aside class="ad-slot" aria-label="${en ? "Advertisement" : "广告"}"><p class="ad-label">${en ? "Advertisement" : "广告"}</p><ins class="adsbygoogle" data-ad-client="${esc(client)}" data-ad-slot="${esc(slot)}" data-full-width-responsive="false"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></aside>`;
+}
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`;
@@ -149,9 +156,13 @@ export async function buildSite(output) {
   await buildSkillPackages(output);
   const assets = await buildAssets(output, data);
   const adsense = ADSENSE_CLIENT ? `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>\n</head>` : "</head>";
-  const publish = (file, html) => fs.writeFile(file, versionPage(html, assets).replace("</head>", adsense));
+  const publish = (file, html) => {
+    const footerAd = adSlotMarkup(ADSENSE_CLIENT, AD_SLOTS.footer, html.includes('<html lang="en"'));
+    return fs.writeFile(file, versionPage(html, assets).replace("</head>", adsense).replace('<footer class="colophon">', `${footerAd}<footer class="colophon">`));
+  };
   const template = await fs.readFile(path.join(root, "site/index.html"), "utf8");
   let home = template;
+  home = replaceOnce(home, /<!-- ad:plates -->/, adSlotMarkup(ADSENSE_CLIENT, AD_SLOTS.plates));
   home = replaceOnce(home, /<link rel="canonical" href="https:\/\/tasteux\.com\/">/, `<link rel="canonical" href="${ORIGIN}${HOME}">\n  ${hreflang}`);
   home = replaceOnce(home, /<div class="skill-versions" id="skill-versions"><\/div>/, `<div class="skill-versions" id="skill-versions">${skillVersionsMarkup()}</div>`);
   home = replaceOnce(home, /<div id="hero-carousel"><\/div>/, `<div id="hero-carousel">${heroMarkup(data.schools, assets.imageBase)}</div>`);
