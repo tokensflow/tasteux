@@ -53,12 +53,15 @@ const runtime = await (await get(`${base}schools.json`)).json();
 assert.equal(runtime.schools.length, 24);
 const sitemap = await (await get("/sitemap.xml")).text();
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-assert.deepEqual(urls, ["/", ...FEATURED_IDS.map((id) => `/schools/${id}/`), "/guides/art-movement-web-design/"].map((url) => origin + url));
+assert.deepEqual(urls, ["/", "/en/", ...FEATURED_IDS.map((id) => `/schools/${id}/`), "/guides/art-movement-web-design/"].map((url) => origin + url));
 for (const url of urls) {
   const page = await (await get(url)).text();
   assert.ok(page.includes(`rel="canonical" href="${url}"`));
 }
 assert.ok((await (await get("/robots.txt")).text()).includes(`Sitemap: ${origin}/sitemap.xml`));
+const llms = await get("/llms.txt");
+assert.ok((await llms.text()).includes("npx skills add tokensflow/tasteux"));
+assert.ok((await (await get("/privacy/")).text()).includes('rel="canonical" href="https://tasteux.com/privacy/"'));
 assert.equal((await fetch(`${origin}/schools/not-a-published-school/`)).status, 404);
 const versions = [];
 const home = await fs.mkdtemp(path.join(os.tmpdir(), "style-mix-published-check-"));
