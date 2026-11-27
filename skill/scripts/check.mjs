@@ -340,18 +340,20 @@ function audit(spec) {
 }
 
 // 风格以外、改版时不该变的内容
+// 构建时按内容生成的指纹目录（/assets/<hex>/）只要任何资源变了就会变，比较前统一换成 /assets/*/
 function snapshot() {
-  const attr = (q, a) => [...document.querySelectorAll(q)].map((el) => el.getAttribute(a));
-  const meta = Object.fromEntries([...document.querySelectorAll("meta[name], meta[property]")].map((m) => [m.getAttribute("name") ?? m.getAttribute("property"), m.content]).filter(([k]) => /^(description|robots|keywords|og:|twitter:|google-|msvalidate)/.test(k)));
+  const norm = (s) => (s ?? "").replace(/\/assets\/[0-9a-f]{8,}\//g, "/assets/*/");
+  const attr = (q, a) => [...document.querySelectorAll(q)].map((el) => norm(el.getAttribute(a)));
+  const meta = Object.fromEntries([...document.querySelectorAll("meta[name], meta[property]")].map((m) => [m.getAttribute("name") ?? m.getAttribute("property"), norm(m.content)]).filter(([k]) => /^(description|robots|keywords|og:|twitter:|google-|msvalidate)/.test(k)));
   return {
     title: document.title,
     lang: document.documentElement.lang,
     canonical: attr("link[rel=canonical]", "href"),
     meta,
-    jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => s.textContent.trim()),
+    jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => norm(s.textContent.trim())),
     headings: [...document.querySelectorAll("h1, h2, h3")].map((h) => `${h.tagName} ${h.textContent.trim().replace(/\s+/g, " ")}`),
     links: [...new Set(attr("a[href]", "href"))].sort(),
-    scripts: [...new Set(attr("script[src]", "src").map((s) => s.replace(/\/assets\/[0-9a-f]{8,}\//, "/assets/*/")))].sort(),
+    scripts: [...new Set(attr("script[src]", "src"))].sort(),
     iframes: attr("iframe[src]", "src"),
     forms: attr("form", "action"),
   };

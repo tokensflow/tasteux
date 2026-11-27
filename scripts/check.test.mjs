@@ -21,7 +21,7 @@ const base = `${vars}
   a.cta { display: inline-block; padding: 12px 20px; background: var(--accent); color: var(--on-accent); }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
   .dot { width: 80px; height: 80px; border-radius: 50%; background: var(--accent3); }`;
-const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fixture</title><meta name="description" content="原来的描述"><style>${css}</style></head><body><main><h1>纸页书店</h1><div class="rule"></div><div class="card"><p>每周三晚上读书。</p><a class="cta" href="/join">预约到店</a></div><div class="card"><div class="dot"></div></div>${body}</main></body></html>`;
+const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fixture</title><meta name="description" content="原来的描述"><meta property="og:image" content="https://example.com/assets/0123456789ab/images/a.jpg"><style>${css}</style></head><body><main><h1>纸页书店</h1><div class="rule"></div><div class="card"><p>每周三晚上读书。</p><a class="cta" href="/join">预约到店</a></div><div class="card"><div class="dot"></div></div>${body}</main></body></html>`;
 
 const good = page(base, "");
 const bad = page(`${base}
@@ -67,6 +67,10 @@ test("browser check passes a page that follows DESIGN.md and fails each broken r
     assert.equal(ok.code, 0, JSON.stringify(ok.findings, null, 2));
     assert.match(ok.verdict, /^CHECK: PASS · bauhaus\+fauvism/);
     for (const shot of ok.screenshots) assert.ok((await fs.stat(shot)).size > 0);
+
+    // 只有构建指纹目录变了，不算内容变化
+    const rebuilt = await check(dir, "rebuilt", good.replace("0123456789ab", "fedcba987654"), "--design", design, "--baseline", path.join(dir, "baseline.json"));
+    assert.equal(rebuilt.code, 0, JSON.stringify(rebuilt.findings, null, 2));
 
     const broken = await check(dir, "bad", bad, "--design", design, "--baseline", path.join(dir, "baseline.json"));
     assert.equal(broken.code, 1);
