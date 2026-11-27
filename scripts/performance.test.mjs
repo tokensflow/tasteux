@@ -51,3 +51,14 @@ test("a failed font stylesheet can be retried without poisoning the family cache
   load(["Bungee"]);
   assert.equal(document.links.length, 1);
 });
+
+test("the lazy font loader skips families the page head already requested", () => {
+  const appended = [];
+  const document = { createElement: () => ({ addEventListener() {} }), head: { append: (link) => appended.push(link.href) } };
+  const load = createFontLoader(document, ["Oswald", "PT Sans"]);
+  load(["Oswald:wght@700", "PT Sans:wght@400;700"]);
+  assert.equal(appended.length, 0);
+  load(["Jost:wght@400;700", "Oswald:wght@700"]);
+  assert.equal(appended.length, 1);
+  assert.ok(appended[0].includes("family=Jost") && !appended[0].includes("Oswald"));
+});

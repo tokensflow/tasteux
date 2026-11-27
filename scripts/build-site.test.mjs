@@ -268,7 +268,7 @@ test("initial picker geometry is static and external UI fonts are non-blocking",
   assert.equal((home.match(/class="grp"/g) ?? []).length, 3);
   for (const url of pages) {
     const html = await fs.readFile(pageFile(url), "utf8");
-    assert.ok(html.includes('display=optional" media="print" onload="this.media=\'all\'"'));
+    assert.ok(html.includes('display=swap" media="print" onload="this.media=\'all\'"'));
   }
   assert.ok((await fs.readFile(path.join(output, "style.css"), "utf8")).includes(".room #code-out { min-height: 320px; }"));
 });

@@ -272,3 +272,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 统一导航（评审第 9 条后半，skill 6e0df6f 的 nav 规则）：子页导航改成和首页一样的\"混合 图鉴 安装 EN\"，EN 带 hreflang=\"en\"；教程入口留在页脚和工作台。6 页 check 0/0。 | 无 |
 | 2026-11-27 | 阅读页（评审第 9 条，skill 6e0df6f 的页面类型）：教程、关于、隐私的 `<html>` 加 `doc-reading`：不放斜带、标题横排不倾斜、标题区和正文单栏最宽 40em（约 40 个汉字/行）、正文 16px、质感 0.25（展示页的一半）；配色、字体、按钮、导航、页脚不变。首页、英文首页、流派页仍是展示页。6 页 check 0/0。 | 无 |
 | 2026-11-27 | 按钮（评审第 10 条，skill 6e0df6f 的按钮写法）：主按钮（首屏\"去混合你的风格\"、各页标题区按钮）改成 --accent 实心色块、Oswald 700 全大写、右侧 --ink 实心箭头块（::after），去掉 4px 粗框；文字里的\" →\"挪到箭头块。次按钮统一 3px --ink 实线框；工作台反相区块里用 --bg 线框，选中态 --bg 底 --ink 字，修掉深底深框的\"内凹\"感。6 页 check 0/0。 | 无 |
+| 2026-11-27 | 字体加载（评审第 5 条，skill 6e0df6f 的加载规则）：head 里那条 Google Fonts 链接从 display=optional 改成 swap（仍是非阻塞的 media=print/onload）；fonts.mjs 的懒加载器读出 head 已请求的字体族（Oswald、PT Sans 等），这些族不再请求第二次。整页滚到底：Oswald 只有 1 条请求，logo 不再中途换字体。性能测试加一条：已在 head 的族不重复请求。6 页 check 0/0。 | 无 |
