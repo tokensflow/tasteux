@@ -3,7 +3,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { FEATURED_IDS, esc, plateMarkup, structurePickerMarkup, surfacePickerMarkup, groupPickerMarkup } from "../site/catalog.mjs";
-import { schoolNotes, guideBody, privacyBody } from "./editorial.mjs";
+import { schoolNotes, guideBody, privacyBody, enHomeBody } from "./editorial.mjs";
 import { imageMarkup } from "../site/images.mjs";
 import { buildAssets, versionPage } from "./assets.mjs";
 import { heroMarkup } from "../site/hero.mjs";
@@ -15,6 +15,9 @@ const ORIGIN = "https://tasteux.com";
 const HOME = "/";
 const GUIDE = "/guides/art-movement-web-design/";
 const PRIVACY = "/privacy/";
+const EN = "/en/";
+// 中英首页互为 hreflang 备选，x-default 指中文首页。
+const hreflang = `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}${HOME}">\n  <link rel="alternate" hreflang="en" href="${ORIGIN}${EN}">\n  <link rel="alternate" hreflang="x-default" href="${ORIGIN}${HOME}">`;
 const GUIDE_TITLE = "如何把艺术流派变成网页设计与 AI 提示词";
 const isStructure = (s) => s.roles.includes("structure");
 const schoolPath = (id) => `${HOME}schools/${id}/`;
@@ -26,16 +29,16 @@ function contentDate() {
 }
 const json = (value) => JSON.stringify(value).replace(/</g, "\\u003c");
 
-function seo({ title, description, url, image = "fauvism", imageAlt, graph, article = false }) {
+function seo({ title, description, url, image = "fauvism", imageAlt, graph, article = false, en = false }) {
   const absolute = ORIGIN + url;
   const imageUrl = `${ORIGIN}/img/${image}.jpg`;
   return `<title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
-  <link rel="canonical" href="${absolute}">
+  <link rel="canonical" href="${absolute}">${en ? `\n  ${hreflang}` : ""}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="${article ? "article" : "website"}">
-  <meta property="og:site_name" content="流派混合 Style Mix">
-  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="${en ? "Style Mix" : "流派混合 Style Mix"}">
+  <meta property="og:locale" content="${en ? "en_US" : "zh_CN"}">
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${absolute}">
@@ -58,10 +61,11 @@ function breadcrumbs(url, name) {
 }
 
 function page(template, metadata, name, content) {
+  const en = metadata.en;
   const assets = template.match(/<link rel="preconnect"[\s\S]*?<link rel="stylesheet" href="style.css">/)[0]
     .replace('href="style.css"', 'href="/style.css"');
   return `<!doctype html>
-<html lang="zh-CN">
+<html lang="${en ? "en" : "zh-CN"}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,13 +73,13 @@ function page(template, metadata, name, content) {
   ${assets}
 </head>
 <body>
-  <a class="skip" href="#article">跳到正文</a>
-  <header class="bar"><a class="brand" href="/">流派混合 <em lang="en">Style Mix</em></a><nav aria-label="页面"><a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a></nav></header>
+  <a class="skip" href="#article">${en ? "Skip to content" : "跳到正文"}</a>
+  <header class="bar"><a class="brand" href="/">流派混合 <em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a><a href="${EN}" hreflang="en" lang="en">English</a>`}</nav></header>
   <main class="article-page" id="article">
-    <nav class="breadcrumbs" aria-label="面包屑"><a href="/">流派混合</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>
+    ${en ? "" : `<nav class="breadcrumbs" aria-label="面包屑"><a href="/">流派混合</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>`}
     ${content}
   </main>
-  <footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${PRIVACY}">隐私政策</a></footer>
+  ${en ? `<footer class="colophon"><span>Style Mix</span><a href="/" hreflang="zh-CN" lang="zh-CN">中文版</a><a href="https://github.com/tokensflow/tasteux">GitHub</a><a href="${PRIVACY}" hreflang="zh-CN">Privacy (in Chinese)</a></footer>` : `<footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${PRIVACY}">隐私政策</a></footer>`}
 </body>
 </html>
 `;
@@ -142,6 +146,7 @@ export async function buildSite(output) {
   const assets = await buildAssets(output, data);
   const template = await fs.readFile(path.join(root, "site/index.html"), "utf8");
   let home = template;
+  home = replaceOnce(home, /<link rel="canonical" href="https:\/\/tasteux\.com\/">/, `<link rel="canonical" href="${ORIGIN}${HOME}">\n  ${hreflang}`);
   home = replaceOnce(home, /<div class="skill-versions" id="skill-versions"><\/div>/, `<div class="skill-versions" id="skill-versions">${skillVersionsMarkup()}</div>`);
   home = replaceOnce(home, /<div id="hero-carousel"><\/div>/, `<div id="hero-carousel">${heroMarkup(data.schools, assets.imageBase)}</div>`);
   home = replaceOnce(home, /<div class="skels" id="pick-structure"><\/div>/, `<div class="skels" id="pick-structure">${structurePickerMarkup(data.schools)}</div>`);
@@ -176,7 +181,15 @@ export async function buildSite(output) {
   ] }, "隐私政策", privacyBody());
   await fs.mkdir(path.join(output, "privacy"), { recursive: true });
   await fs.writeFile(path.join(output, "privacy/index.html"), versionPage(privacy, assets));
-  const pages = [HOME, ...FEATURED_IDS.map(schoolPath), GUIDE];
+  const enDescription = "Style Mix mixes two art movements into one web design system: one sets layout, type and motion, the other color, texture and motifs. Exports DESIGN.md, coding and image prompts. Agent skill for Claude Code and Codex.";
+  const enHome = page(template, { title: "Style Mix: mix two art movements into a web design system", description: enDescription, url: EN, en: true, image: "ukiyo-e", imageAlt: "AI-generated illustration in the Ukiyo-e style", graph: [
+    { "@type": "WebPage", name: "Style Mix", description: enDescription, inLanguage: "en", url: ORIGIN + EN },
+    { "@type": "SoftwareApplication", name: "Style Mix", applicationCategory: "DesignApplication", operatingSystem: "macOS, Linux, Windows", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, url: ORIGIN + EN },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Style Mix", item: ORIGIN + EN }] },
+  ] }, "Style Mix", enHomeBody(data));
+  await fs.mkdir(path.join(output, "en"), { recursive: true });
+  await fs.writeFile(path.join(output, "en/index.html"), versionPage(enHome, assets));
+  const pages = [HOME, EN, ...FEATURED_IDS.map(schoolPath), GUIDE];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
   await fs.writeFile(path.join(output, "llms.txt"), `# Style Mix（流派混合）
@@ -184,6 +197,9 @@ export async function buildSite(output) {
 > 把两个艺术流派混成一套网页风格：一个管骨架（布局、字体、动效），一个管表皮（配色、质感、母题），每一项只归一个流派管，规则固定，同一组合每次结果一样。输出 DESIGN.md、代码提示词和网页插图用的生图提示词。也是一个 Agent Skill：\`npx skills add tokensflow/tasteux\`。
 
 共 ${data.schools.length} 个流派，其中 ${data.schools.filter(isStructure).length} 个能当骨架。网站：${ORIGIN}${HOME}
+
+## English
+- [Style Mix in English](${ORIGIN}${EN}): skeleton and skin, the movements, and how to install the skill
 
 ## Skill
 - [SKILL.md](${ORIGIN}/skill/SKILL.md): 技能入口和工作流程

@@ -65,7 +65,7 @@ test("built homepage exposes all platform downloads and invocation instructions 
 });
 
 test("every landing page has unique metadata and truthful structured data", async () => {
-  assert.equal(pages.length, 8);
+  assert.equal(pages.length, 9);
   const titles = new Set();
   const descriptions = new Set();
   for (const url of pages) {
@@ -87,6 +87,16 @@ test("every landing page has unique metadata and truthful structured data", asyn
     assert.ok(!html.includes('"aggregateRating"'));
     assert.ok(!html.includes('"LocalBusiness"'));
     if (url !== "/") assert.ok(graph.some((node) => node["@type"] === "BreadcrumbList"));
+  }
+});
+
+test("Chinese and English homepages declare each other with hreflang and the right language", async () => {
+  const expected = [`hreflang="zh-CN" href="${origin}/"`, `hreflang="en" href="${origin}/en/"`, `hreflang="x-default" href="${origin}/"`];
+  for (const [url, lang, locale] of [["/", "zh-CN", "zh_CN"], ["/en/", "en", "en_US"]]) {
+    const html = await fs.readFile(pageFile(url), "utf8");
+    for (const link of expected) assert.ok(html.includes(`<link rel="alternate" ${link}>`), `${url} 缺少 ${link}`);
+    assert.ok(html.includes(`<html lang="${lang}">`));
+    assert.ok(html.includes(`property="og:locale" content="${locale}"`));
   }
 });
 

@@ -106,3 +106,20 @@ export function privacyBody() {
     </div>
   </article>`;
 }
+
+// 英文首页正文（/en/）。工作台界面暂时只有中文，这里讲清楚概念并给出安装方式。
+export function enHomeBody(data) {
+  const names = (structure) => data.schools.filter((s) => s.roles.includes("structure") === structure).map((s) => s.en).join(", ");
+  const skeletons = data.schools.filter((s) => s.roles.includes("structure")).length;
+  return `<article lang="en">
+    <header class="article-head"><p class="article-kicker">Web design style &amp; AI prompt generator</p><h1>Two art movements. One web design system.</h1><p class="article-lede">One movement sets the skeleton: layout, type, motion. The other sets the skin: color, texture, motifs. Fixed rules, no averaging, so the same pair gives the same result every time.</p><a class="btn" href="#install">Install the skill</a></header>
+    <figure class="article-visual"><picture><source type="image/webp" srcset="/art/ukiyo-e.800.webp 800w, /art/ukiyo-e.1600.webp 1600w" sizes="(max-width: 640px) calc(100vw - 40px), 900px"><img src="/art/ukiyo-e.jpg" alt="Katsushika Hokusai, Under the Wave off Kanagawa: a Prussian-blue wave curls over three boats, Mount Fuji in the distance" width="1200" height="822" fetchpriority="high" decoding="async"></picture><figcaption>Katsushika Hokusai, <cite>Under the Wave off Kanagawa</cite>, c. 1830–33, woodblock print. <a href="https://www.artic.edu/artworks/24645">Art Institute of Chicago</a>, CC0. This site is Constructivism × Ukiyo-e.</figcaption></figure>
+    <div class="article-body">
+      <section><h2>Skeleton and skin</h2><p>Mixing two styles usually means averaging them, and the average looks like nothing. Style Mix gives every decision to exactly one movement instead. The skeleton owns the grid, type scale, corners, borders, shadows and motion. The skin owns the palette, texture, motifs and the medium of the illustrations.</p><p>Constructivism × Ukiyo-e, for example, means diagonal bands, tilted headlines and square corners, painted in Prussian blue and vermilion on washi paper.</p></section>
+      <section><h2>What you take away</h2><p>For each pair you get a DESIGN.md with CSS variables and rules, a prompt for your coding agent, and an English image prompt for the page's illustrations. Image prompts name the movement, not artists, and ask for no text in the picture.</p><p>The skill also includes a browser check that screenshots your page at 1440 and 390 px and reports contrast, corners, shadows, off-palette colors, fonts and overflow against the DESIGN.md.</p></section>
+      <section><h2>${data.schools.length} movements</h2><p>${skeletons} can be the skeleton: ${names(true)}.</p><p>The other ${data.schools.length - skeletons} work as skin only: ${names(false)}.</p><p>Each one is shown next to a public-domain original, credited with its collection and license. We take the rules, not the composition.</p></section>
+      <section id="install"><h2>Install for Claude Code, Codex and other agents</h2><p>With Node installed, run:</p><pre>npx skills add tokensflow/tasteux</pre><p>Then ask your agent something like:</p><pre>Use style-mix to restyle my homepage as Constructivism × Ukiyo-e.</pre><p>The skill runs on your machine and needs no API key. Source: <a href="https://github.com/tokensflow/tasteux">github.com/tokensflow/tasteux</a>.</p></section>
+      <section><h2>Try the mixer</h2><p>The interactive mixer on the <a href="/" hreflang="zh-CN">Chinese homepage</a> previews any pair live and exports the same files. Its interface is in Chinese for now; the prompts it exports are in English where it matters.</p></section>
+    </div>
+  </article>`;
+}
