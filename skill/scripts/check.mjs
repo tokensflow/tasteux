@@ -16,7 +16,7 @@ const WIDTHS = [
   { width: 1440, height: 900, mobile: false },
   { width: 390, height: 844, mobile: true },
 ];
-const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "originals", "focus", "motion", "baseline"];
+const CHECKS = ["contrast", "radius", "shadow", "gradient", "glass", "palette", "fonts", "overflow", "targets", "structure", "images", "originals", "focus", "motion", "baseline"];
 
 // ---------- 参数 ----------
 function parseArgs(argv) {
@@ -165,6 +165,27 @@ const sectionClip = (b, selector) => b.evaluate((s) => {
   if (!el) return null;
   const r = el.getBoundingClientRect();
   return { x: Math.max(0, r.left + scrollX), y: r.top + scrollY, width: Math.max(1, Math.min(r.width, document.documentElement.scrollWidth)), height: Math.max(1, Math.min(r.height, 8000)), scale: 1 };
+}, selector);
+
+// 懒加载的图片在截图前不会自己加载：把范围内的 img 改成 eager，滚到它们旁边，等加载完（最多 10 秒），再滚回顶部。
+// 返回加载失败的图片，避免把"没等到"和"真的坏了"混在一起。
+const loadImages = (b, selector) => b.evaluate(async (s) => {
+  const root = document.querySelector(s);
+  if (!root) return [];
+  const imgs = [...root.querySelectorAll("img")];
+  for (const img of imgs) {
+    if (img.loading === "lazy") img.loading = "eager";
+    if (!img.src && img.dataset.src) img.src = img.dataset.src;
+  }
+  const deadline = Date.now() + 10000;
+  for (const img of imgs) {
+    if (!img.complete) img.scrollIntoView({ block: "center" });
+    while (!img.complete && Date.now() < deadline) await new Promise((r) => setTimeout(r, 100));
+  }
+  await Promise.all(imgs.map((img) => img.decode?.().catch(() => {})));
+  scrollTo(0, 0);
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  return imgs.filter((img) => img.currentSrc && (!img.complete || img.naturalWidth === 0)).map((img) => `${img.currentSrc.slice(0, 120)}${img.complete ? "" : "（10 秒内没加载完）"}`);
 }, selector);
 
 // ---------- 页面里运行的检查（浏览器上下文，不能用外部变量） ----------
@@ -408,6 +429,8 @@ async function main() {
       const fold = path.join(out, `${view.width}-fold.png`);
       await shoot(b, fold);
       shots.push(fold);
+      const broken = await loadImages(b, "body");
+      if (broken.length) findings.push({ check: "images", level: "FAIL", msg: `${broken.length} 张图片加载失败`, samples: [...new Set(broken)].slice(0, 5), width: view.width });
       for (const [i, clip] of (await overviewClips(b, view)).entries()) {
         const file = path.join(out, `${view.width}-overview-${i + 1}.png`);
         await shoot(b, file, clip);

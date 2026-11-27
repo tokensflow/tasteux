@@ -71,7 +71,7 @@ node <本目录>/scripts/mix.mjs 包豪斯 野兽派 --subject "a poster for an 
    ```
 
    它在 1440px 和 390px 下截图，并检查：文字对比度（按实际底色算）、圆角、阴影、渐变文字、玻璃效果、多出来的强调色和调色板外的颜色、标题和正文字体、横向溢出、手机上的点按尺寸、`lang` / `title` / h1 / 图片 alt、原作（`[data-original]` 不能加滤镜和半透明，图注要链接出处）、Tab 焦点环、减少动态效果时还在跑的动画。第一行是 `CHECK: PASS` 或 `CHECK: FAIL`，有 FAIL 时退出码为 1。
-   - `--shot 选择器`（可重复）截这一轮改动的区块。截图放在 `.style-mix/check/`，不要提交进仓库。
+   - `--shot 选择器`（可重复）截这一轮改动的区块。截图前脚本会把懒加载的图片全部加载完；加载失败的图片会报 images FAIL，所以截图里空白的图就是真的坏了。截图放在 `.style-mix/check/`，不要提交进仓库。
    - 迭代已有网站时，动手前先跑一次 `--save-baseline .style-mix/baseline.json`，改完用 `--baseline .style-mix/baseline.json` 再跑：标题、meta、canonical、JSON-LD、h1–h3、链接、脚本（统计和广告）、iframe、表单有任何变化都会报 FAIL。
    - 用户确认过的偏离用 `--allow radius,shadow` 这类参数跳过对应检查，并写进迭代记录。DESIGN.md 里"检查时排除："列出的区域自动不查，也可以用 `--ignore 选择器` 临时排除。
    - 没有 Chrome 或页面打不开时，按 `references/format.md` 末尾的清单手查，并说明没能自动检查。
