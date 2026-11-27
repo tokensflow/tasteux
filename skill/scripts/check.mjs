@@ -10,7 +10,7 @@ import { existsSync, readdirSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { linearRgb, resolve } from "./mix.mjs";
 
 const WIDTHS = [
@@ -382,9 +382,12 @@ function audit(spec) {
 
 // 风格以外、改版时不该变的内容
 // 构建时按内容生成的指纹目录（/assets/<hex>/）只要任何资源变了就会变，比较前统一换成 /assets/*/
-function snapshot() {
+// 脚本和 iframe 只取页面 HTML 原文里写的：广告和统计脚本运行时插入的 iframe、按版本号变的子脚本每次加载都不一样，比它们只会误报；
+// 原文里的 <script src> 还在，就说明统计和广告代码没被删
+function snapshot(source) {
+  const doc = new DOMParser().parseFromString(source, "text/html");
   const norm = (s) => (s ?? "").replace(/\/assets\/[0-9a-f]{8,}\//g, "/assets/*/");
-  const attr = (q, a) => [...document.querySelectorAll(q)].map((el) => norm(el.getAttribute(a)));
+  const attr = (q, a, root = document) => [...root.querySelectorAll(q)].map((el) => norm(el.getAttribute(a)));
   const meta = Object.fromEntries([...document.querySelectorAll("meta[name], meta[property]")].map((m) => [m.getAttribute("name") ?? m.getAttribute("property"), norm(m.content)]).filter(([k]) => /^(description|robots|keywords|og:|twitter:|google-|msvalidate)/.test(k)));
   return {
     title: document.title,
@@ -394,8 +397,8 @@ function snapshot() {
     jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => norm(s.textContent.trim())),
     headings: [...document.querySelectorAll("h1, h2, h3")].map((h) => `${h.tagName} ${h.textContent.trim().replace(/\s+/g, " ")}`),
     links: [...new Set(attr("a[href]", "href"))].sort(),
-    scripts: [...new Set(attr("script[src]", "src"))].sort(),
-    iframes: attr("iframe[src]", "src"),
+    scripts: [...new Set(attr("script[src]", "src", doc))].sort(),
+    iframes: attr("iframe[src]", "src", doc),
     forms: attr("form", "action"),
   };
 }
@@ -424,6 +427,9 @@ async function readBaseline(file, firstKey) {
   const data = JSON.parse(await fs.readFile(file, "utf8"));
   return data.pages ?? { [firstKey]: data }; // 旧版基线只存一个页面，算作第一个页面的
 }
+
+// 页面 HTML 原文（服务器返回的，或本地文件），不含脚本运行后插入的节点
+const source = async (url) => (url.startsWith("file:") ? fs.readFile(fileURLToPath(url), "utf8") : (await fetch(url)).text());
 
 async function checkPage(b, target, opts, spec, out, baseline, saved) {
   const key = pageKey(target);
@@ -469,7 +475,7 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
         else if (r.width !== null && r.width < 2) bad.push(`${r.name} 焦点环只有 ${r.width}px`);
       }
       if (bad.length) findings.push({ check: "focus", level: "FAIL", msg: "键盘焦点看不清（DESIGN.md 要求 2px 焦点环）", samples: [...new Set(bad)].slice(0, 5), width: view.width });
-      const snap = await b.evaluate(snapshot);
+      const snap = await b.evaluate(snapshot, await source(url));
       if (saved) saved[key] = snap;
       if (baseline && !baseline[key]) findings.push({ check: "baseline", level: "WARN", msg: `基线里没有 ${key}：新页面先确认内容，再用 --save-baseline 把它加进基线`, samples: [], width: view.width });
       else if (baseline) {

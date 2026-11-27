@@ -27,7 +27,9 @@ const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"
 const art = `<figure data-original><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="120" alt="神奈川冲浪里"><figcaption>葛饰北斋《神奈川冲浪里》，芝加哥艺术博物馆，CC0。<a href="https://www.artic.edu/artworks/24645">出处</a></figcaption></figure>`;
 // 远在首屏之外的懒加载图片：检查前必须真的加载出来，否则会被当成坏图
 const lazy = `<img class="far" src="pixel.png" loading="lazy" width="40" height="40" alt="远处的图" style="margin-top: 6000px">`;
-const good = page(base, art + lazy);
+// 像广告代码一样：HTML 里写一个脚本，运行时再插入查询串每次都变的 iframe 和子脚本。基线只认 HTML 原文里的
+const ads = `<script src="ads.js"></script><script>const r = Math.random(); document.body.append(Object.assign(document.createElement("iframe"), { hidden: true, src: "about:blank?correlator=" + r }), Object.assign(document.createElement("script"), { src: "impl.js?v=" + r }));</script>`;
+const good = page(base, art + lazy + ads);
 const bad = page(`${base}
   .card { border-radius: 12px; box-shadow: 0 8px 24px oklch(0 0 0 / 0.2); }
   .grad { background: linear-gradient(90deg, var(--accent), var(--accent3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -86,6 +88,7 @@ test("browser check passes a page that follows DESIGN.md and fails each broken r
     assert.equal(broken.code, 1);
     assert.deepEqual([...failed(broken)].sort(), ["baseline", "contrast", "focus", "gradient", "images", "motion", "originals", "overflow", "radius", "shadow", "structure"]);
     assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("改过的描述"))));
+    assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("- ads.js"))));
 
     // 多页面：一次查两页，基线按页面分开。旧页面照常比对；新页面只提醒没有基线；再存基线时追加新页面，不丢旧页面
     const privacy = path.join(dir, "privacy.html");
