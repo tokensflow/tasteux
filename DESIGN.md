@@ -225,3 +225,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 按规则修：外壳圆角全部改成 0（通用按钮、工作台分组按钮、主题输入框、步骤序号）。check.mjs 首次 PASS，没用 --allow。 | 无 |
 | 2026-11-27 | 按新版 skill（4b03ef4）重新生成：多出"原作"、界面框式和反相区块规则。首屏原作改成 `<figure data-original>`，从"检查时排除"里删掉 `.hero-original`。baseline 认可的变化：无。 | 无 |
 | 2026-11-27 | 改一个区块（图鉴）：有原作的 20 个流派，图版主视觉换成 schools.json `works[0]` 的原作（`figure[data-original]`，图注写作者、年代、收藏方和许可并链接出处，整幅 contain 不裁切）。能当骨架的 8 个改成\"原作 | 按它生成的网页\"左右对照；只做表皮的把 AI 示意图换成原作，下面留调色板和质感色条。极简、孟菲斯、超现实、波普没有原作，暂时还是 AI 示意图。baseline 认可的变化：新增 20 个原作出处链接。 | 无 |
+| 2026-11-27 | 配合 skill a5a2dab（敦煌可当骨架）：`site/preview.css` 加 `.pv[data-structure="dunhuang"]` 横向分栏版式（通栏横带、中心圆形背光、右侧一排拱形龛、底部供养人式窄带；窄画框单栏），骨架数量测试改为按数据计数。baseline 认可的变化：H3\"能当骨架的十个/只做表皮的十四个\"→\"十一个/十三个\"。 | 无 |

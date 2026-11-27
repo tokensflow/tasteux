@@ -238,7 +238,7 @@ test("migration retains old fingerprint bytes at the new asset paths", async () 
 
 test("initial picker geometry is static and external UI fonts are non-blocking", async () => {
   const home = await fs.readFile(pageFile("/"), "utf8");
-  assert.equal((home.match(/class="skel"/g) ?? []).length, 10);
+  assert.equal((home.match(/class="skel"/g) ?? []).length, data.schools.filter((s) => s.roles.includes("structure")).length);
   assert.equal((home.match(/class="skin"/g) ?? []).length, 24);
   assert.equal((home.match(/class="grp"/g) ?? []).length, 3);
   for (const url of pages) {
