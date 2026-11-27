@@ -30,7 +30,9 @@ export function plateMarkup(s, i, imageBase) {
   const meta = `<p class="plate-meta"><span class="plate-no">Pl. ${String(i + 1).padStart(2, "0")}</span><span>${esc(s.era)}</span></p>`;
   const img = imageMarkup(s.id, { imageBase, alt: `${s.name}风格示意：${s.motifs.slice(0, 2).join("、")}`, sizes: structure ? "auto, (max-width: 900px) 90vw, 45vw" : "auto, (max-width: 640px) 90vw, 30vw" });
   const colors = ["bg", "surface", "ink", "accent", "accent2", "accent3"].map((key) => `--${key}:${esc(s.palette[key])}`).join(";");
-  const original = originalMarkup(s, structure ? "(max-width: 900px) 45vw, 22vw" : "(max-width: 640px) 90vw, 30vw");
+  // 表皮流派没有可用原作（仍在版权期）时，AI 示意图占原作的位置并写明来历，版式与其他图版对齐。
+  const original = originalMarkup(s, structure ? "(max-width: 900px) 45vw, 22vw" : "(max-width: 640px) 90vw, 30vw")
+    || (structure ? "" : `<figure class="plate-original plate-standin">${img}<figcaption>${esc(s.name)}的代表作仍在版权期内，这里不收录原作；上图是 AI 生成的风格示意。</figcaption></figure>`);
   const visual = structure
     ? original ? `<div class="plate-pair">${original}<figure class="slot plate-visual">${img}</figure></div>` : `<figure class="slot plate-visual">${img}</figure>`
     : `${original}<div class="pv pv-study"${original ? ' data-img="none"' : ""} style="${colors};--tex-level:${s.texture.level}" data-texture="${esc(s.texture.kind)}"><div class="pv-tex" aria-hidden="true"></div><span class="study-glyph" aria-hidden="true" lang="${s.group === "east" ? "zh" : "en"}">${s.group === "east" ? "永" : "Aa"}</span>${original ? "" : `<figure class="study-img">${img}</figure>`}<div class="study-chips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>`;

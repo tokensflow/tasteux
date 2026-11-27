@@ -603,8 +603,9 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
 .plate-original picture { display: block; aspect-ratio: 4 / 3; background: var(--c-paper2); }
 .plate-original img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .plate-original figcaption a, .hero-original figcaption a { display: inline-block; padding-block: 4px; }
-.plate-original figcaption { margin-top: 6px; font-size: 12px; line-height: 1.5; color: var(--c-muted); }
+.plate-original figcaption { min-height: calc(3em + 8px); margin-top: 6px; font-size: 12px; line-height: 1.5; color: var(--c-muted); }
 .plate-pair .plate-original picture { aspect-ratio: 900 / 760; }
+.plate-standin img { object-fit: cover; }
 .plate-original + .pv.pv-study { aspect-ratio: 6 / 1.2; }
 .plate-original + .pv.pv-study .study-glyph { display: none; }
 @media (max-width: 640px) { .plate-pair { grid-template-columns: minmax(0, 1fr); } }
