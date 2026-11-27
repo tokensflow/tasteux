@@ -81,7 +81,7 @@ picture { display: block; }
   color: inherit;
   background: transparent;
   border: 1px solid var(--c-rule);
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
   transition: transform 120ms ease-out, background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
 }
@@ -283,7 +283,7 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
 
 .step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 10px; }
 .step-head h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; line-height: 1.4; }
-.step-no { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--c-room-ink); border-radius: 50%; font: 400 13px/1 var(--f-latin); }
+.step-no { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--c-room-ink); font: 400 13px/1 var(--f-latin); }
 .step-cap { flex: 1; min-width: 0; font-size: 13px; color: var(--c-room-muted); }
 .step-count { font: 400 13px var(--f-sans); color: var(--c-room-muted); }
 
@@ -327,7 +327,7 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
   color: var(--c-room-muted);
   background: transparent;
   border: 1px solid var(--c-room-rule);
-  border-radius: 999px;
+  border-radius: 0;
   cursor: pointer;
   transition: transform 120ms ease-out, color 160ms ease-out, background-color 160ms ease-out, border-color 160ms ease-out;
 }
@@ -441,7 +441,7 @@ html:not(.js) .install .targets, html:not(.js) .install .sheet, html:not(.js) .i
   color: var(--c-room-ink);
   background: var(--c-room);
   border: 1px solid var(--c-room-rule);
-  border-radius: 2px;
+  border-radius: 0;
 }
 .subject input::placeholder { color: var(--c-room-muted); opacity: 0.8; }
 
