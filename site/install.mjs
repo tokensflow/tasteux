@@ -8,7 +8,7 @@ export const INSTALL_TARGETS = [
   { id: "agents", label: "通用 · .agents", dir: "~/.agents/skills/style-mix", invocation: "用 style-mix 技能，按包豪斯 × 野兽派设计一个网页", activation: "适用于读取 .agents/skills 的工具；具体调用语法以工具文档为准。", archive: "/skill/downloads/style-mix.zip" },
 ];
 
-export const SKILL_FILES = ["SKILL.md", "schools.json", "references/mixing.md", "references/format.md", "scripts/mix.mjs"];
+export const SKILL_FILES = ["SKILL.md", "schools.json", "references/mixing.md", "references/format.md", "scripts/mix.mjs", "scripts/check.mjs"];
 const quote = (s) => `'${String(s).replace(/'/g, "'\\''")}'`;
 
 export function installCommand(target, pageUrl) {

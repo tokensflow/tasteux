@@ -32,12 +32,20 @@ test("two surface-only schools fall back to Minimalism and the second only adds 
   assert.equal(m.textureLevel, 0.15);
   assert.match(m.notes[0], /极简主义/);
   const doc = await run("浮世绘", "水墨");
-  assert.match(doc, /^<!-- style-mix: minimalism\+ukiyo-e /);
+  assert.match(doc, /^---\nversion: alpha\n[\s\S]*^x-style-mix: "minimalism\+ukiyo-e"/m);
 });
 
 test("negatives drop only whole-word conflicts with the surface imagery", async () => {
   assert.ok(!(await json("风格派", "新艺术运动")).negative.includes("curves"));
   assert.ok((await json("风格派", "浮世绘")).negative.includes("curves"));
+});
+
+test("image prompts drop motifs that models render as garbled text", async () => {
+  const prompt = (await run("minimalism", "ink")).split("### 生图用")[1];
+  assert.doesNotMatch(prompt, /calligraphy inscription|seal stamp/);
+  assert.match(prompt, /Negative: .*\btext, letters, calligraphy, watermark, signature/);
+  // 达达的媒介本身就是剪报和混排字体，不能再禁止文字
+  assert.match((await run("dada")).split("### 生图用")[1], /Negative: (?![^\n]*\bletters\b)[^\n]*watermark, signature/);
 });
 
 test("accessibility never promises 4.5:1 text on an accent that cannot reach it", async () => {

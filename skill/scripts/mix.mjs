@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 // 按 references/mixing.md 把一到三个流派混成 DESIGN.md。逻辑移植自 tasteux.com 工作台（app.js 的 mix / designDoc / codePrompt / imagePrompt），两边改动要同步。
 // 用法：node scripts/mix.mjs <流派> [流派] [流派] [--subject "生图主题"] [--json]
+// 也可以被 check.mjs 导入：resolve(["bauhaus", "fauvism"]) 返回混合结果。
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const data = JSON.parse(readFileSync(new URL("../schools.json", import.meta.url), "utf8"));
 const uniq = (list) => [...new Set(list)];
 const clause = (text) => text.split(/[，。；：]/)[0];
 
 // ---------- 颜色：OKLCH → 相对亮度 → WCAG 对比度 ----------
-function luminance(color) {
+export function linearRgb(color) {
   const [L, C, H] = color.match(/oklch\(([^)]+)\)/)[1].trim().split(/\s+/).map(Number);
   const h = (H * Math.PI) / 180;
   const a = C * Math.cos(h);
@@ -20,9 +22,13 @@ function luminance(color) {
   const r = clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s);
   const g = clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s);
   const bl = clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s);
-  return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  return [r, g, bl];
 }
-function contrast(x, y) {
+const luminance = (color) => {
+  const [r, g, b] = linearRgb(color);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+export function contrast(x, y) {
   const [hi, lo] = [luminance(x), luminance(y)].sort((p, q) => q - p);
   return (hi + 0.05) / (lo + 0.05);
 }
@@ -33,7 +39,7 @@ function find(name) {
   const hit = data.schools.find((s) => [s.id, s.name, s.en, ...s.aliases].some((a) => norm(a) === norm(name)));
   if (hit) return hit;
   const list = data.schools.map((s) => `${s.name}（${s.id}）`).join("、");
-  fail(`没有这个流派：${name}。现有流派：${list}`);
+  throw new Error(`没有这个流派：${name}。现有流派：${list}`);
 }
 const isStructure = (s) => s.roles.includes("structure");
 const MINIMALISM = data.schools.find((s) => s.id === "minimalism");
@@ -106,7 +112,7 @@ function accentAsText(p, k) {
   if (c >= 3) return `--${k} 在 --bg 上只做 ${LARGE}、图标和边框（${r}:1）`;
   return `--${k} 不做 --bg 上的文字色（${r}:1），链接和强调文字用 --ink 加下划线或粗细区分`;
 }
-function a11y(m) {
+export function a11y(m) {
   const p = m.F.palette;
   return [
     `- 正文与背景对比度 ≥ 4.5:1（--ink / --bg ${contrast(p.ink, p.bg).toFixed(2)}:1，--muted / --bg ${contrast(p.muted, p.bg).toFixed(2)}:1）。`,
@@ -155,11 +161,16 @@ function codePrompt(m) {
   ].join("\n");
 }
 
+// 生图模型会把这些母题画成乱码文字（题跋、题签、剪报、印章），生图时去掉，并在负向词里禁止文字
+// 媒介或构图本身就是字（达达的剪报和混排字体）时，只禁水印和签名
+const TEXTY = /inscription|calligraph|cartouche|lettering|typography|typeface|newspaper|stamp/i;
+const noText = (medium) => (TEXTY.test(medium) ? ["watermark", "signature"] : ["text", "letters", "calligraphy", "watermark", "signature"]);
 function imagePrompt(m, subject) {
   const { S, F } = m;
   const composition = m.pure ? S.structure.composition : S.structure.composition.replace(/\bblack\b/g, "dark");
-  const body = [subject, F.medium, composition, `palette of ${F.colorWords.join(", ")}`, `featuring ${m.motifsEn.join(", ")}`].join(", ");
-  return `${body}\nNegative: ${m.negative.join(", ")}`;
+  const motifs = m.motifsEn.filter((x) => !TEXTY.test(x));
+  const body = [subject, F.medium, composition, `palette of ${F.colorWords.join(", ")}`, ...(motifs.length ? [`featuring ${motifs.join(", ")}`] : [])].join(", ");
+  return `${body}\nNegative: ${uniq([...m.negative, ...noText(`${F.medium} ${composition}`)]).join(", ")}`;
 }
 
 function label(m) {
@@ -173,17 +184,91 @@ function label(m) {
   ];
 }
 
-function designDoc(m, subject) {
+// ---------- Stitch DESIGN.md 前言（google-labs-code/design.md，version alpha） ----------
+const q = (s) => JSON.stringify(String(s));
+const dim = (v) => (/^-?\d*\.?\d+$/.test(String(v)) ? `${v}${Number(v) === 0 ? "px" : "em"}` : v);
+function frontmatter(m) {
+  const { S, F } = m;
+  const st = S.structure;
+  const p = F.palette;
+  const t = st.type;
+  const colors = [
+    ["primary", p.accent, "--accent"],
+    ["on-primary", p.onAccent, "--on-accent"],
+    ...(m.accents.includes("accent2") ? [["secondary", p.accent2, "--accent2"]] : []),
+    ...(m.accents.includes("accent3") ? [["tertiary", p.accent3, "--accent3"]] : []),
+    ["background", p.bg, "--bg"],
+    ["on-background", p.ink, "--ink"],
+    ["surface", p.surface, "--surface"],
+    ["on-surface", p.ink, "--ink"],
+    ["on-surface-variant", p.muted, "--muted"],
+    ["outline", p.line, "--line"],
+  ];
+  // 强调色色块上的文字只在 ≥ 4.5:1 时写进组件，和"无障碍"的分级一致
+  const block = (role, k) => {
+    const text = [["on-background", p.ink], ["on-primary", p.onAccent]].sort((x, y) => contrast(y[1], p[k]) - contrast(x[1], p[k]))[0];
+    return [`  ${role}-block:`, `    backgroundColor: "{colors.${role}}"`, ...(contrast(text[1], p[k]) >= 4.5 ? [`    textColor: "{colors.${text[0]}}"`] : [])];
+  };
+  const pill = /999px/.test(st.radius);
+  return [
+    "---",
+    "version: alpha",
+    `name: ${q(m.pure ? `${S.name} 原样` : `${S.name} × ${F.name}`)}`,
+    `description: ${q(m.thesis)}`,
+    `x-style-mix: ${q(`${S.id}+${F.id}`)} # 重新生成：node scripts/mix.mjs ${S.id} ${F.id}；数据 schools.json v${data.version}`,
+    "colors:",
+    ...colors.map(([k, v, css]) => `  ${k}: ${q(v)} # ${css}`),
+    "typography:",
+    "  display:",
+    `    fontFamily: ${q(t.display.family)}`,
+    `    fontWeight: ${t.display.weight}`,
+    `    letterSpacing: ${dim(t.display.tracking)}`,
+    "  body:",
+    `    fontFamily: ${q(t.body.family)}`,
+    `    fontWeight: ${t.body.weight}`,
+    "rounded:",
+    "  none: 0px",
+    ...(pill ? ["  full: 999px"] : []),
+    "omitted:",
+    "  - spacing",
+    "components:",
+    "  page:",
+    '    backgroundColor: "{colors.background}"',
+    '    textColor: "{colors.on-background}"',
+    "  card:",
+    '    backgroundColor: "{colors.surface}"',
+    '    textColor: "{colors.on-surface}"',
+    '    rounded: "{rounded.none}"',
+    "  caption:",
+    '    backgroundColor: "{colors.background}"',
+    '    textColor: "{colors.on-surface-variant}"',
+    "  button-primary:",
+    '    backgroundColor: "{colors.primary}"',
+    '    textColor: "{colors.on-primary}"',
+    '    rounded: "{rounded.none}"',
+    ...(m.accents.includes("accent2") ? block("secondary", "accent2") : []),
+    ...(m.accents.includes("accent3") ? block("tertiary", "accent3") : []),
+    "  divider:",
+    '    backgroundColor: "{colors.outline}"',
+    "---",
+  ];
+}
+
+export function designDoc(m, subject = "{主题：按场景写一个具体画面}") {
   const { S, F } = m;
   const st = S.structure;
   const t = st.type;
   return [
-    `<!-- style-mix: ${S.id}+${F.id} · schools.json v${data.version} · 重新生成：node scripts/mix.mjs ${S.id} ${F.id} -->`,
+    ...frontmatter(m),
     m.pure ? `# ${S.name} 原样` : `# ${S.name} × ${F.name}`, "",
     "## 展签",
     m.pure ? `${S.name} ${S.en} 原样` : `主 · ${S.name} ${S.en}，副 · ${F.name} ${F.en}`,
     ...m.notes, "", ...label(m),
     "## 主张", m.thesis, "",
+    "## 适用范围",
+    "整个页面。",
+    "<!-- 外壳和展品分开的网站（比如页面里展示别的风格的作品、截图、预览），写明这份规范只管哪部分，并把不归它管的区域写成一行：检查时排除：`.gallery`、`#preview`。check.mjs 会读这一行。 -->",
+    "",
     "## 色彩", "```css", ...rootVars(m), "```", `用法：${F.colorUsage}`, accentRule(m), "",
     "## 字体",
     `- 标题：font-family: ${fontStack(t.display.family, t.zh)}；字重 ${t.display.weight}；${t.display.transform === "uppercase" ? "全大写；" : ""}字距 ${t.display.tracking}`,
@@ -200,19 +285,34 @@ function designDoc(m, subject) {
     "## 无障碍", ...a11y(m), "",
     "## 提示词", "", "### 写代码用", "```text", codePrompt(m), "```", "",
     "### 生图用", "```text", imagePrompt(m, subject), "```", "",
+    "## 迭代记录",
+    "",
+    "| 日期 | 这一轮 | 偏离的规则 |",
+    "|---|---|---|",
+    `| ${new Date().toISOString().slice(0, 10)} | 生成：${m.pure ? `${S.name}原样` : `${S.name} × ${F.name}`} | 无 |`,
+    "",
   ].join("\n");
 }
+
+export const resolve = (names) => mix(cast(names));
 
 function fail(msg) {
   process.stderr.write(`${msg}\n`);
   process.exit(1);
 }
 
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
 const args = process.argv.slice(2);
 const json = args.includes("--json");
 const si = args.indexOf("--subject");
 const subject = si >= 0 ? args[si + 1] : "{主题：按场景写一个具体画面}";
 const names = args.filter((a, i) => !a.startsWith("--") && (si < 0 || i !== si + 1));
 if (!names.length) fail("用法：node scripts/mix.mjs <流派> [流派] [流派] [--subject \"生图主题\"] [--json]");
-const m = mix(cast(names));
+let m;
+try {
+  m = resolve(names);
+} catch (error) {
+  fail(error.message);
+}
 process.stdout.write(json ? `${JSON.stringify({ structure: m.S.id, surface: m.F.id, pure: m.pure, notes: m.notes, textureLevel: m.level, textureKind: m.kind, accents: m.accents, dont: m.dont, negative: m.negative, accessibility: a11y(m) }, null, 2)}\n` : designDoc(m, subject));
+}

@@ -10,11 +10,19 @@
 
 ## 2. DESIGN.md
 
+手算时可以省略 YAML 前言（mix.mjs 会生成 Google Stitch 格式的 token 前言），但要保留第一行之前的这三行，让 check.mjs 和下一轮迭代认得出组合：
+
 ```markdown
+---
+x-style-mix: "{主.id}+{副.id}"
+---
 # {主.name} × {副.name}（纯粹形态写 # {name} 原样）
 
 ## 主张
 {一句话视觉主张}
+
+## 适用范围
+整个页面。（外壳和展品分开时，写明只管哪部分，再加一行：检查时排除：`.gallery`、`#preview`）
 
 ## 色彩
 :root {
@@ -76,6 +84,33 @@ Negative: {主.structure.negative + 副.negative，去重}
 
 - 跨流派时，把 `composition` 里的 black 换成 dark（比如 black lines 写成 dark lines），具体颜色交给 palette of 那一段。
 - 负向词只在和副流派的 `medium` 或 `motifsEn` 整词冲突时删除（curves 对 whiplash curves 删；symmetry 对 asymmetric 不删），不要凭联想删。
+- 会被画成乱码文字的母题（题跋 inscription、书法 calligraphy、题签框 cartouche、字母 lettering、typography、剪报 newspaper、印章 stamp）不写进 featuring。负向词末尾加 `text, letters, calligraphy, watermark, signature`；媒介或构图本身就是字的（比如达达的剪报和混排字体），只加 `watermark, signature`。
 
 用户没给主题时，按场景补一个具体主题（比如落地页就写这个产品的主视觉），不要写 "beautiful artwork" 这种空主题。只用流派名，不写艺术家名字。
 
+## 5. 迭代记录
+
+DESIGN.md 末尾固定是这一节，每轮加一行，不改旧行：
+
+```markdown
+## 迭代记录
+
+| 日期 | 这一轮 | 偏离的规则 |
+|---|---|---|
+| 2026-11-27 | 生成：包豪斯 × 野兽派 | 无 |
+| 2026-11-28 | 补建：页面现状对照规则 | 圆角 0 → 按钮 2px（待确认）；标题字体 Jost → Noto Serif SC（用户确认） |
+| 2026-11-29 | 按规则修：首屏和导航 | 无 |
+```
+
+## 6. 没有 check.mjs 时的手查清单
+
+在 1440px 和 390px 下各截首屏和改动区块，逐条写"通过"或"未通过 + 位置 + 原因"：
+
+- 正文对比度 ≥ 4.5:1，大字 ≥ 3:1；强调色上的文字按"无障碍"的分级。
+- 圆角、阴影、边框符合"布局"；没有渐变文字、玻璃卡片、通用圆角阴影卡片网格。
+- 只用调色板里的颜色，强调色不超过规定的数量。
+- 标题和正文是"字体"里的字体，中文标题字重 700–900。
+- 390px 下没有横向滚动，可点元素不小于 24×24px。
+- Tab 能看到 2px 焦点环；`prefers-reduced-motion` 下没有位移动效。
+- 质感层在正文下层，主视觉图不压正文。
+- 迭代已有网站时：标题、meta、canonical、JSON-LD、h1–h3、链接、统计和广告代码没有变。

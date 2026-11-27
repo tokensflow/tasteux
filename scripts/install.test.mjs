@@ -11,7 +11,7 @@ import { buildSkillPackages } from "./skill-packages.mjs";
 
 const exec = promisify(execFile);
 const source = new URL("../skill/", import.meta.url).pathname;
-const files = ["SKILL.md", "schools.json", "references/mixing.md", "references/format.md", "scripts/mix.mjs"];
+const files = ["SKILL.md", "schools.json", "references/mixing.md", "references/format.md", "scripts/mix.mjs", "scripts/check.mjs"];
 const required = {
   pi: ["~/.pi/agent/skills/style-mix", "/skill:style-mix"],
   claude: ["~/.claude/skills/style-mix", "/style-mix"],
