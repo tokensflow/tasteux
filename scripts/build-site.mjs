@@ -85,7 +85,7 @@ function page(template, metadata, name, content) {
 <body>
   <div class="pv doc-tex" data-texture="paper" aria-hidden="true"><div class="pv-tex"></div></div>
   <a class="skip" href="#article">${en ? "Skip to content" : "跳到正文"}</a>
-  <header class="bar"><a class="brand" href="/"><b>tasteux</b><em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="${GUIDE}">教程</a><a href="${EN}" hreflang="en" lang="en">English</a>`}</nav></header>
+  <header class="bar"><a class="brand" href="/"><b>tasteux</b><em lang="en">Style Mix</em></a><nav aria-label="${en ? "Pages" : "页面"}">${en ? `<a href="#install">Install</a><a href="/" hreflang="zh-CN" lang="zh-CN">中文</a>` : `<a href="/#workbench">混合</a><a href="/#plates">图鉴</a><a href="/#install">安装</a><a href="${EN}" hreflang="en" lang="en">EN</a>`}</nav></header>
   <main class="article-page" id="article">
     ${en ? "" : `<nav class="breadcrumbs" aria-label="面包屑"><a href="/">tasteux Style Mix</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>`}
     ${content}
