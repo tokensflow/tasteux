@@ -1,103 +1,70 @@
 ---
 name: style-mix
-description: "Mixes two art movements (Bauhaus, Ukiyo-e, Fauvism, ...) into a web design system, then outputs DESIGN.md, a coding-agent prompt, an image-generation prompt, and optionally a page. Use when the user names a painting school or asks for an art-movement style for a web page or image."
+description: "Mixes two art movements (Bauhaus, Ukiyo-e, Fauvism, Dunhuang murals, ...) into a web design system: one school sets the layout, the other the colors. Outputs DESIGN.md, a coding-agent prompt, an image-generation prompt, and optionally builds a page, or restyles and iterates an existing site against its DESIGN.md. Use when the user names a painting school or art movement for a web page or image, or says 流派混合, 画派风格, 包豪斯风格, 浮世绘风格, 敦煌壁画风格, 水墨风格, X × Y, X 的骨架配 Y 的颜色, 用艺术流派改版网站, 按 DESIGN.md 继续迭代官网."
 metadata:
-  keywords: "流派混合, 画派风格, 艺术流派, 立体主义, 未来主义, 至上主义, 构成主义, 达达, 风格派, 蒙德里安, 包豪斯, 装饰艺术, 极简主义, 孟菲斯, 敦煌壁画, 青绿山水, 水墨, 宋画, 工笔花鸟, 浮世绘, 巴洛克, 洛可可, 印象派, 点彩派, 新艺术运动, 野兽派, 表现主义, 超现实主义, 波普, X 风格的网页, X × Y, art movement style, Bauhaus page, style mix"
+  keywords: "流派混合, 画派风格, 艺术流派, 立体主义, 未来主义, 至上主义, 构成主义, 达达, 风格派, 蒙德里安, 包豪斯, 装饰艺术, 极简主义, 孟菲斯, 敦煌壁画, 青绿山水, 水墨, 宋画, 工笔花鸟, 浮世绘, 巴洛克, 洛可可, 印象派, 点彩派, 新艺术运动, 野兽派, 表现主义, 超现实主义, 波普, X 风格的网页, X × Y, art movement style, Bauhaus page, style mix, 网站改版, 迭代官网"
 ---
 
 # Style Mix：把两个画派混成一套网页风格
 
-流派数据在本目录的 `schools.json`，混合规则在 `references/mixing.md`。开始前两个文件都要完整读一遍。不要凭记忆描述流派，所有颜色、字体、规则都从 `schools.json` 里取。
+流派数据在本目录的 `schools.json`，混合规则在 `references/mixing.md`。不要凭记忆描述流派，所有颜色、字体、规则都从数据里取。
+
+`scripts/mix.mjs` 按 mixing.md 把选定的流派算成完整的 DESIGN.md（含代码提示词和生图提示词），和 tasteux.com 工作台导出的是同一套结果。有 Node 18+ 时一律用它，不要手算：
+
+```
+node <本目录>/scripts/mix.mjs 包豪斯 野兽派 --subject "a poster for an independent bookstore"
+```
+
+- 参数顺序就是主、副：先写管布局的，再写管颜色的。流派可以写中文名、英文名或 id；只写一个就是纯粹形态；第三个只贡献母题。
+- `--json` 只输出主副、质感强度、强调色、禁忌、负向词和各强调色上能放什么，适合检查。
+- 流派名不存在时脚本报错并列出现有流派。推荐最接近的一个，等用户确认。
+
+没有 Node 时，完整读一遍 `references/mixing.md` 和 `references/format.md`，按 format.md 的格式手算。
+
+## 先判断是哪种任务
+
+- **出方案**：用户只要风格、DESIGN.md 或提示词。走"流程"第 1–4 步。
+- **做新页面**：用户要页面，但项目里还没有按本技能生成的 DESIGN.md。走第 1–5 步。
+- **迭代已有网站**：项目里已经有页面，用户要改版或继续改。走"迭代已有网站"。
 
 ## 流程
 
-1. **识别流派**：用 `aliases` 匹配用户说的名字。匹配不到时，列出现有流派，推荐最接近的一个，等用户确认。
-2. **定主副**：按 `mixing.md` 第 2 条决定主流派（结构）和副流派（表皮）。如果做了替换（比如两个都是表皮流派），在输出第一行说明。用户说"原样""纯粹""只要 X 风格"时，主副都是 X，下文称"纯粹形态"。
-3. **计算**：按 `mixing.md` 第 3 条算出质感强度和强调色数量，按第 4 条处理禁忌冲突。
-4. **输出**：按下面的格式依次输出。用户只要其中一部分时，只给那一部分。
-5. **做页面**（只在用户要求时）：用用户项目现有的技术栈实现，第 2 部分的 DESIGN.md 就是唯一的设计依据。用户没有项目时，写一个没有依赖的单文件 HTML。做完对照第 2 部分的"禁止"逐条自查，把结果作为最后一部分输出：每条一行，写"通过"或"未通过 + 原因"。
+1. **识别流派与定主副**：按 `mixing.md` 第 2 条决定主流派（结构）和副流派（表皮），确定参数顺序。用户说"原样""纯粹""只要 X 风格"时只传 X。
+2. **生成**：运行 `mix.mjs`。脚本在展签下写出它做的替换（比如两个都是表皮流派时改用极简主义做结构），原样保留。
+3. **补上需要判断的部分**：
+   - 主张：脚本给的是一句模板，可以改写成更具体的一句，说清骨架和表皮各来自哪里；不要写"融合了 A 与 B 的精髓"这类空话。
+   - 生图主题：用户没给时，按场景写一个具体画面（比如落地页就写这个产品的主视觉），替换 `{主题}`；不要写 "beautiful artwork" 这种空主题，不写艺术家名字。
+   - 用户要求偏离数据时（比如"包豪斯但要圆角"），照做，并在展签下面用一句话写出偏离了哪条规则。
+4. **输出**：依次给出展签、DESIGN.md、写代码用的提示词、生图用的提示词。用户只要其中一部分时，只给那一部分。
+5. **做页面**（只在用户要求时）：把 DESIGN.md 存进项目根目录，它就是唯一的设计依据。用用户项目现有的技术栈实现；没有项目时写一个没有依赖的单文件 HTML。做完按"验收"检查。
 
-## 输出格式
+## 迭代已有网站
 
-### 1. 展签
+同一个网站会被反复改，每一轮都以项目里的 DESIGN.md 为准，不要每轮重新发明风格。
 
-一行：`主 · {主.name} {主.en}，副 · {副.name} {副.en}`；纯粹形态写 `{name} {en} 原样`。
-再用一句话写出视觉主张，说清骨架和表皮各来自哪里。不要写"融合了 A 与 B 的精髓"这类空话。
-然后两小段，分别介绍两个流派：先照抄 `intro`，再写一句"这次负责"（骨架：网格和标题字体；表皮：配色、质感和主视觉题材）。纯粹形态合成一段。
+1. **读现状**：先找项目根目录的 `DESIGN.md`。第一行有 `<!-- style-mix: 主+副 ... -->` 的，就是本技能生成的；按那一行的命令重新运行 `mix.mjs`，确认数据没有更新，有出入时以新输出为准并告诉用户。没有 DESIGN.md 时，读页面现有的 CSS 变量、字体和布局，告诉用户它最接近哪个组合，用户确认后生成 DESIGN.md 并存进项目根目录。
+2. **定这一轮的范围**：一轮只做一件事，并在开工前说清楚：
+   - **换组合**：换主流派会改布局、字体、圆角、动效；换副流派只改颜色、质感、母题和主视觉。先说清会变什么、不会变什么，再动手。
+   - **按规则修**：组合不变，把页面里违反 DESIGN.md 的地方改掉（硬编码颜色、多出来的强调色、被禁止的阴影或圆角、压在正文上的质感）。
+   - **改一个区块**：只动用户点名的区块，其他区块不动。
+3. **保留不属于风格的东西**：文案、链接和 URL、`<title>`、meta description、canonical、Open Graph、JSON-LD、`lang`、标题层级、表单、统计和广告代码，除非用户要求，都不改。颜色和字体只通过 DESIGN.md 里的 CSS 变量进入页面，不在组件里写死色值。
+4. **验收**：见下一节。
+5. **记录**：在 DESIGN.md 末尾的"## 迭代记录"里加一行：日期、这一轮做了什么、偏离了哪条规则（没有就写"无"）。下一轮先读这一节，不要把用户确认过的偏离改回去。
 
-### 2. DESIGN.md
+## 验收
 
-```markdown
-# {主.name} × {副.name}（纯粹形态写 # {name} 原样）
+页面做完或改完，都要真的打开看，不要只读代码就说完成。
 
-## 主张
-{一句话视觉主张}
+1. 用浏览器分别在 1440px 和 390px 宽度下截首屏和整页，逐张看。手边没有浏览器时，说明没能目测。
+2. 对照 DESIGN.md 的"禁止"和"无障碍"逐条检查，每条一行，写"通过"或"未通过 + 位置 + 原因"。无障碍按脚本算出的结果查：哪个强调色上能放正文、哪个只能放大字、哪个不能放字。
+3. 检查质感层在正文下层，主视觉图不压正文；键盘 Tab 能看到焦点环；`prefers-reduced-motion` 下没有位移动效。
+4. 迭代已有网站时，再确认第 3 步列出的不属于风格的内容没有被改。
 
-## 色彩
-:root {
-  --bg: {副.palette.bg};
-  --surface: {副.palette.surface};
-  --ink: {副.palette.ink};
-  --muted: {副.palette.muted};
-  --line: {副.palette.line};
-  --accent: {副.palette.accent};
-  --on-accent: {副.palette.onAccent};
-  （按 accentSlots 继续列出 --accent2、--accent3）
-}
-用法：{副.colorUsage}
-
-## 字体
-- 标题：font-family: "{display.family}", {zh}；字重 {display.weight}；transform 为 uppercase 时写"全大写"，为 none 时不写；字距 {tracking}
-- 正文：font-family: "{body.family}", {zh}；字重 {body.weight}
-- 中文标题：拉丁标题字体没有中文字形，中文会落到回退字体，所以中文标题单独指定 700–900 字重，和拉丁标题的分量一致；字距不要用负值
-- Google Fonts：{google}
-
-## 布局
-- 栅格：{grid}
-- 规则：{rules，逐条}
-- 圆角：{radius}；边框：{border}；阴影：{shadow}；密度：{density}
-
-## 质感
-{副.texture.desc}，强度 {计算后的强度}
-强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。不同质感换算成 CSS 不透明度时系数可以不同，以观感为准。质感层铺在页面底色上、正文下层，不进卡片，不压文字。强度上限由主流派的 textureCap 决定，比如极简主义最多 0.15，几乎看不见。
-
-## 母题
-{副.motifs}
-母题首先用在主视觉和插图里。纯粹形态或没有冲突时，母题也可以做成界面上的单个图形（比如包豪斯的圆、方、三角），但不要铺成重复的底纹。有冲突时按 mixing.md 第 4 条只放进插图。
-
-## 动效
-{motion.desc}，{duration} {easing}。按下时也要有反馈。用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。
-
-## 禁止
-{主.structure.dont + 副.dont，逐条}
-
-## 无障碍
-- 正文与背景对比度 ≥ 4.5:1。
-- 文字放在 --accent 上用 --on-accent；放在 --accent2、--accent3 上时，在 --ink 和 --on-accent 里选对比度更高的那个，并保证 ≥ 4.5:1。
-- 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。
-```
-
-### 3. 写代码用的提示词
-
-用一个代码块给出，让用户能直接贴进 Claude、Cursor、v0 这类工具。内容是第 2 部分的压缩版：先一句话说明风格，再列出 CSS 变量、字体、布局规则和禁止项。用中文写，token 值保持原样。结尾加一句"不要使用渐变文字、默认玻璃卡片、通用圆角阴影卡片网格"。
-
-### 4. 生图用的提示词
-
-用英文写，因为生图模型对英文更稳定。格式：
-
-```
-{主题}, {副.medium}, {主.structure.composition}, palette of {副.colorWords}, featuring {副.motifsEn}
-Negative: {主.structure.negative + 副.negative，去重}
-```
-
-- 跨流派时，`composition` 里的颜色词（比如 black lines）按 mixing.md 第 3 条换成表皮的对应颜色。
-- 负向词只在和副流派的 `medium` 或 `motifsEn` 整词冲突时删除（curves 对 whiplash curves 删；symmetry 对 asymmetric 不删），不要凭联想删。
-
-用户没给主题时，按场景补一个具体主题（比如落地页就写这个产品的主视觉），不要写 "beautiful artwork" 这种空主题。只用流派名，不写艺术家名字。
+把检查结果作为最后一部分输出。未通过的先修，修完重新截图再检查，最多三轮；还有未通过的，如实列出。
 
 ## 规则
 
 - 不往调色板里加新颜色，也不改颜色值。数据里的配色都过了对比度校验。
 - 不给一个流派造它没有的结构。表皮流派（`roles` 里只有 `surface`）不能决定布局。
-- 用户要求偏离数据时（比如"包豪斯但要圆角"），照做，并在展签下面用一句话写出偏离了哪条规则。
 - 一次最多混合两个流派。用户给三个时，前两个做主副，第三个只贡献母题，并说明这么做的原因。
+- 生图提示词用英文，因为生图模型对英文更稳定；页面 UI 文案和其他输出用用户的语言。

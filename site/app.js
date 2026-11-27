@@ -234,6 +234,33 @@ const accentRule = (m) =>
     ? `只使用 ${m.accents.length} 个强调色（${m.S.name}的规矩）。上面的用法如果提到更多颜色，以这一条为准。`
     : `只使用 ${m.accents.length} 个强调色。`;
 
+// ---------- 每个强调色上能放什么（与 skill/scripts/mix.mjs 一致） ----------
+const LARGE = "24px 以上或 18.7px 以上粗体的大字";
+function onAccentRule(p, k) {
+  const [name, c] = [["--ink", contrast(p.ink, p[k])], ["--on-accent", contrast(p.onAccent, p[k])]].sort((x, y) => y[1] - x[1])[0];
+  const r = c.toFixed(2);
+  if (c >= 4.5) return `--${k} 上的文字用 ${name}（${r}:1）`;
+  if (c >= 3) return `--${k} 上只放 ${LARGE}或图标，用 ${name}（${r}:1）；正文和小字不放在 --${k} 上`;
+  return `--${k} 只做色块和插图，不放文字（最高 ${r}:1）`;
+}
+function accentTextRule(p, k) {
+  const c = contrast(p[k], p.bg);
+  const r = c.toFixed(2);
+  if (c >= 4.5) return `--${k} 可以直接做 --bg 上的文字色（${r}:1）`;
+  if (c >= 3) return `--${k} 在 --bg 上只做 ${LARGE}、图标和边框（${r}:1）`;
+  return `--${k} 不做 --bg 上的文字色（${r}:1），链接和强调文字用 --ink 加下划线或粗细区分`;
+}
+function a11y(m) {
+  const p = m.F.palette;
+  return [
+    `- 正文与背景对比度 ≥ 4.5:1（--ink / --bg ${contrast(p.ink, p.bg).toFixed(2)}:1，--muted / --bg ${contrast(p.muted, p.bg).toFixed(2)}:1）。`,
+    `- --accent 上的文字用 --on-accent（${contrast(p.onAccent, p.accent).toFixed(2)}:1）。`,
+    ...m.accents.slice(1).map((k) => `- ${onAccentRule(p, k)}。`),
+    ...m.accents.map((k) => `- ${accentTextRule(p, k)}。`),
+    "- 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。",
+  ];
+}
+
 function codePrompt(m) {
   const { S, F } = m;
   const st = S.structure;
@@ -265,9 +292,8 @@ function codePrompt(m) {
     `【母题】${F.motifs.join("、")}。首先用在主视觉和插图里；${m.pure ? "" : "和骨架规则不冲突时，"}也可以做成界面上的单个图形，但不要铺成重复的底纹，不改变上面的布局规则。`,
     `【动效】${st.motion.desc}，${st.motion.duration} ${st.motion.easing}。按下时也要有反馈；用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。`,
     `【禁止】${m.dont.join("、")}。不要使用渐变文字、默认玻璃卡片、通用圆角阴影卡片网格。`,
-    `【无障碍】正文与背景对比度 ≥ 4.5:1；文字放在 --accent 上用 --on-accent${
-      m.accents.length > 1 ? `，放在 ${m.accents.slice(1).map((k) => `--${k}`).join("、")} 上时在 --ink 和 --on-accent 里选对比度更高的那个` : ""
-    }；焦点环 2px，必须保留。`,
+    "【无障碍】",
+    ...a11y(m),
   ].join("\n");
 }
 
@@ -630,7 +656,6 @@ function designDoc(m) {
     ...items.map(([text, note = ""]) => `- ${text}${note}`),
     "",
   ]);
-  const extra = m.accents.slice(1).map((k) => `--${k}`);
   return [
     m.pure ? `# ${S.name} 原样` : `# ${S.name} × ${F.name}`,
     "",
@@ -676,11 +701,7 @@ function designDoc(m) {
     ...m.dont.map((d) => `- ${d}`),
     "",
     "## 无障碍",
-    "- 正文与背景对比度 ≥ 4.5:1。",
-    extra.length
-      ? `- 文字放在 --accent 上用 --on-accent；放在 ${extra.join("、")} 上时，在 --ink 和 --on-accent 里选对比度更高的那个，并保证 ≥ 4.5:1。`
-      : "- 文字放在 --accent 上用 --on-accent。",
-    "- 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。",
+    ...a11y(m),
     "",
     "## 提示词",
     "",
