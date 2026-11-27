@@ -61,7 +61,7 @@ test("rules learned from the originals hold in the data", async () => {
 test("surface schools with public-domain originals list them with source and license", async () => {
   const doc = await run("constructivism", "ukiyo-e");
   const section = doc.split("## 原作")[1].split("\n## ")[0];
-  assert.match(section, /神奈川冲浪里.*CC0.*https:\/\/www\.artic\.edu\/artworks\/24645/);
+  assert.match(section, /神奈川冲浪里.*芝加哥艺术博物馆，CC0.*https:\/\/www\.artic\.edu\/artworks\/24645/);
   assert.match(section, /不加滤镜/);
   assert.match(doc, /original composition, do not reproduce any famous artwork/);
   assert.doesNotMatch(await run("minimalism"), /## 原作/, "没有原作的流派不出这一节");
@@ -76,6 +76,15 @@ test("inverse blocks, Chinese display headings and textures follow fixed rules",
   const css = await fs.readFile(new URL("../skill/references/textures.css", import.meta.url), "utf8");
   const kinds = JSON.parse(await fs.readFile(new URL("../skill/schools.json", import.meta.url), "utf8")).textureKinds;
   for (const k of Object.keys(kinds)) assert.ok(css.includes(`[data-texture="${k}"]`), k);
+});
+
+test("works keep license and source apart, with a representative first work", async () => {
+  const data = JSON.parse(await fs.readFile(new URL("../skill/schools.json", import.meta.url), "utf8"));
+  for (const s of data.schools) for (const w of s.works) {
+    assert.match(w.license, /^(CC0|公有领域)$/, `${s.id} ${w.title}`);
+    assert.ok(w.source && w.page.startsWith("https://"), `${s.id} ${w.title}`);
+  }
+  assert.doesNotMatch(data.schools.find((s) => s.id === "blue-green").works[0].title, /卷首/);
 });
 
 test("accessibility never promises 4.5:1 text on an accent that cannot reach it", async () => {

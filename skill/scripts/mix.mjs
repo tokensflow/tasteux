@@ -159,7 +159,7 @@ function originals(m) {
     "- 不裁掉题款和印章，不加滤镜、混合模式或半透明，不铺质感，不在画面上压文字。可以整幅缩放，横卷可以只取一段，但要在图注里写明是局部。",
     "- 下载后存进项目，不要直接热链博物馆的图片地址。",
     "",
-    ...works.map((w) => `- 《${w.title}》${w.en ? ` ${w.en}` : ""}，${w.artist}，${w.year}。${w.license}。出处：${w.page}`),
+    ...works.map((w) => `- 《${w.title}》${w.en ? ` ${w.en}` : ""}，${w.artist}，${w.year}。${w.source}，${w.license}。出处：${w.page}`),
     "",
   ];
 }
