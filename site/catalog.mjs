@@ -20,7 +20,7 @@ export function originalMarkup(s, sizes) {
   const w = s.works?.[0];
   if (!w) return "";
   const alt = `${w.artist}《${w.title}》`;
-  return `<figure class="plate-original" data-original><picture><source type="image/webp" srcset="art/${esc(s.id)}.800.webp" sizes="${esc(sizes)}"><img src="art/${esc(s.id)}.jpg" alt="${esc(alt)}" width="1200" height="900" loading="lazy" decoding="async"></picture><figcaption>${esc(w.artist)}《${esc(w.title)}》，${esc(w.year)}。<a href="${esc(w.page)}">${esc(w.source)}</a>，${esc(w.license.replace(/（.*）/, ""))}。</figcaption></figure>`;
+  return `<figure class="plate-original" data-original><picture><source type="image/webp" srcset="art/${esc(s.id)}.800.webp" sizes="${esc(sizes)}"><img src="art/${esc(s.id)}.jpg" alt="${esc(alt)}" width="1200" height="900" loading="lazy" decoding="async"></picture><figcaption>${esc(w.artist)}《${esc(w.title)}》，${esc(w.year)}。<a href="${esc(w.page)}">${esc(w.source)}</a>，${esc(w.license)}。</figcaption></figure>`;
 }
 
 export function plateMarkup(s, i, imageBase) {
