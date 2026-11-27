@@ -71,8 +71,8 @@ components:
 构成主义搭骨架：倾斜 -8° 到 -15° 的对角网格；浮世绘上颜色：普鲁士蓝做主色面和 CTA。
 
 ## 适用范围
-官网 tasteux.com 的页面外壳：顶栏、首屏标题区、章节标题、按钮、安装区。图鉴图版、轮播海报、工作台预览和流派原作展示的是其他组合或真画，按各自流派的数据渲染，不归本文件管。
-检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`、`.hero-original`
+官网 tasteux.com 的页面外壳：顶栏、首屏标题区、章节标题、按钮、安装区。图鉴图版、轮播海报和工作台预览展示的是其他组合，按各自流派的数据渲染，不归本文件管；流派原作按"原作"一节放在 `figure[data-original]` 里。
+检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`
 
 ## 色彩
 ```css
@@ -94,6 +94,7 @@ components:
 - 标题：font-family: "Oswald", "PingFang SC", "Noto Sans SC", sans-serif；字重 700；全大写；字距 0.01em
 - 正文：font-family: "PT Sans", "PingFang SC", "Noto Sans SC", sans-serif；字重 400
 - 中文标题：拉丁标题字体没有中文字形，中文会落到回退字体，所以中文标题单独指定 700–900 字重，和拉丁标题的分量一致；字距不要用负值
+- 中文大标题不套用全大写和窄体：中文用 900 字重、字距 0 到 0.05em；要窄体的分量感时，在中文大标题上方配一行全大写的拉丁小标题。不要用 font-stretch、transform: scaleX 压扁汉字，也不要用 skewX 或 oblique 做伪斜体；骨架要求倾斜时用 rotate 把整块标题转过去。
 - Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
 
 ## 布局
@@ -108,11 +109,26 @@ components:
 
 ## 质感
 和纸纤维纹，带木版压印感，强度 0.5
-强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。质感层铺在页面底色上、正文下层，不进卡片，不压文字。
+强度是质感的浓淡（0–1），按观感理解：0.15 几乎看不见，0.3 能看出，0.5 明显，0.6 很重。质感层铺在页面底色上、正文下层，不进卡片，不压文字，也不盖在原作上。
+实现：复制本技能 references/textures.css，页面里放 `<div class="texture" data-texture="paper" aria-hidden="true"></div>`，在 :root 设 `--tex-level: 0.5;`。
 
 ## 母题
 巨浪、霞形云带、松枝、题签框
 母题首先用在主视觉和插图里。和骨架规则不冲突时，也可以做成界面上的单个图形，但不要铺成重复的底纹。有冲突时按 mixing.md 第 4 条只放进插图。
+
+界面框式（可以直接做成顶栏、卡片边框、图片框，不进生图提示词）：
+- 顶部一条普鲁士蓝向下褪开的晕染带（广重画顶的天空），可做顶栏
+- 竖长的色块题签条贴在图片一角，只放短标题
+
+## 原作
+主视觉优先用浮世绘的公有领域原作，没有合适的才用下面的生图提示词。规则：
+- 放在 `<figure data-original>` 里，图片用 `<picture>` 或 `<img>`，`<figcaption>` 写作者、标题、年代、收藏方和许可，并链接到出处页。
+- 不裁掉题款和印章，不加滤镜、混合模式或半透明，不铺质感，不在画面上压文字。可以整幅缩放，横卷可以只取一段，但要在图注里写明是局部。
+- 下载后存进项目，不要直接热链博物馆的图片地址。
+
+- 《神奈川冲浪里》 Under the Wave off Kanagawa，葛饰北斋 Katsushika Hokusai，1830–33。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/24645
+- 《见附·天龙川渡船》 Mitsuke: Ferries Crossing the Tenryu River，歌川广重 Utagawa Hiroshige，约 1837–42。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/4368
+- 《山下白雨》 Shower Below the Summit，葛饰北斋 Katsushika Hokusai，约 1830–33。CC0（芝加哥艺术博物馆）。出处：https://www.artic.edu/artworks/87008
 
 ## 动效
 沿斜线快速滑入，果断停住，220ms cubic-bezier(0.2, 0.8, 0.2, 1)。按下时也要有反馈。用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。
@@ -133,6 +149,7 @@ components:
 - --accent2 上只放 24px 以上或 18.7px 以上粗体的大字或图标，用 --ink（4.04:1）；正文和小字不放在 --accent2 上。
 - --accent 可以直接做 --bg 上的文字色（6.81:1）。
 - --accent2 在 --bg 上只做 24px 以上或 18.7px 以上粗体的大字、图标和边框（3.49:1）。
+- 反相区块（深色通栏，比如展厅、页脚）：--ink 做底，--bg 做字（14.09:1），次要文字也用 --bg，不用 --muted（只有 2.05:1），按钮仍是 --accent 配 --on-accent；不要另造调色板以外的深色。
 - 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。
 
 ## 提示词
@@ -159,7 +176,7 @@ components:
 【字体】
 标题：Oswald 700，全大写，字距 0.01em
 正文：PT Sans 400
-中文回退："PingFang SC", "Noto Sans SC", sans-serif；中文标题 700–900 字重，字距不用负值
+中文回退："PingFang SC", "Noto Sans SC", sans-serif；中文标题 700–900 字重，字距不用负值。中文大标题不套用全大写和窄体：中文用 900 字重、字距 0 到 0.05em；要窄体的分量感时，在中文大标题上方配一行全大写的拉丁小标题。不要用 font-stretch、transform: scaleX 压扁汉字，也不要用 skewX 或 oblique 做伪斜体；骨架要求倾斜时用 rotate 把整块标题转过去。
 Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
 
 【布局】
@@ -173,6 +190,8 @@ Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
 
 【质感】和纸纤维纹，带木版压印感，强度 0.5，只铺在背景上，不盖住文字
 【母题】巨浪、霞形云带、松枝、题签框。母题首先用在主视觉和插图里。和骨架规则不冲突时，也可以做成界面上的单个图形，但不要铺成重复的底纹。有冲突时按 mixing.md 第 4 条只放进插图。
+【界面框式】顶部一条普鲁士蓝向下褪开的晕染带（广重画顶的天空），可做顶栏；竖长的色块题签条贴在图片一角，只放短标题
+【主视觉】优先用浮世绘的公有领域原作（见 DESIGN.md「原作」），写明出处和许可，不加滤镜、不铺质感、不裁题款。
 【动效】沿斜线快速滑入，果断停住，220ms cubic-bezier(0.2, 0.8, 0.2, 1)。按下时也要有反馈。用键盘快捷键触发的状态切换不加过渡，遵守 prefers-reduced-motion。
 【禁止】居中对称、圆角、细小正文做主角、写实光影、霓虹色、3D 效果、大面积渐变（只允许天空或海面的单色晕染）。不要使用渐变文字、默认玻璃卡片、通用圆角阴影卡片网格。
 【无障碍】
@@ -181,12 +200,13 @@ Google Fonts：Oswald:wght@500;700 / PT Sans:wght@400;700
 - --accent2 上只放 24px 以上或 18.7px 以上粗体的大字或图标，用 --ink（4.04:1）；正文和小字不放在 --accent2 上。
 - --accent 可以直接做 --bg 上的文字色（6.81:1）。
 - --accent2 在 --bg 上只做 24px 以上或 18.7px 以上粗体的大字、图标和边框（3.49:1）。
+- 反相区块（深色通栏，比如展厅、页脚）：--ink 做底，--bg 做字（14.09:1），次要文字也用 --bg，不用 --muted（只有 2.05:1），按钮仍是 --accent 配 --on-accent；不要另造调色板以外的深色。
 - 焦点环 2px，颜色在 --ink 和 --accent 里选与所在背景对比度 ≥ 3:1 的那个。即使主流派禁止描边，焦点环也必须保留。
 ```
 
 ### 生图用
 ```text
-a landing page for a tool that mixes two art movements into a web style, ukiyo-e woodblock print, Edo period, flat color areas, fine black keylines, bokashi gradation, washi paper, dynamic diagonal composition, tilted axis, strong forward momentum, palette of Prussian blue, vermilion, ochre, washi cream, sumi black, featuring great waves, banded clouds, pine branches
+a landing page for a tool that mixes two art movements into a web style, ukiyo-e woodblock print, Edo period, flat color areas, fine black keylines, bokashi gradation, washi paper, dynamic diagonal composition, tilted axis, strong forward momentum, palette of Prussian blue, vermilion, ochre, washi cream, sumi black, featuring great waves, banded clouds, pine branches, original composition, do not reproduce any famous artwork
 Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, lens flare, heavy gradient, text, letters, calligraphy, watermark, signature
 ```
 
@@ -203,3 +223,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 换组合：viki 看过三个方向稿和原作观察笔记后，外壳改用 构成主义 × 浮世绘（减法版：一条斜带、一个大标题、一张原作，彩色面积不超过一成）。按新数据重新生成本文件，旧记录保留在上面。 | 无 |
 | 2026-11-27 | 改一个区块（首屏标题区）：按减法版方向 A 重做：大标题沿 -8° 倾斜、一条普鲁士蓝斜带加朱红细线把视线引向 CTA、右侧放北斋《神奈川冲浪里》原作（芝加哥艺术博物馆藏，CC0，图注写出处）。h1 文字、title、meta 不变；新增一个原作出处链接。顶栏、章节、按钮、图鉴还是旧样式，后面几轮再改。 | 无（首屏底色按数据铺和纸纹，强度 0.5。全站按钮的 2px 圆角留到下一轮统一改成 0） |
 | 2026-11-27 | 按规则修：外壳圆角全部改成 0（通用按钮、工作台分组按钮、主题输入框、步骤序号）。check.mjs 首次 PASS，没用 --allow。 | 无 |
+| 2026-11-27 | 按新版 skill（4b03ef4）重新生成：多出"原作"、界面框式和反相区块规则。首屏原作改成 `<figure data-original>`，从"检查时排除"里删掉 `.hero-original`。baseline 认可的变化：无。 | 无 |
