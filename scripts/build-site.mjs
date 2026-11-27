@@ -3,7 +3,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { FEATURED_IDS, esc, plateMarkup, structurePickerMarkup, surfacePickerMarkup, groupPickerMarkup } from "../site/catalog.mjs";
-import { schoolNotes, guideBody, privacyBody, enHomeBody } from "./editorial.mjs";
+import { schoolNotes, guideBody, privacyBody, enHomeBody, aboutBody, ISSUES, REPO } from "./editorial.mjs";
 import { imageMarkup } from "../site/images.mjs";
 import { buildAssets, versionPage } from "./assets.mjs";
 import { heroMarkup } from "../site/hero.mjs";
@@ -15,6 +15,7 @@ const ORIGIN = "https://tasteux.com";
 const HOME = "/";
 const GUIDE = "/guides/art-movement-web-design/";
 const PRIVACY = "/privacy/";
+const ABOUT = "/about/";
 const EN = "/en/";
 // 中英首页互为 hreflang 备选，x-default 指中文首页。
 const hreflang = `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}${HOME}">\n  <link rel="alternate" hreflang="en" href="${ORIGIN}${EN}">\n  <link rel="alternate" hreflang="x-default" href="${ORIGIN}${HOME}">`;
@@ -82,7 +83,7 @@ function page(template, metadata, name, content) {
     ${en ? "" : `<nav class="breadcrumbs" aria-label="面包屑"><a href="/">流派混合</a><span aria-hidden="true"> / </span><span aria-current="page">${esc(name)}</span></nav>`}
     ${content}
   </main>
-  ${en ? `<footer class="colophon"><span>Style Mix</span><a href="/" hreflang="zh-CN" lang="zh-CN">中文版</a><a href="https://github.com/tokensflow/tasteux">GitHub</a><a href="${PRIVACY}" hreflang="zh-CN">Privacy (in Chinese)</a></footer>` : `<footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${PRIVACY}">隐私政策</a></footer>`}
+  ${en ? `<footer class="colophon"><span>Style Mix</span><a href="/" hreflang="zh-CN" lang="zh-CN">中文版</a><a href="https://github.com/tokensflow/tasteux">GitHub</a><a href="${PRIVACY}" hreflang="zh-CN">Privacy (in Chinese)</a></footer>` : `<footer class="colophon"><span>流派混合 <em lang="en">Style Mix</em></span><a href="${GUIDE}">使用教程</a><a href="/#install">安装 Agent 技能</a><a href="/skill/schools.json">流派数据</a><a href="${ABOUT}">关于</a><a href="${PRIVACY}">隐私政策</a></footer>`}
 </body>
 </html>
 `;
@@ -194,7 +195,15 @@ export async function buildSite(output) {
   ] }, "Style Mix", enHomeBody(data));
   await fs.mkdir(path.join(output, "en"), { recursive: true });
   await publish(path.join(output, "en/index.html"), enHome);
-  const pages = [HOME, EN, ...FEATURED_IDS.map(schoolPath), GUIDE];
+  const aboutDescription = "流派混合（Style Mix）由 tokensflow 制作，源码公开在 GitHub。本页说明规则和原作从哪里来、是否收费，以及怎样通过 GitHub Issues 联系我们。";
+  const about = page(template, { title: "关于｜流派混合 Style Mix", description: aboutDescription, url: ABOUT, graph: [
+    { "@type": "AboutPage", name: "关于流派混合", description: aboutDescription, inLanguage: "zh-CN", url: ORIGIN + ABOUT, mainEntity: { "@id": `${ORIGIN}/#org` } },
+    { "@type": "Organization", "@id": `${ORIGIN}/#org`, name: "Style Mix", alternateName: "流派混合", url: ORIGIN + HOME, sameAs: [REPO, "https://github.com/tokensflow"], contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: ISSUES } },
+    breadcrumbs(ABOUT, "关于"),
+  ] }, "关于", aboutBody(data));
+  await fs.mkdir(path.join(output, "about"), { recursive: true });
+  await publish(path.join(output, "about/index.html"), about);
+  const pages = [HOME, EN, ...FEATURED_IDS.map(schoolPath), GUIDE, ABOUT];
   const lastmod = contentDate();
   await fs.writeFile(path.join(output, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${ORIGIN}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`).join("\n")}\n</urlset>\n`);
   await fs.writeFile(path.join(output, "llms.txt"), `# Style Mix（流派混合）
@@ -214,6 +223,9 @@ export async function buildSite(output) {
 
 ## 教程
 - [${GUIDE_TITLE}](${ORIGIN}${GUIDE})
+
+## 关于
+- [关于流派混合](${ORIGIN}${ABOUT}): 作者 tokensflow、规则和原作的来源、联系方式（GitHub Issues）
 
 ## 流派
 ${FEATURED_IDS.map((id) => `- [${byId[id].name}网页设计](${ORIGIN}${schoolPath(id)}): ${schoolNotes[id].lede}`).join("\n")}

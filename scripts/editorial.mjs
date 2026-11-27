@@ -90,7 +90,7 @@ export function guideBody(byId) {
   </article>`;
 }
 
-// 隐私政策正文。联系方式等作者信息等关于页定稿后再补。
+// 隐私政策正文。联系方式和关于页一致：只用 GitHub Issues。
 export const PRIVACY_UPDATED = "2026-11-27";
 export function privacyBody() {
   return `<article>
@@ -102,6 +102,7 @@ export function privacyBody() {
       <section><h2>广告：Google AdSense</h2><p>本站计划用 Google AdSense 展示广告来维持运营，工具本身一直免费。广告开启后，Google 及其合作伙伴会使用 Cookie，根据你访问本站和其他网站的记录投放广告。</p><p>你可以在 <a href="https://adssettings.google.com/">Google 广告设置</a>里关闭个性化广告，也可以在 <a href="https://www.aboutads.info/choices/">aboutads.info</a> 关闭第三方供应商的个性化广告 Cookie。Google 怎样使用合作网站上的数据，见 <a href="https://policies.google.com/technologies/partner-sites">这一页</a>。来自欧洲经济区、英国和瑞士的访客，会先看到 Google 的同意提示，再决定是否允许。</p></section>
       <section><h2>安装 Skill</h2><p>用 <code>npx skills add</code> 安装时，文件从 GitHub 下载；用 curl 或 ZIP 安装时，文件从本站下载，只留下上面说的 Cloudflare 访问记录。装好以后，Skill 在你自己的电脑上运行，不会把你的项目或对话发给我们。</p></section>
       <section><h2>图片</h2><p>首页和图鉴里的原作是公有领域作品，图片文件放在本站，不从博物馆网站加载。图注里的馆藏链接只有你点击时才会打开。</p></section>
+      <section id="contact"><h2>联系我们</h2><p>对这份政策或你的数据有疑问，请在 <a href="https://github.com/tokensflow/tasteux/issues">GitHub Issues</a> 里提，本站由 <a href="/about/">tokensflow</a> 维护。我们不通过邮件联系。</p></section>
       <section><h2>政策变更</h2><p>这份政策有改动时，会更新本页顶部的日期。</p></section>
     </div>
   </article>`;
@@ -120,6 +121,23 @@ export function enHomeBody(data) {
       <section><h2>${data.schools.length} movements</h2><p>${skeletons} can be the skeleton: ${names(true)}.</p><p>The other ${data.schools.length - skeletons} work as skin only: ${names(false)}.</p><p>Each one is shown next to a public-domain original, credited with its collection and license. We take the rules, not the composition.</p></section>
       <section id="install"><h2>Install for Claude Code, Codex and other agents</h2><p>With Node installed, run:</p><pre>npx skills add tokensflow/tasteux</pre><p>Then ask your agent something like:</p><pre>Use style-mix to restyle my homepage as Constructivism × Ukiyo-e.</pre><p>The skill runs on your machine and needs no API key. Source: <a href="https://github.com/tokensflow/tasteux">github.com/tokensflow/tasteux</a>.</p></section>
       <section><h2>Try the mixer</h2><p>The interactive mixer on the <a href="/" hreflang="zh-CN">Chinese homepage</a> previews any pair live and exports the same files. Its interface is in Chinese for now; the prompts it exports are in English where it matters.</p></section>
+    </div>
+  </article>`;
+}
+
+// 关于页。署名和联系方式由 viki 定：tokensflow，只用 GitHub Issues，不放邮箱。
+export const ISSUES = "https://github.com/tokensflow/tasteux/issues";
+export const REPO = "https://github.com/tokensflow/tasteux";
+export const ABOUT_UPDATED = "2026-11-27";
+export function aboutBody(data) {
+  const skeletons = data.schools.filter((s) => s.roles.includes("structure")).length;
+  return `<article>
+    <header class="article-head"><p class="article-kicker">关于 · 更新于 <time datetime="${ABOUT_UPDATED}">${ABOUT_UPDATED}</time></p><h1>关于流派混合</h1><p class="article-lede">流派混合（Style Mix）把两个艺术流派混成一套网页风格：一个管骨架，一个管表皮，规则固定。它是一个网页工具，也是一个可以装进 Claude Code、Codex 的 Agent Skill。</p><a class="btn" href="${ISSUES}">在 GitHub 上提问题 →</a></header>
+    <div class="article-body">
+      <section><h2>谁在做</h2><p>由 <a href="https://github.com/tokensflow">tokensflow</a> 制作和维护。网站和 Skill 的全部源码公开在 <a href="${REPO}">GitHub 仓库 tokensflow/tasteux</a>。</p></section>
+      <section><h2>规则从哪里来</h2><p>${data.schools.length} 个流派的颜色、字体、版式规则和禁忌都写在同一份数据文件 <a href="/skill/schools.json">schools.json</a> 里，其中 ${skeletons} 个能当骨架。混合方法写在 <a href="/skill/references/mixing.md">mixing.md</a>：每一项只归一个流派管，不取平均。</p><p>每个流派旁边放的原作都是公有领域作品，图注写明作者、年代、收藏方和许可。我们学的是流派的规则，不复刻名作构图；生图提示词只写流派名，不写艺术家名字。</p><p>本站自己也按这套规则做：外壳是构成主义 × 浮世绘，每次改版都用 Skill 自带的浏览器检查在 1440 和 390 两个宽度验收。</p></section>
+      <section><h2>收费吗</h2><p>工具和 Skill 都免费。网站计划用 Google AdSense 展示广告来维持运营，数据怎么处理见<a href="/privacy/">隐私政策</a>。</p></section>
+      <section id="contact"><h2>联系我们</h2><p>问题、建议、流派数据的错误，或者原作出处和许可有疑问，都请在 <a href="${ISSUES}">GitHub Issues</a> 里提。我们不通过邮件联系。</p></section>
     </div>
   </article>`;
 }

@@ -65,7 +65,7 @@ test("built homepage exposes all platform downloads and invocation instructions 
 });
 
 test("every landing page has unique metadata and truthful structured data", async () => {
-  assert.equal(pages.length, 9);
+  assert.equal(pages.length, 10);
   const titles = new Set();
   const descriptions = new Set();
   for (const url of pages) {

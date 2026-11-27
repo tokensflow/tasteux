@@ -81,6 +81,7 @@ components:
 | 教程文章 | `/guides/art-movement-web-design/` | 管 |
 | 流派详情页（6 个同一模板） | `/schools/ukiyo-e/` | 管 |
 | 隐私政策 | `/privacy/` | 管 |
+| 关于 | `/about/` | 管 |
 
 检查时排除：`#hero-carousel`、`.thumb`、`.pv`、`.plate-visual`、`.study-img`、`.skin-img`
 
@@ -247,3 +248,4 @@ Negative: symmetry, rounded corners, ornament, photorealistic, neon, 3d render, 
 | 2026-11-27 | 改一个模板组（文章类外壳：教程、流派页、/privacy/、/en/）：page() 给 `<html>` 加 `doc` 类并铺和纸质感层；style.css 在 `.doc` 上设 DESIGN.md 色板，把外壳的 --c-* 映射到它，标题 Oswald / 中文 900、拉丁标题全大写 700、首屏标题 rotate(-8deg)（390 用 -4deg）、贯穿全宽的普鲁士蓝斜带、3–5px 粗线、CTA 普鲁士蓝、h2 前朱红小块、页脚反相（--ink 底 --bg 字）、正文左对齐不居中。共用字体链接加 PT Sans 400/700。Oswald 只加载实际用到的 700，不加载 DESIGN.md 列出的 500：多声明 500 后，check.mjs 用 400 字重探测会落到未加载的 500 字面而误报，已反馈 skill 线程。5 页一起 check：文章类 4 页 0 提醒；首页 6 条提醒是首页自己的旧色和正文字体，留给首页配色轮。baseline 无变化。 | 无（字体一条已由 skill 7919360 改成规则本身） |
 | 2026-11-27 | 改一个模板（首页配色）：首页 `<html>` 也加 `doc` 类，根元素上有了 --bg/--ink/--accent，正文换 PT Sans。工作台按反相规则：--c-room* 全部映射到 --ink 底、--bg 字和 --bg 细线，不再有调色板以外的深色；原来用 --c-room-seal 的三处小字（--accent2 在 --ink 上只有 4.04:1）改成 --bg 加粗。预览画框底 --ink、衬纸 --bg，警告字 --accent2。5 页一起 check：0 项未通过、0 项提醒。baseline 无变化。 | 无 |
 | 2026-11-27 | 配合 skill 7919360（字体检查按"任一字重加载即算"，构成主义只请求 Oswald 700）：用 mix.mjs 重新生成后同步了 Google Fonts 一行和原作出处的许可写法；上一行"只载 Oswald 700"的偏离随之取消。5 页 check：0 项未通过、0 项提醒。baseline 无变化。 | 无 |
+| 2026-11-27 | 新页面（关于）+ 改一处（隐私）：viki 定了署名 tokensflow、联系方式只用 GitHub Issues、不放邮箱。build-site 生成 `/about/`（谁在做、规则和原作从哪里来、收费吗、联系我们），JSON-LD 用 AboutPage + Organization（contactPoint 指向 Issues），进 sitemap 和 llms.txt；隐私页加\"联系我们\"一节；所有页脚加\"关于\"。适用范围加\"关于\"模板。6 页一起 check：0 项未通过、0 项提醒。baseline 认可的变化：各页 links + /about/，隐私页 + H2 联系我们、+ Issues 链接；/about/ 新加入基线。 | 无 |
