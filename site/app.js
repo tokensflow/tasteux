@@ -6,7 +6,7 @@ import { contrast, readableOn, paletteVars } from "./palette.mjs";
 import { INSTALL_TARGETS as TARGETS, installCommand, targetButtonsMarkup, skillVersionsMarkup } from "./install.mjs";
 
 const DATA_URL = "../skill/schools.json";
-const DEFAULT_MIX = ["bauhaus", "fauvism"];
+const DEFAULT_MIX = ["constructivism", "ukiyo-e"];
 const DEFAULT_SUBJECT = "a poster for an independent bookstore called Paper Pages";
 const PV_WIDTH = 900;
 
@@ -511,7 +511,8 @@ function apply() {
   $("swap").disabled = !canSwap;
   $("swap-hint").textContent = m.pure ? `骨架和表皮相同：这是${S.name}的纯粹形态。` : isStructure(F) ? "" : `${F.name}只做表皮，没有自己的版面结构，所以不能互换。`;
 
-  history.replaceState(null, "", `#mix=${S.id}+${F.id}`);
+  // 只在访客换过组合、或本来就带着 #mix= 打开时写网址；直接打开首页时网址保持干净。
+  if (last || location.hash.startsWith("#mix=")) history.replaceState(null, "", `#mix=${S.id}+${F.id}`);
 }
 
 function commit(next, kind) {
