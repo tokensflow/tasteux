@@ -785,6 +785,15 @@ html:not(.js) .quick-install .btn { display: none; }
   .group-head { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* 触屏宽度：链接和按钮的点击区不小于 32×32（正文段落里的行内链接除外） */
+@media (max-width: 900px) {
+  .bar nav a, .hero-pickers button { min-width: 32px; justify-content: center; }
+  .bench-about a, .to-duo, figcaption a { display: inline-flex; align-items: center; min-height: 32px; }
+  .related-links a, .plate h4 a { display: flex; align-items: center; min-height: 32px; }
+  .plate h4 a { display: inline-flex; }
+  .colophon a { align-items: center; justify-content: center; min-width: 32px; min-height: 32px; }
+}
+
 @media (max-width: 900px) and (max-height: 560px) {
   .bench-stage { position: static; }
 }
@@ -839,7 +848,7 @@ html:not(.js) .quick-install .btn { display: none; }
 .doc h1, .doc h2, .doc h3 { font-weight: 900; letter-spacing: 0; }
 /* 拉丁标题：Oswald 700、全大写、字距 0.01em；中文标题保持 900 */
 .doc :is(h1, h2, h3):lang(en) { font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; }
-.doc .breadcrumbs a { display: inline-flex; align-items: center; min-height: 24px; }
+.doc .breadcrumbs a { display: inline-flex; align-items: center; min-height: 32px; }
 .doc .article-page { position: relative; max-width: none; margin-inline: 0; overflow-x: clip; }
 .doc .article-head { position: relative; isolation: isolate; gap: 22px; padding: 56px 0 120px; }
 .doc .article-kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--ink); }
