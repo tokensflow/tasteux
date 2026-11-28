@@ -34,23 +34,26 @@ function parseArgs(argv) {
     else if (a === "--out") opts.out = take(i++);
     else if (a === "--baseline") opts.baseline = take(i++);
     else if (a === "--ignore") opts.ignore.push(take(i++));
+    else if (a === "--min-target") opts.minTarget = Number(take(i++));
     else if (a === "--shot") opts.shots.push(take(i++));
     else if (a === "--save-baseline") opts.saveBaseline = take(i++);
     else if (a === "--allow") take(i++).split(",").forEach((x) => opts.allow.add(x.trim()));
     else if (a.startsWith("--")) throw new Error(`不认识的参数：${a}`);
     else opts.targets.push(a);
   }
-  if (!opts.targets.length) throw new Error("用法：node scripts/check.mjs <网址或 HTML 文件>... [--design DESIGN.md | --mix 主+副] [--out 目录] [--ignore 选择器] [--shot 选择器] [--save-baseline 文件 | --baseline 文件] [--allow 项目] [--json]");
+  if (!opts.targets.length) throw new Error("用法：node scripts/check.mjs <网址或 HTML 文件>... [--design DESIGN.md | --mix 主+副] [--out 目录] [--ignore 选择器] [--shot 选择器] [--save-baseline 文件 | --baseline 文件] [--allow 项目] [--min-target 32] [--json]");
   for (const x of opts.allow) if (!CHECKS.includes(x)) throw new Error(`--allow 只接受：${CHECKS.join(", ")}`);
   return opts;
 }
 
+// 点按目标门槛：--min-target 优先，其次 DESIGN.md"无障碍"里的"点按目标：…≥ N×Npx"，都没有时用 WCAG 2.5.8 的 24px
 // 从 DESIGN.md 前言的 x-style-mix（或旧版第一行的 <!-- style-mix: 主+副 -->）读出组合，从"检查时排除："读出不检查的区域
 async function readMix(opts) {
   const file = opts.design ?? (existsSync("DESIGN.md") ? "DESIGN.md" : null);
   const text = file ? await fs.readFile(file, "utf8") : "";
   const scope = text.match(/^检查时排除：(.+)$/m);
   if (scope) opts.ignore.push(...[...scope[1].matchAll(/`([^`]+)`/g)].map((x) => x[1]));
+  opts.minTarget ??= Number(text.match(/点按目标：[^\n]*?≥\s*(\d+)/)?.[1] ?? 24);
   if (opts.mix) return opts.mix.split("+");
   if (!file) throw new Error("没有找到 DESIGN.md；用 --design 指定，或用 --mix 主+副");
   const hit = text.match(/^x-style-mix:\s*"?([a-z-]+)\+([a-z-]+)"?/m) ?? text.match(/<!--\s*style-mix:\s*([a-z-]+)\+([a-z-]+)/);
@@ -388,13 +391,22 @@ function audit(spec) {
   }
 
   // 点按目标（只在手机宽度）
-  if (innerWidth < 600) {
-    const small = shown.filter((el) => el.matches("a[href], button, input:not([type=hidden]), select, textarea, [role=button]")).filter((el) => {
+  // 按截图宽度判断手机：页面横向溢出时，手机模拟下的 innerWidth 会被内容撑宽，用它判断会悄悄跳过这一项
+  if (spec.mobile) {
+    // 行内例外（WCAG 2.5.8）：链接是一段文字里的几个词，所在的文字块里还有别的字；只认正文段落（p、li、dd、td、blockquote）；单独成行的链接、按钮、图注里的出处链接都不算行内
+    const block = (el) => { let n = el.parentElement; while (n && getComputedStyle(n).display.startsWith("inline")) n = n.parentElement; return n; };
+    const inline = (el) => {
+      if (el.tagName !== "A" || styles.get(el).display !== "inline" || !block(el)?.matches("p, li, dd, td, blockquote")) return false;
+      const own = el.textContent.trim();
+      const rest = (block(el)?.textContent ?? "").replace(own, "").replace(/[\s，。、；：,.;:()（）|·—-]+/g, "");
+      return rest.length >= 8;
+    };
+    const min = spec.minTarget;
+    const small = shown.filter((el) => el.matches("a[href], button, input:not([type=hidden]), select, textarea, [role=button], summary, label[for]")).filter((el) => {
       const r = el.getBoundingClientRect();
-      const inline = el.tagName === "A" && el.parentElement.matches("p, li") && el.parentElement.textContent.trim() !== el.textContent.trim();
-      return !inline && (r.width < 24 || r.height < 24);
+      return !inline(el) && (r.width < min - 0.5 || r.height < min - 0.5);
     });
-    if (small.length) add("targets", "WARN", `${small.length} 个可点元素小于 24×24px`, small.map((el) => `${sel(el)} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`));
+    if (small.length) add("targets", "FAIL", `${small.length} 个可点元素小于 ${min}×${min}px（正文句子里的行内链接不算）`, small.map((el) => `${sel(el)} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`));
   }
 
   // 原作：<figure data-original> 里的画不加滤镜、混合模式、半透明，要有写明出处的图注
@@ -505,7 +517,7 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
       await shoot(b, file, clip);
       shots.push(file);
     }
-    for (const f of await b.evaluate(audit, spec)) findings.push({ ...f, width: view.width });
+    for (const f of await b.evaluate(audit, { ...spec, mobile: view.mobile })) findings.push({ ...f, width: view.width });
     if (!view.mobile) {
       // 键盘焦点：按 Tab 走前 12 个可聚焦元素，每个都要有看得见的焦点环
       const bad = [];
@@ -547,7 +559,7 @@ async function checkPage(b, target, opts, spec, out, baseline, saved) {
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   const m = resolve(await readMix(opts));
-  const spec = { ...specFor(m), ignore: opts.ignore };
+  const spec = { ...specFor(m), ignore: opts.ignore, minTarget: opts.minTarget };
   const root = path.resolve(opts.out ?? ".style-mix/check");
   const keys = opts.targets.map(pageKey);
   const baseline = opts.baseline ? await readBaseline(opts.baseline, keys[0]) : null;

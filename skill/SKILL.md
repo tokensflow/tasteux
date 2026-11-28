@@ -72,7 +72,7 @@ node <本目录>/scripts/mix.mjs 包豪斯 野兽派 --subject "a poster for an 
    node <本目录>/scripts/check.mjs http://localhost:3000/ [更多页面的网址...] --design DESIGN.md --shot "#hero"
    ```
 
-   它在 1440px 和 390px 下截图，并检查：文字对比度（按实际底色算）、圆角、阴影、按钮（立体斜面、双线边框）、质感平铺接缝、渐变文字、玻璃效果、多出来的强调色和调色板外的颜色、标题和正文字体、同一字体族混用两种 font-display、横向溢出、手机上的点按尺寸、`lang` / `title` / h1 / 图片 alt、原作（`[data-original]` 不能加滤镜和半透明，图注要链接出处）、Tab 焦点环、减少动态效果时还在跑的动画。第一行是 `CHECK: PASS` 或 `CHECK: FAIL`，有 FAIL 时退出码为 1。
+   它在 1440px 和 390px 下截图，并检查：文字对比度（按实际底色算）、圆角、阴影、按钮（立体斜面、双线边框）、质感平铺接缝、渐变文字、玻璃效果、多出来的强调色和调色板外的颜色、标题和正文字体、同一字体族混用两种 font-display、横向溢出、手机上的点按尺寸（门槛读 DESIGN.md"无障碍"里的"点按目标"，新生成的是 32px，旧文件没有这一行时按 24px；`--min-target 32` 可以临时指定；正文句子里的行内链接不算）、`lang` / `title` / h1 / 图片 alt、原作（`[data-original]` 不能加滤镜和半透明，图注要链接出处）、Tab 焦点环、减少动态效果时还在跑的动画。第一行是 `CHECK: PASS` 或 `CHECK: FAIL`，有 FAIL 时退出码为 1。
    - `--shot 选择器`（可重复）截这一轮改动的区块。截图前脚本会把懒加载的图片全部加载完；加载失败的图片会报 images FAIL，所以截图里空白的图就是真的坏了。截图放在 `.style-mix/check/`，不要提交进仓库。
    - 多页面网站把"适用范围"里标为管的每个页面模板的示例网址一起传进去（`check.mjs http://localhost:3000/ http://localhost:3000/guide/ http://localhost:3000/en/ ...`），一次出一个结论；每页的截图在各自的子目录里。只查首页不算验收。同一语言的页面导航不一样会报 nav FAIL；语言切换链接加 hreflang，它按页面指向译文，不参与比较。
    - 迭代已有网站时，动手前先对这些页面跑一次 `--save-baseline .style-mix/baseline.json`，改完用 `--baseline .style-mix/baseline.json` 再跑：标题、meta、canonical、JSON-LD、h1–h3、链接、脚本（统计和广告）、iframe、表单有任何变化都会报 FAIL。脚本和 iframe 只比页面 HTML 原文里写的，广告运行时插入的 iframe 和子脚本不算。基线按页面路径分开存在这一个文件里（换域名或端口不影响），`--save-baseline` 只覆盖这次查的页面。这一轮新增的页面不在基线里，只报 WARN；确认内容后单独对它跑一次 `--save-baseline` 加进去。

@@ -164,6 +164,9 @@ function originals(m) {
   ];
 }
 
+// 点按目标：手机上 24px（WCAG 2.5.8 的底线）点起来仍然容易误触，统一要求 32px；check.mjs 从这一行读门槛
+const TARGET = "- 点按目标：手机上可点元素 ≥ 32×32px（按钮、导航、标签、图片出处链接、轮播圆点都算）；正文句子里的行内链接除外。";
+
 // 字体加载：同一个字体族在不同地方用不同的 font-display 各加载一次，页面滚到一半标题会换字体
 const FONT_LOAD = "整站只用一种 font-display（推荐 swap），每个字体族只请求一次：在每个页面的 <head> 里用同一条 Google Fonts 链接加载，并 preconnect fonts.gstatic.com；不要在某个区块或懒加载的模块里再请求一次";
 
@@ -199,7 +202,7 @@ function codePrompt(m) {
     ...(m.F.works?.length ? [`【主视觉】优先用${m.F.name}的公有领域原作（见 DESIGN.md「原作」），写明出处和许可，不加滤镜、不铺质感、不裁题款。`] : []),
     `【动效】${motion(st)}`,
     `【禁止】${m.dont.join("、")}。不要使用渐变文字、默认玻璃卡片、通用圆角阴影卡片网格。`,
-    "【无障碍】", ...a11y(m),
+    "【无障碍】", ...a11y(m), TARGET,
   ].join("\n");
 }
 
@@ -331,7 +334,7 @@ export function designDoc(m, subject = "{主题：按场景写一个具体画面
     ...originals(m),
     "## 动效", motion(st), "",
     "## 禁止", ...m.dont.map((d) => `- ${d}`), "- 渐变文字、默认玻璃卡片、通用圆角阴影卡片网格", "",
-    "## 无障碍", ...a11y(m), "",
+    "## 无障碍", ...a11y(m), TARGET, "",
     "## 提示词", "", "### 写代码用", "```text", codePrompt(m), "```", "",
     "### 生图用", "```text", imagePrompt(m, subject), "```", "",
     "## 迭代记录",

@@ -21,8 +21,9 @@ const base = `${vars}
   a.cta { display: inline-block; padding: 12px 20px; background: var(--accent); color: var(--on-accent); }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
   .dot { width: 80px; height: 80px; border-radius: 50%; background: var(--accent3); }
-  main > figure, main > img { grid-column: 1 / -1; margin: 0; max-width: 100%; }`;
-const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fixture</title><meta name="description" content="原来的描述"><meta property="og:image" content="https://example.com/assets/0123456789ab/images/a.jpg"><style>${css}</style></head><body><main><h1>纸页书店</h1><div class="rule"></div><div class="card"><p>每周三晚上读书。</p><a class="cta" href="/join">预约到店</a></div><div class="card"><div class="dot"></div></div>${body}</main></body></html>`;
+  main > figure, main > img { grid-column: 1 / -1; margin: 0; max-width: 100%; }
+  figcaption a { display: inline-block; min-height: 32px; line-height: 32px; }`;
+const page = (css, body, lang = "zh-CN") => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fixture</title><meta name="description" content="原来的描述"><meta property="og:image" content="https://example.com/assets/0123456789ab/images/a.jpg"><style>${css}</style></head><body><main><h1>纸页书店</h1><div class="rule"></div><div class="card"><p>每周三晚上读书，<a href="/rules">读书会规则</a>写在店门口的黑板上。</p><a class="cta" href="/join">预约到店</a></div><div class="card"><div class="dot"></div></div>${body}</main></body></html>`;
 
 const art = `<figure data-original><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="120" alt="神奈川冲浪里"><figcaption>葛饰北斋《神奈川冲浪里》，芝加哥艺术博物馆，CC0。<a href="https://www.artic.edu/artworks/24645">出处</a></figcaption></figure>`;
 // 远在首屏之外的懒加载图片：检查前必须真的加载出来，否则会被当成坏图
@@ -33,7 +34,7 @@ const ads = `<script src="ads.js"></script><script>const r = Math.random(); docu
 const noise = (region) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'${region}><feTurbulence type='fractalNoise' baseFrequency='.85' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`)}")`;
 const tex = (region) => `<div class="texture" aria-hidden="true" style="position: fixed; inset: 0; z-index: -1; opacity: 0.1; background: var(--ink); mask: ${noise(region).replaceAll('"', "&quot;")}"></div>`;
 // 标签页的选中下划线（单边 inset 0 -2px 0）不是立体按钮
-const tab = `<button class="tab" style="box-shadow: inset 0 -2px 0 var(--ink); background: none; color: var(--ink); border: 0; min-height: 44px; outline-offset: 2px" onfocus="this.style.outline='2px solid'">代码</button>`;
+const tab = `<button class="tab" style="box-shadow: inset 0 -2px 0 var(--ink); background: none; color: var(--ink); border: 0; min-height: 44px; min-width: 44px; outline-offset: 2px" onfocus="this.style.outline='2px solid'">代码</button>`;
 const good = page(base, art + lazy + ads + tab + tex(" x='0' y='0' width='100%' height='100%' filterUnits='userSpaceOnUse'"));
 const bad = page(`${base}
   .card { border-radius: 12px; box-shadow: 0 8px 24px oklch(0 0 0 / 0.2); }
@@ -45,7 +46,7 @@ const bad = page(`${base}
   @keyframes spin { to { transform: rotate(1turn); } }
   a.cta { border: 4px outset var(--ink); }
   @font-face { font-family: "Jost"; font-display: optional; src: url("a.woff2"); }
-  @font-face { font-family: "Jost"; font-display: swap; src: url("b.woff2"); }`, `${tex("")}<img src="missing.png" width="40" height="40" alt="坏图"><figure data-original style="filter: sepia(0.5)"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="120" alt="x"></figure><p class="grad">渐变标题</p><p class="faint">看不清的说明文字</p><div class="wide"></div><div class="spin"></div>`, "").replace("原来的描述", "改过的描述");
+  @font-face { font-family: "Jost"; font-display: swap; src: url("b.woff2"); }`, `${tex("")}<button style="width: 20px; height: 20px; padding: 0">×</button><img src="missing.png" width="40" height="40" alt="坏图"><figure data-original style="filter: sepia(0.5)"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="120" alt="x"></figure><p class="grad">渐变标题</p><p class="faint">看不清的说明文字</p><div class="wide"></div><div class="spin"></div>`, "").replace("原来的描述", "改过的描述");
 // 只含字母 A 的 DejaVu Serif Bold 子集（Bitstream Vera 许可，可自由再分发）
 const fontA = "data:font/woff2;base64,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";
 // 只用到 700 的标题字体同时声明了 500 一档：500 从不加载，不能因此报"没有加载成功"；整个族都没加载才报
@@ -97,9 +98,15 @@ test("browser check passes a page that follows DESIGN.md and fails each broken r
 
     const broken = await check(dir, "good", bad, "--design", design, "--baseline", path.join(dir, "baseline.json"));
     assert.equal(broken.code, 1);
-    assert.deepEqual([...failed(broken)].sort(), ["baseline", "buttons", "contrast", "focus", "fonts", "gradient", "images", "motion", "originals", "overflow", "radius", "shadow", "structure", "texture"]);
+    assert.deepEqual([...failed(broken)].sort(), ["baseline", "buttons", "contrast", "focus", "fonts", "gradient", "images", "motion", "originals", "overflow", "radius", "shadow", "structure", "targets", "texture"]);
     assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("改过的描述"))));
     assert.ok(broken.findings.some((f) => f.check === "baseline" && f.samples.some((s) => s.includes("- ads.js"))));
+    // 点按目标门槛来自 DESIGN.md（32px）：20px 的按钮报，正文句子里的行内链接不报；--min-target 可以改门槛
+    const tiny = broken.findings.find((f) => f.check === "targets");
+    assert.match(tiny.msg, /小于 32×32px/);
+    assert.ok(tiny.samples.some((x) => x.includes("button")) && !tiny.samples.some((x) => x.includes("p > a")), JSON.stringify(tiny.samples));
+    const loose = await check(dir, "loose", bad, "--design", design, "--min-target", "16");
+    assert.ok(!failed(loose).has("targets"));
 
     // 多页面：一次查两页，基线按页面分开。旧页面照常比对；新页面只提醒没有基线；再存基线时追加新页面，不丢旧页面
     const privacy = path.join(dir, "privacy.html");
