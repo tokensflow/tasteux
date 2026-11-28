@@ -65,7 +65,7 @@ test("built homepage exposes all platform downloads and invocation instructions 
 });
 
 test("every landing page has unique metadata and truthful structured data", async () => {
-  assert.equal(pages.length, 10);
+  assert.equal(pages.length, 20);
   const titles = new Set();
   const descriptions = new Set();
   for (const url of pages) {
@@ -90,13 +90,20 @@ test("every landing page has unique metadata and truthful structured data", asyn
   }
 });
 
-test("Chinese and English homepages declare each other with hreflang and the right language", async () => {
-  const expected = [`hreflang="zh-CN" href="${origin}/"`, `hreflang="en" href="${origin}/en/"`, `hreflang="x-default" href="${origin}/"`];
-  for (const [url, lang, locale] of [["/", "zh-CN", "zh_CN"], ["/en/", "en", "en_US"]]) {
-    const html = await fs.readFile(pageFile(url), "utf8");
-    for (const link of expected) assert.ok(html.includes(`<link rel="alternate" ${link}>`), `${url} 缺少 ${link}`);
-    assert.ok(html.includes(`<html lang="${lang}"`));
-    assert.ok(html.includes(`property="og:locale" content="${locale}"`));
+test("every Chinese page and its English page declare each other with hreflang and the right language", async () => {
+  const zhPages = pages.filter((url) => !url.startsWith("/en/"));
+  assert.equal(zhPages.length * 2, pages.length);
+  for (const zh of zhPages) {
+    const en = `/en${zh}`;
+    assert.ok(pages.includes(en), `${zh} 没有英文页 ${en}`);
+    const expected = [`hreflang="zh-CN" href="${origin}${zh}"`, `hreflang="en" href="${origin}${en}"`, `hreflang="x-default" href="${origin}${zh}"`];
+    for (const [url, lang, locale] of [[zh, "zh-CN", "zh_CN"], [en, "en", "en_US"]]) {
+      const html = await fs.readFile(pageFile(url), "utf8");
+      for (const link of expected) assert.ok(html.includes(`<link rel="alternate" ${link}>`), `${url} 缺少 ${link}`);
+      assert.equal((html.match(/rel="alternate" hreflang=/g) ?? []).length, 3, url);
+      assert.ok(html.includes(`<html lang="${lang}"`));
+      assert.ok(html.includes(`property="og:locale" content="${locale}"`));
+    }
   }
 });
 

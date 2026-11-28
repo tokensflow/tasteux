@@ -53,7 +53,8 @@ const runtime = await (await get(`${base}schools.json`)).json();
 assert.equal(runtime.schools.length, 24);
 const sitemap = await (await get("/sitemap.xml")).text();
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-assert.deepEqual(urls, ["/", "/en/", ...FEATURED_IDS.map((id) => `/schools/${id}/`), "/guides/art-movement-web-design/", "/about/"].map((url) => origin + url));
+const zhUrls = ["/", ...FEATURED_IDS.map((id) => `/schools/${id}/`), "/guides/art-movement-web-design/", "/about/", "/privacy/"];
+assert.deepEqual([...urls].sort(), [...zhUrls, ...zhUrls.map((url) => `/en${url}`)].map((url) => origin + url).sort());
 for (const url of urls) {
   const page = await (await get(url)).text();
   assert.ok(page.includes(`rel="canonical" href="${url}"`));
