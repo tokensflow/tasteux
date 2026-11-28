@@ -183,33 +183,15 @@
         <p>提供 Pi、Claude Code 和 Codex 版本，共用标准 SKILL.md、24 个流派的数据与混合规则。装好后可以在 Agent 里直接生成 DESIGN.md、代码和生图提示词；技能本身不需要额外 API key。</p>
       </header>
 
-      <div class="quick-install">
-        <h3>一行安装</h3>
-        <p>已装 Node 的话，在终端运行下面这行。skills 命令行会找到本机的 Claude Code、Codex 等 Agent，按提示选择装到哪里。</p>
-        <div class="sheet">
-          <header><span>终端</span><button class="btn btn-sm" type="button" data-copy="quick-install-cmd">复制</button></header>
-          <pre id="quick-install-cmd">npx skills add tokensflow/tasteux</pre>
-        </div>
-        <p>也可以下载技能包手动安装：</p>
-      </div>
-
-      <div class="skill-versions" id="skill-versions"></div>
-      <p class="skill-portable">三个下载包内容相同，安装目录和调用方式不同；只需安装你使用的版本。下方命令适用于 macOS / Linux，遇到已有技能目录会停止，不覆盖你的修改。</p>
-      <div class="install">
-        <div>
-          <div class="targets" role="group" aria-label="安装位置" id="targets"></div>
+      <div class="install-main">
+        <div class="quick-install">
+          <h3>一行安装</h3>
+          <p>已装 Node 的话，在终端运行下面这行。skills 命令行会找到本机的 Claude Code、Codex 等 Agent，按提示选择装到哪里。</p>
           <div class="sheet">
-            <header><span id="target-path"></span><button class="btn btn-sm" type="button" data-copy="install-out">复制</button></header>
-            <pre id="install-out"></pre>
+            <header><span>终端</span><button class="btn btn-sm" type="button" data-copy="quick-install-cmd">复制</button></header>
+            <pre id="quick-install-cmd">npx skills add tokensflow/tasteux</pre>
           </div>
-          <div class="install-usage"><p id="skill-activation"></p><code id="skill-invocation"></code><a id="selected-skill-download" class="btn btn-sm" href="/skill/downloads/style-mix-pi.zip" download="style-mix-pi.zip">下载当前版本 .zip</a></div>
-          <p class="files">单独下载：
-            <a href="../skill/SKILL.md" download>SKILL.md</a>
-            <a href="../skill/schools.json" download>schools.json</a>
-            <a href="../skill/references/mixing.md" download>mixing.md</a>
-            <a href="../skill/references/format.md" download>format.md</a>
-            <a href="../skill/scripts/mix.mjs" download>mix.mjs</a>
-          </p>
+          <p class="install-zip">没有 Node：<a class="btn btn-sm" href="/skill/downloads/style-mix.zip" download="style-mix.zip">下载技能包 .zip</a>，解压后把 <code>style-mix</code> 文件夹放进 Agent 的 skills 目录。</p>
         </div>
         <div class="say">
           <h3>装好以后这样说</h3>
@@ -221,6 +203,27 @@
           </ul>
         </div>
       </div>
+
+      <details class="install-more">
+        <summary>高级：按 Agent 下载、终端脚本、单独文件</summary>
+        <div class="skill-versions" id="skill-versions"></div>
+        <p class="skill-portable">三个下载包内容相同，安装目录和调用方式不同；只需安装你使用的版本。下方命令适用于 macOS / Linux，遇到已有技能目录会停止，不覆盖你的修改。</p>
+        <div class="install">
+          <div class="targets" role="group" aria-label="安装位置" id="targets"></div>
+          <div class="sheet">
+            <header><span id="target-path"></span><button class="btn btn-sm" type="button" data-copy="install-out">复制</button></header>
+            <pre id="install-out"></pre>
+          </div>
+          <div class="install-usage"><p id="skill-activation"></p><code id="skill-invocation"></code><a id="selected-skill-download" class="btn btn-sm" href="/skill/downloads/style-mix-pi.zip" download="style-mix-pi.zip">下载当前版本 .zip</a></div>
+          <p class="files">单独下载：
+          <a href="../skill/SKILL.md" download>SKILL.md</a>
+          <a href="../skill/schools.json" download>schools.json</a>
+          <a href="../skill/references/mixing.md" download>mixing.md</a>
+          <a href="../skill/references/format.md" download>format.md</a>
+          <a href="../skill/scripts/mix.mjs" download>mix.mjs</a>
+          </p>
+        </div>
+      </details>
     </section>
   </main>
 
