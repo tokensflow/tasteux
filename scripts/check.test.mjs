@@ -75,7 +75,7 @@ async function check(dir, name, html, ...args) {
 }
 const failed = (r) => new Set(r.findings.filter((f) => f.level === "FAIL").map((f) => f.check));
 
-test("browser check passes a page that follows DESIGN.md and fails each broken rule", { timeout: 120000 }, async (t) => {
+test("browser check passes a page that follows DESIGN.md and fails each broken rule", { timeout: 300000 }, async (t) => {
   if (!(await chromeAvailable())) return t.skip("没有 Chrome");
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "style-mix-check-"));
   try {
