@@ -115,9 +115,7 @@ function previewMarkup(template, S, F, imageBase) {
   const tpl = template.match(/<template id="pv-tpl">\s*([\s\S]*?)\s*<\/template>/)[1];
   const pv = replaceOnce(tpl, /<div class="pv" [^>]*>/, `<div class="pv" data-structure="${esc(S.id)}" data-texture="${level ? esc(F.texture.kind) : "none"}"${F.img === false ? ' data-img="none"' : ""} style="${esc(style)}" aria-hidden="true">`)
     .replace(/<figure class="pv-img"[\s\S]*?<\/figure>/, () => `<figure class="pv-img" aria-hidden="true">${F.img === false ? "" : imageMarkup(F.id, { imageBase, alt: "", sizes: "(max-width: 640px) 160px, 320px" })}</figure>`);
-  // 示例页的标题不进流派页的标题大纲：静态副本里换成普通元素，样式不变。
-  const flat = pv.replace(/<h2 class="pv-title">([\s\S]*?)<\/h2>/, '<p class="pv-title">$1</p>').replace(/<h3>([\s\S]*?)<\/h3>/g, '<p class="pv-h">$1</p>');
-  return `<link rel="stylesheet" href="${esc(fontsHref(st.type.google))}"><div class="thumb">${flat}</div>`;
+  return `<link rel="stylesheet" href="${esc(fontsHref(st.type.google))}"><div class="thumb">${pv}</div>`;
 }
 
 function schoolPage(template, s, byId, imageBase) {

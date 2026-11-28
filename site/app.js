@@ -714,6 +714,7 @@ async function sampleHtml(m) {
   };
   swap(pv.querySelector(".pv-page"), "main");
   swap(pv.querySelector(".pv-title"), "h1");
+  pv.querySelectorAll(".pv-h").forEach((el) => swap(el, "h2"));
   swap(pv.querySelector(".pv-cta"), "a", { href: "#" });
   pv.querySelectorAll(".pv-links > span").forEach((el) => swap(el, "a", { href: "#" }));
   const img = pv.querySelector(".pv-img img");
